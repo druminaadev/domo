@@ -54,6 +54,7 @@ const NAV: NavGroup[] = [
       { label: 'Approved', path: '/loans/approved', icon: CheckCircle },
       { label: 'Disbursed', path: '/loans/disbursed', icon: Banknote },
       { label: 'Pending Approval', path: '/loans/approval', icon: CheckSquare, badge: 'New' },
+      { label: 'Nominee Details', path: '/loans/nominee-details', icon: UserCircle },
     ],
   },
   {

@@ -17,6 +17,8 @@ interface LoanForm {
   fileCharges: string; otherCharges: string; intervalDays: string; remarks: string
   modelName: string; regNo: string; chassisNo: string; keys: string; rcReceived: string
   itemName: string; weight: string; pieces: string; receiverMobile: string
+  nomineeName: string; nomineeRelation: string; nomineeDob: string; nomineeMobile: string
+  nomineeIdentityProof: string; nomineeIdentityNo: string; nomineeAddress: string
 }
 
 const INTERVALS = ['7 Days', '14 Days', 'Monthly', 'Quarterly']
@@ -124,6 +126,8 @@ export default function AddLoanPage() {
             <Input label="Receiver Mobile" placeholder="10-digit mobile" {...register('receiverMobile')} />
           </div>
         </Card>
+
+      
 
         <div className="flex gap-3">
           <Button type="submit">Register Loan</Button>
