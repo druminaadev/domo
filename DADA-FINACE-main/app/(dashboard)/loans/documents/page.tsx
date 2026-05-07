@@ -3,6 +3,7 @@ import { useStore } from '@/store/appStore'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 import { format, parseISO } from 'date-fns'
+import { Button } from '@/components/ui/Button'
 
 function getLabel(score: number) {
   if (score >= 800) return 'Excellent'
@@ -275,12 +276,12 @@ function DocumentContent() {
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-10 print:shadow-none print:rounded-none">
         {renderDoc()}
         <div className="mt-8 pt-4 border-t border-slate-200 text-center print:hidden">
-          <button onClick={() => window.print()} className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 cursor-pointer mr-3">
+          <Button onClick={() => window.print()} className="mr-3">
             Print / Save PDF
-          </button>
-          <button onClick={() => window.close()} className="px-6 py-2 border border-slate-300 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50 cursor-pointer">
+          </Button>
+          <Button variant="outline" onClick={() => window.close()}>
             Close
-          </button>
+          </Button>
         </div>
       </div>
     </div>

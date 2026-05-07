@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
 import { Button } from '@/components/ui/Button'
+import { FileUpload } from '@/components/ui/FileUpload'
 import { useStore } from '@/store/appStore'
 import { useUIStore } from '@/store/uiStore'
 
@@ -94,37 +95,44 @@ export default function AddLoanPage() {
             ))}
           </div>
           {securityType === 'vehicle' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Input label="Vehicle Model" placeholder="e.g. Honda Activa" {...register('modelName')} />
-              <Input label="Registration Number" placeholder="e.g. GJ01AB1234" {...register('regNo')} />
-              <Input label="Chassis Number" placeholder="Chassis number" {...register('chassisNo')} />
-              <Input label="Number of Keys" type="number" placeholder="e.g. 2" {...register('keys')} />
-              <div className="flex flex-col gap-1">
-                <label className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>RC Book Received</label>
-                <div className="flex gap-4 mt-2">
-                  {['yes', 'no'].map(v => (
-                    <label key={v} className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--text-primary)' }}>
-                      <input type="radio" value={v} {...register('rcReceived')} style={{ accentColor: 'var(--accent)' }} />
-                      {v === 'yes' ? 'Yes' : 'No'}
-                    </label>
-                  ))}
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <Input label="Vehicle Model" placeholder="e.g. Honda Activa" {...register('modelName')} />
+                <Input label="Registration Number" placeholder="e.g. GJ01AB1234" {...register('regNo')} />
+                <Input label="Chassis Number" placeholder="Chassis number" {...register('chassisNo')} />
+                <Input label="Number of Keys" type="number" placeholder="e.g. 2" {...register('keys')} />
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>RC Book Received</label>
+                  <div className="flex gap-4 mt-2">
+                    {['yes', 'no'].map(v => (
+                      <label key={v} className="flex items-center gap-2 text-sm cursor-pointer" style={{ color: 'var(--text-primary)' }}>
+                        <input type="radio" value={v} {...register('rcReceived')} style={{ accentColor: 'var(--accent)' }} />
+                        {v === 'yes' ? 'Yes' : 'No'}
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+              <FileUpload label="Upload Vehicle Documents" accept="image/*,.pdf" />
+            </>
           )}
           {securityType === 'gold' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Input label="Item Name" placeholder="e.g. Gold Necklace" {...register('itemName')} />
-              <Input label="Weight (grams)" type="number" step="0.1" placeholder="e.g. 20" {...register('weight')} />
-              <Input label="No. of Pieces" type="number" placeholder="e.g. 1" {...register('pieces')} />
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <Input label="Item Name" placeholder="e.g. Gold Necklace" {...register('itemName')} />
+                <Input label="Weight (grams)" type="number" step="0.1" placeholder="e.g. 20" {...register('weight')} />
+                <Input label="No. of Pieces" type="number" placeholder="e.g. 1" {...register('pieces')} />
+              </div>
+              <FileUpload label="Upload Gold Documents" accept="image/*,.pdf" />
+            </>
           )}
         </Card>
 
         <Card title="Receiver Details">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Input label="Receiver Mobile" placeholder="10-digit mobile" {...register('receiverMobile')} />
           </div>
+          <FileUpload label="Upload Receiver Documents" accept="image/*,.pdf" />
         </Card>
 
       
