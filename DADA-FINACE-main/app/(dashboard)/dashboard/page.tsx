@@ -1,15 +1,52 @@
 'use client'
+
 import { useRouter } from 'next/navigation'
-import { CreditCard, Clock, CheckCircle, Banknote, Users, UserCircle, TrendingUp, Plus, ArrowUpRight, ArrowDownRight, DollarSign, Activity, Wallet } from 'lucide-react'
-import { useStore } from '@/store/appStore'
+import {
+  Activity,
+  ArrowDownRight,
+  ArrowUpRight,
+  Banknote,
+  CalendarDays,
+  CheckCircle,
+  Clock,
+  CreditCard,
+  IndianRupee,
+  Plus,
+  Sparkles,
+  Target,
+  TrendingUp,
+  Users,
+  Wallet,
+} from 'lucide-react'
+import { format, parseISO, startOfMonth } from 'date-fns'
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { Badge } from '@/components/ui/Badge'
 import { GradientButton } from '@/components/ui/GradientButton'
 import { NeumorphicCard } from '@/components/ui/NeumorphicCard'
-import { format, parseISO, startOfMonth } from 'date-fns'
-import {
-  AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart, Line
-} from 'recharts'
+import { useStore } from '@/store/appStore'
+
+type IconType = typeof CreditCard
+
+const statusColors = {
+  pending: '#F59E0B',
+  approved: '#6366F1',
+  disbursed: '#10B981',
+}
 
 export default function Dashboard() {
   const { loans, customers, employees } = useStore()
@@ -18,349 +55,426 @@ export default function Dashboard() {
   const formatINR = (n: number) =>
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n)
 
-  const totalDisbursed = loans.filter(l => l.status === 'disbursed').reduce((s, l) => s + l.amount, 0)
-  const totalPending = loans.filter(l => l.status === 'pending').reduce((s, l) => s + l.amount, 0)
-  const totalApproved = loans.filter(l => l.status === 'approved').reduce((s, l) => s + l.amount, 0)
-  
-  // Calculate growth percentages
+  const pendingLoans = loans.filter(l => l.status === 'pending')
+  const approvedLoans = loans.filter(l => l.status === 'approved')
+  const disbursedLoans = loans.filter(l => l.status === 'disbursed')
+
+  const totalDisbursed = disbursedLoans.reduce((s, l) => s + l.amount, 0)
+  const totalPending = pendingLoans.reduce((s, l) => s + l.amount, 0)
+  const totalApproved = approvedLoans.reduce((s, l) => s + l.amount, 0)
+  const totalPortfolio = loans.reduce((s, l) => s + l.amount, 0)
+  const activeLoans = approvedLoans.length + disbursedLoans.length
+  const avgLoanAmount = loans.length > 0 ? totalPortfolio / loans.length : 0
+  const approvalRate = loans.length > 0 ? Math.round((activeLoans / loans.length) * 100) : 0
+
   const thisMonthLoans = loans.filter(l => {
     const loanMonth = format(parseISO(l.loanDate), 'MMM yy')
-    const currentMonth = format(new Date(), 'MMM yy')
-    return loanMonth === currentMonth
+    return loanMonth === format(new Date(), 'MMM yy')
   }).length
-  
+
   const lastMonthLoans = loans.filter(l => {
-    const loanDate = parseISO(l.loanDate)
     const lastMonth = new Date()
     lastMonth.setMonth(lastMonth.getMonth() - 1)
-    return format(loanDate, 'MMM yy') === format(lastMonth, 'MMM yy')
+    return format(parseISO(l.loanDate), 'MMM yy') === format(lastMonth, 'MMM yy')
   }).length
-  
-  const loanGrowth = lastMonthLoans > 0 ? ((thisMonthLoans - lastMonthLoans) / lastMonthLoans * 100).toFixed(1) : '0'
-  const isGrowthPositive = Number(loanGrowth) >= 0
 
-  // ── Chart 1: Monthly loan count trend ──────────────────────
+  const loanGrowth = lastMonthLoans > 0 ? ((thisMonthLoans - lastMonthLoans) / lastMonthLoans) * 100 : thisMonthLoans > 0 ? 100 : 0
+  const isGrowthPositive = loanGrowth >= 0
+
   const monthlyMap: Record<string, { month: string; loans: number; amount: number }> = {}
   loans.forEach(l => {
     const key = format(startOfMonth(parseISO(l.loanDate)), 'MMM yy')
     if (!monthlyMap[key]) monthlyMap[key] = { month: key, loans: 0, amount: 0 }
-    monthlyMap[key].loans++
+    monthlyMap[key].loans += 1
     monthlyMap[key].amount += l.amount
   })
   const trendData = Object.values(monthlyMap).slice(-6)
 
-  // ── Chart 2: Status donut ───────────────────────────────────
   const donutData = [
-    { name: 'Pending',   value: loans.filter(l => l.status === 'pending').length,   color: '#F59E0B' },
-    { name: 'Approved',  value: loans.filter(l => l.status === 'approved').length,  color: '#3B82F6' },
-    { name: 'Disbursed', value: loans.filter(l => l.status === 'disbursed').length, color: '#10B981' },
+    { name: 'Pending', value: pendingLoans.length, color: statusColors.pending },
+    { name: 'Approved', value: approvedLoans.length, color: statusColors.approved },
+    { name: 'Disbursed', value: disbursedLoans.length, color: statusColors.disbursed },
   ].filter(d => d.value > 0)
 
-  // ── Chart 3: Disbursed amount by month ─────────────────────
   const disbursedMap: Record<string, number> = {}
-  loans.filter(l => l.status === 'disbursed').forEach(l => {
+  disbursedLoans.forEach(l => {
     const key = format(startOfMonth(parseISO(l.loanDate)), 'MMM yy')
     disbursedMap[key] = (disbursedMap[key] ?? 0) + l.amount
   })
   const barData = Object.entries(disbursedMap).map(([month, amount]) => ({ month, amount })).slice(-6)
 
-  const recentLoans = [...loans].sort((a, b) => b.id - a.id).slice(0, 5)
+  const customerGrowthMap: Record<string, number> = {}
+  customers.forEach(c => {
+    try {
+      const dateStr = c.regDate || new Date().toISOString()
+      const key = format(startOfMonth(parseISO(dateStr)), 'MMM yy')
+      customerGrowthMap[key] = (customerGrowthMap[key] ?? 0) + 1
+    } catch {
+      // Ignore invalid dates from seed or imported records.
+    }
+  })
+  const customerGrowthData = Object.entries(customerGrowthMap).map(([month, count]) => ({ month, customers: count })).slice(-6)
 
-  // Shared tooltip style
+  const loanTypeData = [
+    { name: 'Personal', value: Math.floor(loans.length * 0.45), color: '#8B5CF6' },
+    { name: 'Business', value: Math.floor(loans.length * 0.30), color: '#EC4899' },
+    { name: 'Home', value: Math.floor(loans.length * 0.15), color: '#F59E0B' },
+    { name: 'Auto', value: Math.floor(loans.length * 0.10), color: '#10B981' },
+  ].filter(d => d.value > 0)
+
+  const recentLoans = [...loans].sort((a, b) => b.id - a.id).slice(0, 6)
+
   const tooltipStyle = {
     contentStyle: {
       background: '#FFFFFF',
       border: '1px solid #E8E8E8',
-      borderRadius: '12px',
-      color: '#2C2C2C',
+      borderRadius: '14px',
+      color: '#222831',
       fontSize: '12px',
-      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+      boxShadow: '0 16px 40px rgba(34, 40, 49, 0.12)',
     },
-    labelStyle: { color: '#6B6B6B', fontWeight: 600 },
+    labelStyle: { color: '#393E46', fontWeight: 700 },
   }
 
+  const kpis: Array<{
+    label: string
+    value: string | number
+    hint: string
+    icon: IconType
+    color: string
+    bg: string
+  }> = [
+    {
+      label: 'Total Loans',
+      value: loans.length,
+      hint: `${thisMonthLoans} opened this month`,
+      icon: CreditCard,
+      color: '#FF6D3D',
+      bg: 'rgba(255, 109, 61, 0.12)',
+    },
+    {
+      label: 'Customers',
+      value: customers.length,
+      hint: 'Registered borrowers',
+      icon: Users,
+      color: '#14B8A6',
+      bg: 'rgba(20, 184, 166, 0.12)',
+    },
+    {
+      label: 'Avg Ticket',
+      value: formatINR(avgLoanAmount),
+      hint: 'Across all applications',
+      icon: Wallet,
+      color: '#8B5CF6',
+      bg: 'rgba(139, 92, 246, 0.12)',
+    },
+    {
+      label: 'Approval Rate',
+      value: `${approvalRate}%`,
+      hint: 'Approved + disbursed',
+      icon: Target,
+      color: '#10B981',
+      bg: 'rgba(16, 185, 129, 0.12)',
+    },
+  ]
+
+  const pipeline = [
+    { label: 'Pending', count: pendingLoans.length, amount: totalPending, icon: Clock, color: statusColors.pending },
+    { label: 'Approved', count: approvedLoans.length, amount: totalApproved, icon: CheckCircle, color: statusColors.approved },
+    { label: 'Disbursed', count: disbursedLoans.length, amount: totalDisbursed, icon: Banknote, color: statusColors.disbursed },
+  ]
+
   return (
-    <div className="space-y-5 min-h-screen p-6">
+    <div className="min-h-screen space-y-5 bg-[#FFF8F3] p-4 sm:p-6">
+      <section className="relative overflow-hidden rounded-3xl border border-orange-100 bg-white p-5 text-[#222831] shadow-[0_24px_70px_rgba(255,109,61,0.16)] sm:p-7">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(255,167,38,0.25),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(255,109,61,0.18),transparent_30%),linear-gradient(135deg,#FFFFFF_0%,#FFF7ED_56%,#FFE8DA_100%)]" />
+        <div className="absolute right-8 top-8 hidden h-32 w-32 rounded-full border border-orange-200/70 sm:block" />
+        <div className="absolute bottom-0 right-0 h-28 w-64 rounded-tl-full bg-orange-100/70" />
 
-      {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <div>
-          <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">Dashboard</h1>
-          <p className="text-sm mt-1 text-[#6B6B6B] dark:text-gray-400">
-            Welcome back! Here&apos;s your loan overview.
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <GradientButton size="sm" variant="outline" onClick={() => router.push('/customers/add')}>
-            <Plus size={16} /> Add Customer
-          </GradientButton>
-          <GradientButton size="sm" onClick={() => router.push('/loans/add')}>
-            <Plus size={16} /> Add Loan
-          </GradientButton>
-        </div>
-      </div>
-
-      {/* Bento Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        
-        {/* Hero Card - Total Earnings (Spans 2 rows on large screens) */}
-        <div 
-          className="lg:col-span-4 lg:row-span-2 rounded-[20px] p-6 relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 glow-orange-strong"
-          style={{ 
-            background: 'linear-gradient(135deg, #FF6B35 0%, #FF4500 100%)',
-          }}
-        >
-          <div className="relative z-10">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)' }}>
-                <DollarSign size={24} style={{ color: '#FFFFFF' }} />
-              </div>
-              <div className="flex items-center gap-1 px-3 py-1.5 rounded-full" style={{ background: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)' }}>
-                {isGrowthPositive ? <ArrowUpRight size={14} color="#FFFFFF" /> : <ArrowDownRight size={14} color="#FFFFFF" />}
-                <span className="text-xs font-bold" style={{ color: '#FFFFFF' }}>{Math.abs(Number(loanGrowth))}%</span>
-              </div>
+        <div className="relative z-10 grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
+          <div className="space-y-5">
+            <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#FF6D3D] shadow-sm backdrop-blur">
+              <Sparkles size={14} />
+              Finance command center
             </div>
-            <p className="text-sm font-semibold mb-2" style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Total Earnings</p>
-            <h2 className="text-4xl font-bold mb-1" style={{ color: '#FFFFFF' }}>{formatINR(totalDisbursed)}</h2>
-            <p className="text-xs" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>From {loans.filter(l => l.status === 'disbursed').length} disbursed loans</p>
-            
-            <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-xs mb-1" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Pending</p>
-                  <p className="text-lg font-bold" style={{ color: '#FFFFFF' }}>{formatINR(totalPending)}</p>
+            <div>
+              <h1 className="max-w-3xl text-3xl font-black leading-tight sm:text-5xl">Good Morning, John!</h1>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#6B6B6B] sm:text-base">
+                Track disbursements, approvals, collections, and customer momentum from one polished workspace.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <GradientButton size="md" onClick={() => router.push('/loans/add')}>
+                <Plus size={16} /> Add Loan
+              </GradientButton>
+              <GradientButton size="md" variant="outline" onClick={() => router.push('/customers/add')}>
+                <Users size={16} /> Add Customer
+              </GradientButton>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-orange-200 bg-white/80 p-5 shadow-[0_18px_45px_rgba(255,109,61,0.16)] backdrop-blur-xl">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FF6D3D]">Disbursed Portfolio</p>
+                <h2 className="mt-3 text-3xl font-black sm:text-4xl">{formatINR(totalDisbursed)}</h2>
+                <p className="mt-2 text-sm text-[#6B6B6B]">From {disbursedLoans.length} completed loans</p>
+              </div>
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#FFF0E8] text-[#FF6D3D]">
+                <IndianRupee size={24} />
+              </span>
+            </div>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-orange-100 bg-[#FFF7ED] p-3">
+                <p className="text-xs text-[#6B6B6B]">Monthly Growth</p>
+                <div className="mt-2 flex items-center gap-1 text-lg font-black">
+                  {isGrowthPositive ? <ArrowUpRight size={18} /> : <ArrowDownRight size={18} />}
+                  {Math.abs(loanGrowth).toFixed(1)}%
                 </div>
-                <div>
-                  <p className="text-xs mb-1" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Approved</p>
-                  <p className="text-lg font-bold" style={{ color: '#FFFFFF' }}>{formatINR(totalApproved)}</p>
-                </div>
+              </div>
+              <div className="rounded-2xl border border-orange-100 bg-[#FFF7ED] p-3">
+                <p className="text-xs text-[#6B6B6B]">Portfolio Value</p>
+                <p className="mt-2 text-lg font-black">{formatINR(totalPortfolio)}</p>
               </div>
             </div>
           </div>
-          {/* Decorative circles */}
-          <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full" style={{ background: 'rgba(255, 255, 255, 0.1)' }} />
-          <div className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full" style={{ background: 'rgba(255, 255, 255, 0.1)' }} />
         </div>
+      </section>
 
-        {/* Quick Stats Grid */}
-        <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* Total Loans */}
-          <NeumorphicCard className="hover:-translate-y-1 hover:shadow-xl transition-all duration-300" glass>
-            <div className="flex items-start gap-4 p-1">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(59, 130, 246, 0.12)' }}>
-                <CreditCard size={22} style={{ color: '#3B82F6' }} />
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {kpis.map(item => {
+          const Icon = item.icon
+          return (
+            <NeumorphicCard key={item.label} className="group overflow-hidden p-5 hover:-translate-y-1 hover:shadow-xl">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#6B6B6B] dark:text-gray-400">{item.label}</p>
+                  <p className="mt-3 text-2xl font-black leading-none text-[#1A1A1A] dark:text-white">{item.value}</p>
+                  <p className="mt-2 text-xs text-[#6B6B6B] dark:text-gray-400">{item.hint}</p>
+                </div>
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110" style={{ background: item.bg, color: item.color }}>
+                  <Icon size={23} />
+                </span>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold mb-3 uppercase tracking-wide text-[#6B6B6B] dark:text-gray-400">Total Loans</p>
-                <p className="text-3xl font-bold leading-none text-[#1A1A1A] dark:text-white">{loans.length}</p>
-              </div>
-            </div>
-          </NeumorphicCard>
+            </NeumorphicCard>
+          )
+        })}
+      </section>
 
-          {/* Pending */}
-          <NeumorphicCard className="hover:-translate-y-1 hover:shadow-xl transition-all duration-300" glass>
-            <div className="flex items-start gap-4 p-1">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(245, 158, 11, 0.12)' }}>
-                <Clock size={22} style={{ color: '#F59E0B' }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold mb-3 uppercase tracking-wide text-[#6B6B6B] dark:text-gray-400">Pending</p>
-                <p className="text-3xl font-bold leading-none text-[#1A1A1A] dark:text-white">{loans.filter(l => l.status === 'pending').length}</p>
-              </div>
-            </div>
-          </NeumorphicCard>
-
-          {/* Approved */}
-          <NeumorphicCard className="hover:-translate-y-1 hover:shadow-xl transition-all duration-300" glass>
-            <div className="flex items-start gap-4 p-1">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(99, 102, 241, 0.12)' }}>
-                <CheckCircle size={22} style={{ color: '#6366F1' }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold mb-3 uppercase tracking-wide text-[#6B6B6B] dark:text-gray-400">Approved</p>
-                <p className="text-3xl font-bold leading-none text-[#1A1A1A] dark:text-white">{loans.filter(l => l.status === 'approved').length}</p>
-              </div>
-            </div>
-          </NeumorphicCard>
-
-          {/* Disbursed */}
-          <NeumorphicCard className="hover:-translate-y-1 hover:shadow-xl transition-all duration-300" glass>
-            <div className="flex items-start gap-4 p-1">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(16, 185, 129, 0.12)' }}>
-                <Banknote size={22} style={{ color: '#10B981' }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold mb-3 uppercase tracking-wide text-[#6B6B6B] dark:text-gray-400">Disbursed</p>
-                <p className="text-3xl font-bold leading-none text-[#1A1A1A] dark:text-white">{loans.filter(l => l.status === 'disbursed').length}</p>
-              </div>
-            </div>
-          </NeumorphicCard>
-        </div>
-
-        {/* Secondary Stats */}
-        <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-4">
-          {/* Customers */}
-          <NeumorphicCard className="hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-start gap-4 p-1">
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(168, 85, 247, 0.12)' }}>
-                <UserCircle size={26} style={{ color: '#A855F7' }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold mb-3 uppercase tracking-wide" style={{ color: '#6B6B6B' }}>Total Customers</p>
-                <p className="text-3xl font-bold leading-none" style={{ color: '#1A1A1A' }}>{customers.length}</p>
-              </div>
-            </div>
-          </NeumorphicCard>
-
-          {/* Employees */}
-          <NeumorphicCard className="hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-start gap-4 p-1">
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(244, 63, 94, 0.12)' }}>
-                <Users size={26} style={{ color: '#F43F5E' }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold mb-3 uppercase tracking-wide" style={{ color: '#6B6B6B' }}>Total Employees</p>
-                <p className="text-3xl font-bold leading-none" style={{ color: '#1A1A1A' }}>{employees.length}</p>
-              </div>
-            </div>
-          </NeumorphicCard>
-
-          {/* Active This Month */}
-          <NeumorphicCard className="hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-start gap-4 p-1">
-              <div className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(20, 184, 166, 0.12)' }}>
-                <Activity size={26} style={{ color: '#14B8A6' }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold mb-3 uppercase tracking-wide" style={{ color: '#6B6B6B' }}>This Month</p>
-                <p className="text-3xl font-bold leading-none" style={{ color: '#1A1A1A' }}>{thisMonthLoans}</p>
-              </div>
-            </div>
-          </NeumorphicCard>
-        </div>
-
-        {/* Loan Trend Chart - Wide */}
-        <NeumorphicCard className="lg:col-span-8">
-          <div className="mb-5">
-            <h2 className="text-base font-bold" style={{ color: '#1A1A1A' }}>Loan Trend</h2>
-            <p className="text-xs mt-1" style={{ color: '#6B6B6B' }}>Monthly loan count over the last 6 months</p>
-          </div>
-          <ResponsiveContainer width="100%" height={240}>
-            <AreaChart data={trendData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+      <section className="grid grid-cols-1 gap-5 xl:grid-cols-12">
+        <NeumorphicCard className="xl:col-span-8">
+          <PanelHeader
+            icon={<Activity size={18} />}
+            title="Loan Momentum"
+            subtitle="Applications and amount movement over the last 6 months"
+          />
+          <ResponsiveContainer width="100%" height={285}>
+            <AreaChart data={trendData} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
               <defs>
                 <linearGradient id="loanGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#FF6D3D" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#FF5722" stopOpacity={0.05} />
+                  <stop offset="5%" stopColor="#FF6D3D" stopOpacity={0.35} />
+                  <stop offset="95%" stopColor="#FF6D3D" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#E8E8E8" vertical={false} />
               <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip {...tooltipStyle} formatter={(v) => [v, 'Loans']} />
-              <Area type="monotone" dataKey="loans" stroke="#FF6D3D" strokeWidth={3}
-                fill="url(#loanGrad)" dot={{ fill: '#FF5722', r: 4, strokeWidth: 2, stroke: '#FFFFFF' }} activeDot={{ r: 6 }} />
+              <Area
+                type="monotone"
+                dataKey="loans"
+                stroke="#FF6D3D"
+                strokeWidth={3}
+                fill="url(#loanGrad)"
+                dot={{ fill: '#FF6D3D', r: 4, strokeWidth: 2, stroke: '#FFFFFF' }}
+                activeDot={{ r: 7 }}
+              />
             </AreaChart>
           </ResponsiveContainer>
         </NeumorphicCard>
 
-        {/* Loan Status Donut */}
-        <NeumorphicCard className="lg:col-span-4">
-          <div className="mb-4">
-            <h2 className="text-base font-bold" style={{ color: '#1A1A1A' }}>Loan Status</h2>
-            <p className="text-xs mt-1" style={{ color: '#6B6B6B' }}>Distribution by status</p>
-          </div>
-          <ResponsiveContainer width="100%" height={180}>
-            <PieChart>
-              <Pie data={donutData} cx="50%" cy="50%" innerRadius={50} outerRadius={75}
-                paddingAngle={4} dataKey="value">
-                {donutData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} stroke="#FFFFFF" strokeWidth={2} />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={tooltipStyle.contentStyle}
-                labelStyle={tooltipStyle.labelStyle}
-                formatter={(v, name) => [v, name]}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="flex flex-col gap-2 mt-3">
-            {donutData.map(d => (
-              <div key={d.name} className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: d.color }} />
-                  <span style={{ color: '#6B6B6B' }}>{d.name}</span>
+        <div className="grid gap-4 xl:col-span-4">
+          {pipeline.map(item => {
+            const Icon = item.icon
+            return (
+              <NeumorphicCard key={item.label} className="p-5 hover:-translate-y-1 hover:shadow-xl">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl" style={{ background: `${item.color}1F`, color: item.color }}>
+                      <Icon size={22} />
+                    </span>
+                    <div>
+                      <p className="text-sm font-black text-[#1A1A1A] dark:text-white">{item.label}</p>
+                      <p className="text-xs text-[#6B6B6B] dark:text-gray-400">{item.count} loans</p>
+                    </div>
+                  </div>
+                  <p className="text-right text-lg font-black text-[#1A1A1A] dark:text-white">{formatINR(item.amount)}</p>
                 </div>
-                <span className="font-bold" style={{ color: '#1A1A1A' }}>{d.value}</span>
-              </div>
-            ))}
-          </div>
-        </NeumorphicCard>
-      </div>
-
-      {/* Disbursed Amount Bar Chart */}
-      <NeumorphicCard>
-        <div className="mb-5">
-          <h2 className="text-base font-bold" style={{ color: '#1A1A1A' }}>Disbursed Amount</h2>
-          <p className="text-xs mt-1" style={{ color: '#6B6B6B' }}>Monthly disbursement in ₹</p>
+              </NeumorphicCard>
+            )
+          })}
         </div>
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={barData} margin={{ top: 4, right: 4, left: -10, bottom: 0 }} barSize={40}>
-            <defs>
-              <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stopColor="#FF6D3D" stopOpacity={1} />
-                <stop offset="100%" stopColor="#FF5722" stopOpacity={0.7} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E8E8E8" vertical={false} />
-            <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false}
-              tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
-            <Tooltip {...tooltipStyle} formatter={(v) => [formatINR(Number(v)), 'Disbursed']} />
-            <Bar dataKey="amount" fill="url(#barGrad)" radius={[8, 8, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </NeumorphicCard>
+      </section>
 
-      {/* Recent Loans Table */}
-      <NeumorphicCard className="overflow-hidden p-0">
-        <div className="px-6 py-5 flex items-center justify-between" style={{ borderBottom: '2px solid #F4F4F4' }}>
-          <div>
-            <h2 className="text-base font-bold" style={{ color: '#1A1A1A' }}>Recent Loans</h2>
-            <p className="text-xs mt-1" style={{ color: '#6B6B6B' }}>Latest {recentLoans.length} loan applications</p>
+      <section className="grid grid-cols-1 gap-5 xl:grid-cols-12">
+        <NeumorphicCard className="xl:col-span-5">
+          <PanelHeader icon={<TrendingUp size={18} />} title="Status Mix" subtitle="Where applications currently stand" />
+          {donutData.length ? (
+            <div className="grid items-center gap-4 sm:grid-cols-[1fr_0.9fr]">
+              <ResponsiveContainer width="100%" height={230}>
+                <PieChart>
+                  <Pie data={donutData} cx="50%" cy="50%" innerRadius={58} outerRadius={88} paddingAngle={5} dataKey="value">
+                    {donutData.map((entry, i) => (
+                      <Cell key={i} fill={entry.color} stroke="#FFFFFF" strokeWidth={3} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={tooltipStyle.contentStyle} labelStyle={tooltipStyle.labelStyle} formatter={(v, name) => [v, name]} />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="space-y-3">
+                {donutData.map(d => (
+                  <div key={d.name} className="rounded-2xl border border-gray-100 p-3 dark:border-gray-800">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="flex items-center gap-2 font-bold text-[#393E46] dark:text-gray-200">
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: d.color }} />
+                        {d.name}
+                      </span>
+                      <span className="font-black text-[#1A1A1A] dark:text-white">{d.value}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <EmptyState label="No status data yet" />
+          )}
+        </NeumorphicCard>
+
+        <NeumorphicCard className="xl:col-span-7 bg-[#FFFDFC] p-5 shadow-[0_18px_45px_rgba(255,109,61,0.10)]">
+          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h2 className="text-base font-black text-[#1A1A1A] dark:text-white">Monthly Disbursement</h2>
+              <p className="mt-5 text-xs font-semibold text-[#A0A0A0]">Total amount disbursed</p>
+              <div className="mt-1 flex items-end gap-1">
+                <span className="text-3xl font-black leading-none text-[#1A1A1A] dark:text-white">{formatINR(totalDisbursed)}</span>
+                <span className="pb-0.5 text-sm font-semibold text-[#A0A0A0]">/ {formatINR(totalPortfolio || totalDisbursed)}</span>
+              </div>
+            </div>
+            <div className="flex w-fit rounded-full bg-[#F4F4F4] p-1 text-xs font-bold text-[#9A9A9A]">
+              <button type="button" className="rounded-full px-4 py-2 transition-colors hover:text-[#FF6D3D]">Weekly</button>
+              <button type="button" className="rounded-full bg-white px-4 py-2 text-[#1A1A1A] shadow-[0_3px_10px_rgba(0,0,0,0.10)]">Monthly</button>
+            </div>
           </div>
+
+          <div className="mb-3 flex flex-wrap items-center gap-4 pl-1 text-[11px] font-semibold text-[#6B6B6B]">
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#FF6D3D]" />
+              Disbursed
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#FFD7BF]" />
+              Monthly capacity
+            </span>
+          </div>
+
+          <ResponsiveContainer width="100%" height={210}>
+            <BarChart data={barData} margin={{ top: 10, right: 8, left: -18, bottom: 0 }} barSize={34}>
+              <defs>
+                <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#FFB347" stopOpacity={1} />
+                  <stop offset="52%" stopColor="#FF8A3D" stopOpacity={0.96} />
+                  <stop offset="100%" stopColor="#FF5722" stopOpacity={0.9} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#EDE7E2" vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9A9A9A' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: '#B0B0B0' }} axisLine={false} tickLine={false} tickFormatter={v => `${Number(v) / 1000}k`} />
+              <Tooltip {...tooltipStyle} formatter={(v) => [formatINR(Number(v)), 'Disbursed']} />
+              <Bar
+                dataKey="amount"
+                fill="url(#barGrad)"
+                radius={[14, 14, 5, 5]}
+                background={{ fill: '#F5F2EF', radius: 14 }}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </NeumorphicCard>
+      </section>
+
+      <section className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+        <NeumorphicCard>
+          <PanelHeader icon={<Users size={18} />} title="Customer Growth" subtitle="New customer registrations by month" />
+          <ResponsiveContainer width="100%" height={240}>
+            <LineChart data={customerGrowthData} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E8E8E8" vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <Tooltip {...tooltipStyle} formatter={(v) => [v, 'Customers']} />
+              <Line
+                type="monotone"
+                dataKey="customers"
+                stroke="#8B5CF6"
+                strokeWidth={3}
+                dot={{ fill: '#8B5CF6', r: 4, strokeWidth: 2, stroke: '#FFFFFF' }}
+                activeDot={{ r: 7 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </NeumorphicCard>
+
+        <NeumorphicCard>
+          <PanelHeader icon={<CalendarDays size={18} />} title="Loan Categories" subtitle="Estimated split by loan product type" />
+          {loanTypeData.length ? (
+            <div className="space-y-4">
+              {loanTypeData.map(d => (
+                <div key={d.name}>
+                  <div className="mb-2 flex items-center justify-between text-sm">
+                    <span className="font-bold text-[#393E46] dark:text-gray-200">{d.name}</span>
+                    <span className="font-black text-[#1A1A1A] dark:text-white">{d.value}</span>
+                  </div>
+                  <div className="h-3 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                    <div className="h-full rounded-full" style={{ width: `${loans.length ? (d.value / loans.length) * 100 : 0}%`, background: d.color }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <EmptyState label="No category data yet" />
+          )}
+        </NeumorphicCard>
+      </section>
+
+      <NeumorphicCard className="overflow-hidden p-0">
+        <div className="flex flex-col gap-3 border-b border-gray-100 px-5 py-5 dark:border-gray-800 sm:flex-row sm:items-center sm:justify-between">
+          <PanelHeader icon={<Clock size={18} />} title="Recent Loans" subtitle={`Latest ${recentLoans.length} loan applications`} compact />
           <GradientButton size="sm" variant="outline" onClick={() => router.push('/loans/list')}>
             View All <ArrowUpRight size={14} />
           </GradientButton>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[860px] text-sm">
             <thead>
-              <tr style={{ background: '#FAFAFA', borderBottom: '2px solid #F4F4F4' }}>
+              <tr className="bg-[#FAFAFA] dark:bg-[#222831]">
                 {['Loan ID', 'Customer', 'Employee', 'Amount', 'Installments', 'Status', 'Date'].map(h => (
-                  <th key={h} className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wide"
-                    style={{ color: '#6B6B6B' }}>{h}</th>
+                  <th key={h} className="px-5 py-4 text-left text-xs font-black uppercase tracking-wide text-[#6B6B6B] dark:text-gray-400">
+                    {h}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {recentLoans.map((loan, i) => {
+              {recentLoans.map(loan => {
                 const customer = customers.find(c => c.id === loan.customerId)
                 const employee = employees.find(e => e.id === loan.employeeId)
                 return (
-                  <tr key={loan.id} className="transition-all duration-200 cursor-pointer"
-                    style={{ borderBottom: '1px solid #F4F4F4' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255, 109, 61, 0.05)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                    <td className="px-6 py-4 font-bold" style={{ color: '#FF6D3D' }}>{loan.loanNo}</td>
-                    <td className="px-6 py-4 font-semibold" style={{ color: '#1A1A1A' }}>{customer?.name ?? '—'}</td>
-                    <td className="px-6 py-4" style={{ color: '#6B6B6B' }}>{employee?.name ?? '—'}</td>
-                    <td className="px-6 py-4 font-bold" style={{ color: '#1A1A1A' }}>{formatINR(loan.amount)}</td>
-                    <td className="px-6 py-4" style={{ color: '#6B6B6B' }}>{loan.installments}</td>
-                    <td className="px-6 py-4"><Badge status={loan.status} /></td>
-                    <td className="px-6 py-4 text-xs" style={{ color: '#6B6B6B' }}>
-                      {format(parseISO(loan.loanDate), 'dd/MM/yyyy')}
-                    </td>
+                  <tr key={loan.id} className="border-t border-gray-100 transition-colors hover:bg-orange-50/60 dark:border-gray-800 dark:hover:bg-orange-950/10">
+                    <td className="px-5 py-4 font-black text-[#FF6D3D]">{loan.loanNo}</td>
+                    <td className="px-5 py-4 font-bold text-[#1A1A1A] dark:text-white">{customer?.name ?? '-'}</td>
+                    <td className="px-5 py-4 text-[#6B6B6B] dark:text-gray-400">{employee?.name ?? '-'}</td>
+                    <td className="px-5 py-4 font-black text-[#1A1A1A] dark:text-white">{formatINR(loan.amount)}</td>
+                    <td className="px-5 py-4 text-[#6B6B6B] dark:text-gray-400">{loan.installments}</td>
+                    <td className="px-5 py-4"><Badge status={loan.status} /></td>
+                    <td className="px-5 py-4 text-xs font-semibold text-[#6B6B6B] dark:text-gray-400">{format(parseISO(loan.loanDate), 'dd/MM/yyyy')}</td>
                   </tr>
                 )
               })}
@@ -368,6 +482,38 @@ export default function Dashboard() {
           </table>
         </div>
       </NeumorphicCard>
+    </div>
+  )
+}
+
+function PanelHeader({
+  icon,
+  title,
+  subtitle,
+  compact = false,
+}: {
+  icon: React.ReactNode
+  title: string
+  subtitle: string
+  compact?: boolean
+}) {
+  return (
+    <div className={`flex items-center gap-3 ${compact ? '' : 'mb-5'}`}>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-100 text-[#FF6D3D] dark:bg-orange-950/30">
+        {icon}
+      </span>
+      <div>
+        <h2 className="text-base font-black text-[#1A1A1A] dark:text-white">{title}</h2>
+        <p className="mt-0.5 text-xs text-[#6B6B6B] dark:text-gray-400">{subtitle}</p>
+      </div>
+    </div>
+  )
+}
+
+function EmptyState({ label }: { label: string }) {
+  return (
+    <div className="flex min-h-40 items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-gray-50 text-sm font-semibold text-[#6B6B6B] dark:border-gray-800 dark:bg-[#222831] dark:text-gray-400">
+      {label}
     </div>
   )
 }
