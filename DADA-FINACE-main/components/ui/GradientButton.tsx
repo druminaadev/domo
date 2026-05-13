@@ -1,5 +1,6 @@
 'use client'
 import React from 'react'
+import { COLORS } from '@/lib/colors'
 
 interface GradientButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'outline'
@@ -29,7 +30,20 @@ export function GradientButton({
       <button
         {...props}
         disabled={disabled || loading}
-        className={`${baseStyle} ${sizes[size]} bg-white dark:bg-[#2C2C2C] text-[#FFA726] border-2 border-[#FFA726] hover:bg-gradient-to-r hover:from-[#FFA726] hover:to-[#FFB74D] hover:text-white hover:border-transparent hover:scale-105 hover:shadow-lg hover:shadow-orange-400/30 ${className}`}
+        className={`${baseStyle} ${sizes[size]} bg-white dark:bg-[#2C2C2C] border-2 hover:text-white hover:border-transparent hover:scale-105 hover:shadow-lg ${className}`}
+        style={{
+          color: COLORS.orange,
+          borderColor: COLORS.orange,
+          boxShadow: `0 4px 14px ${COLORS.orangeShadowLight}`,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = `linear-gradient(to right, ${COLORS.orange}, ${COLORS.orangeLight})`
+          e.currentTarget.style.color = 'white'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'white'
+          e.currentTarget.style.color = COLORS.orange
+        }}
       >
         {loading && <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />}
         {children}
@@ -41,7 +55,19 @@ export function GradientButton({
     <button
       {...props}
       disabled={disabled || loading}
-      className={`${baseStyle} ${sizes[size]} bg-gradient-to-r from-[#FFA726] to-[#FFB74D] text-white hover:from-[#FF9800] hover:to-[#FFA726] hover:scale-105 shadow-lg shadow-orange-400/30 hover:shadow-xl hover:shadow-orange-400/40 ${className}`}
+      className={`${baseStyle} ${sizes[size]} text-white hover:scale-105 ${className}`}
+      style={{
+        background: `linear-gradient(to right, ${COLORS.orange}, ${COLORS.orangeLight})`,
+        boxShadow: `0 4px 14px ${COLORS.orangeShadow}`,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = `linear-gradient(to right, ${COLORS.orangeDark}, ${COLORS.orange})`
+        e.currentTarget.style.boxShadow = `0 6px 20px ${COLORS.orangeShadow}`
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = `linear-gradient(to right, ${COLORS.orange}, ${COLORS.orangeLight})`
+        e.currentTarget.style.boxShadow = `0 4px 14px ${COLORS.orangeShadow}`
+      }}
     >
       {loading && <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />}
       {children}
