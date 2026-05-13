@@ -2,39 +2,24 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ── Light Mode Palette (Calm & Neutral) ───────────────────── */
-/*
-  Warm Canvas     #FAFAF9  — global page background (warm off-white)
-  Soft Surface    #F5F4F0  — sidebar, cards, containers
-  Muted Border    #E8E6E1  — hairline dividers
-  Hover Wash      #EFEDE8  — hover state background
-  Ink Primary     #1C1917  — headings & primary text (warm near-black)
-  Stone Secondary #78716C  — secondary / metadata text
-  Accent          #5B7FA6  — muted steel-blue (calm, not vivid)
-  Accent Hover    #4A6A8E  — slightly deeper on hover
-  Accent Tint     rgba(91,127,166,0.10) — active background wash
-  Success         #4A9E7F  — muted emerald
-  Warning         #C9882A  — muted amber
-  Error           #C0544F  — muted rose
-*/
+/* ── Premium Futuristic Finance CRM Theme ───────────────────── */
 :root {
-  --bg:             #FAFAF9;
-  --surface:        #F5F4F0;
+  --bg:             #EEEEEE;
+  --surface:        #FFFFFF;
   --form-field:     #FFFFFF;
-  --text-primary:   #1C1917;
-  --text-secondary: #78716C;
-  --border:         #E8E6E1;
-  --hover:          #EFEDE8;
-  --accent:         #5B7FA6;
-  --accent-hover:   #4A6A8E;
-  --accent-tint:    rgba(91, 127, 166, 0.10);
-  --success:        #4A9E7F;
-  --warning:        #C9882A;
-  --error:          #C0544F;
-  --success-tint:   rgba(74, 158, 127, 0.10);
-  --warning-tint:   rgba(201, 136, 42, 0.10);
-  --error-tint:     rgba(192, 84, 79, 0.10);
-  /* Toast solid backgrounds — light mode */
+  --text-primary:   #222831;
+  --text-secondary: #393E46;
+  --border:         #E8E8E8;
+  --hover:          #F5F5F5;
+  --accent:         #FFA726;
+  --accent-hover:   #FF9800;
+  --accent-tint:    rgba(255, 167, 38, 0.15);
+  --success:        #22C55E;
+  --warning:        #F59E0B;
+  --error:          #EF4444;
+  --success-tint:   rgba(34, 197, 94, 0.15);
+  --warning-tint:   rgba(245, 158, 11, 0.15);
+  --error-tint:     rgba(239, 68, 68, 0.15);
   --toast-success-bg:     #166534;
   --toast-success-border: #15803d;
   --toast-success-icon:   #4ade80;
@@ -53,42 +38,30 @@
   --toast-info-text:      #eff6ff;
 }
 
-/* ── Dark Mode Palette ──────────────────────────────────────── */
-/*
-  Canvas          #0A0A0F  — deep blue-black page background
-  Surface         #12131A  — sidebar & topbar
-  Card            #1A1B25  — cards, modals, containers
-  Form Field      #20212E  — input / select / textarea backgrounds
-  Hover           #252636  — hover state on nav & rows
-  Border          #2E2F42  — subtle violet-tinted borders
-  Text Primary    #F0F0FF  — near-white with cool blue tint
-  Text Secondary  #8B8FA8  — muted blue-gray metadata
-  Accent          #7C8FFF  — soft indigo-blue (distinct from light mode)
-  Accent Hover    #6B7EF0  — deeper on hover
-  Accent Tint     rgba(124,143,255,0.12)
-  Success         #34D399  — vivid emerald
-  Warning         #FBBF24  — golden amber
-  Error           #FB7185  — soft rose-red
-*/
+/* ── Premium Dark Fintech SaaS Theme ──────────────────────────────────────── */
 .dark {
-  --bg:             #0A0A0F;
-  --surface:        #12131A;
-  --card:           #1A1B25;
-  --form-field:     #20212E;
-  --text-primary:   #F0F0FF;
-  --text-secondary: #8B8FA8;
-  --border:         #2E2F42;
-  --hover:          #252636;
-  --accent:         #7C8FFF;
-  --accent-hover:   #6B7EF0;
-  --accent-tint:    rgba(124, 143, 255, 0.12);
-  --success:        #34D399;
-  --warning:        #FBBF24;
-  --error:          #FB7185;
-  --success-tint:   rgba(52, 211, 153, 0.12);
-  --warning-tint:   rgba(251, 191, 36, 0.12);
-  --error-tint:     rgba(251, 113, 133, 0.12);
-  /* Toast solid backgrounds — dark mode */
+  --bg:             #222831;
+  --surface:        #393E46;
+  --card:           #393E46;
+  --form-field:     #2C3139;
+  --text-primary:   #EEEEEE;
+  --text-secondary: #9CA3AF;
+  --border:         #4A5058;
+  --hover:          #434950;
+  --accent:         #FFA726;
+  --accent-hover:   #FF9800;
+  --accent-glow:    #FFB74D;
+  --accent-tint:    rgba(255, 167, 38, 0.15);
+  --gradient-start: #FFA726;
+  --gradient-end:   #FFB74D;
+  --glow:           rgba(255, 167, 38, 0.5);
+  --glow-strong:    rgba(255, 167, 38, 0.8);
+  --success:        #22C55E;
+  --warning:        #F59E0B;
+  --error:          #EF4444;
+  --success-tint:   rgba(34, 197, 94, 0.15);
+  --warning-tint:   rgba(245, 158, 11, 0.15);
+  --error-tint:     rgba(239, 68, 68, 0.15);
   --toast-success-bg:     #14532d;
   --toast-success-border: #16a34a;
   --toast-success-icon:   #4ade80;
@@ -112,15 +85,116 @@
   * { box-sizing: border-box; }
 
   body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background-color: var(--bg);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #EEEEEE;
     color: var(--text-primary);
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  .dark body {
+    background: #222831;
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255, 167, 38, 0.3); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255, 167, 38, 0.5); }
+  
+  .dark ::-webkit-scrollbar-thumb { background: rgba(255, 167, 38, 0.3); }
+  .dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 167, 38, 0.5); }
+}
+
+/* ── Premium Glassmorphism & Neon Effects ──────────────────────────────────────── */
+.glass-card {
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.glass-card-premium {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(17, 17, 17, 0.6) 100%);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 107, 44, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.neon-glow-orange {
+  box-shadow: 
+    0 0 20px rgba(255, 107, 44, 0.4),
+    0 0 40px rgba(255, 107, 44, 0.2),
+    0 0 60px rgba(255, 107, 44, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.neon-glow-orange-strong {
+  box-shadow: 
+    0 0 30px rgba(255, 107, 44, 0.6),
+    0 0 60px rgba(255, 107, 44, 0.4),
+    0 0 90px rgba(255, 107, 44, 0.2),
+    0 12px 48px rgba(0, 0, 0, 0.4);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.gradient-orange {
+  background: linear-gradient(135deg, #FF5E3A 0%, #FF9A3D 100%);
+}
+
+.gradient-orange-vertical {
+  background: linear-gradient(180deg, #FF5E3A 0%, #FF9A3D 100%);
+}
+
+.border-glow {
+  border: 1px solid rgba(255, 107, 44, 0.3);
+  box-shadow: inset 0 0 20px rgba(255, 107, 44, 0.1);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 107, 44, 0.5), 0 0 40px rgba(255, 107, 44, 0.3);
+}
+
+/* ── Animations ──────────────────────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 
+      0 0 30px rgba(255, 107, 44, 0.6),
+      0 0 60px rgba(255, 107, 44, 0.4),
+      0 0 90px rgba(255, 107, 44, 0.2),
+      0 12px 48px rgba(0, 0, 0, 0.4);
+  }
+  50% { 
+    box-shadow: 
+      0 0 40px rgba(255, 107, 44, 0.8),
+      0 0 80px rgba(255, 107, 44, 0.6),
+      0 0 120px rgba(255, 107, 44, 0.3),
+      0 16px 64px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 44, 0.1), transparent);
+  background-size: 1000px 100%;
+  animation: shimmer 3s infinite;
 }
 
 @keyframes slideInRight {

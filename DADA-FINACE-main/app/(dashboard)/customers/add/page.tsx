@@ -68,15 +68,21 @@ export default function AddCustomerPage() {
   }
 
   return (
-    <>
+    <div className="min-h-screen dark:bg-transparent" >
       <PageHeader title="Add Customer" />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 pb-8">
         <Card title="Personal Information">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Input label="Customer Name" required placeholder="Full name" error={errors.name?.message} {...register('name', { required: 'Required' })} />
-            <Input label="Father's Name" required placeholder="Father's full name" error={errors.fatherName?.message} {...register('fatherName', { required: 'Required' })} />
-            <Input label="Mother's Name" placeholder="Mother's full name" {...register('motherName')} />
-            <Input label="Date of Birth" type="date" required error={errors.dob?.message} {...register('dob', { required: 'Required' })} />
+            <div className="sm:col-span-2 lg:col-span-1">
+              <label className="block text-xs font-semibold mb-2 text-[#1A1A1A] dark:text-white">Profile Photo</label>
+              <WebcamCapture onCapture={setPhoto} current={photo} />
+            </div>
+            <div className="sm:col-span-2 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input label="Customer Name" required placeholder="Full name" error={errors.name?.message} {...register('name', { required: 'Required' })} />
+              <Input label="Father's Name" required placeholder="Father's full name" error={errors.fatherName?.message} {...register('fatherName', { required: 'Required' })} />
+              <Input label="Mother's Name" placeholder="Mother's full name" {...register('motherName')} />
+              <Input label="Date of Birth" type="date" required error={errors.dob?.message} {...register('dob', { required: 'Required' })} />
+            </div>
             <Input label="Age" type="number" placeholder="Auto-calculated" {...register('age')} />
             <Select label="Gender" required placeholder="Select Gender" options={[{ value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }, { value: 'other', label: 'Other' }]} error={errors.gender?.message} {...register('gender', { required: 'Required' })} />
             <Select label="Marital Status" placeholder="Select Status" options={[{ value: 'married', label: 'Married' }, { value: 'unmarried', label: 'Unmarried' }, { value: 'divorced', label: 'Divorced' }, { value: 'widowed', label: 'Widowed' }]} {...register('maritalStatus')} />
@@ -106,12 +112,11 @@ export default function AddCustomerPage() {
             <Input label="IFSC Code" placeholder="e.g. SBIN0001234" className="uppercase" error={errors.bankIfsc?.message} {...register('bankIfsc', { pattern: { value: /^[A-Z]{4}0[A-Z0-9]{6}$/i, message: 'Invalid IFSC' } })} />
           </div>
         </Card>
-        <Card title="Profile Photo"><WebcamCapture onCapture={setPhoto} current={photo} /></Card>
         <div className="flex gap-3">
           <Button type="submit">Register Customer</Button>
           <Button type="button" variant="outline" onClick={() => router.push('/customers/list')}>Cancel</Button>
         </div>
       </form>
-    </>
+    </div>
   )
 }

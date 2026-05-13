@@ -136,13 +136,6 @@ export function Topbar({ onMenuToggle }: TopbarProps) {
             <div className="text-xs text-slate-500 dark:text-slate-400 capitalize">{user?.role}</div>
           </div>
         </div>
-
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-md transition-colors cursor-pointer"
-        >
-          <LogOut size={13} /> Logout
-        </button>
       </div>
     </header>
   )

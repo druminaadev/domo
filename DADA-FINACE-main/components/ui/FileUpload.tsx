@@ -57,7 +57,7 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs font-medium" style={{ color: 'var(--text-secondary)' }}>
+      <label className="text-xs font-semibold text-[#6B6B6B] dark:text-gray-300">
         {label}
       </label>
 
@@ -66,10 +66,9 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={handleClick}
-        className="border-2 border-dashed rounded-lg p-6 cursor-pointer transition-all"
+        className="border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all bg-[#FAFAFA] dark:bg-[#2C2C2C]"
         style={{
-          borderColor: isDragging ? 'var(--accent)' : 'var(--border)',
-          background: isDragging ? 'var(--accent-tint)' : 'var(--form-field)',
+          borderColor: isDragging ? '#FF6D3D' : '#E8E8E8',
         }}
       >
         <input
@@ -84,15 +83,15 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
         <div className="flex flex-col items-center gap-2 text-center">
           <div
             className="w-12 h-12 rounded-full flex items-center justify-center"
-            style={{ background: 'var(--accent-tint)' }}
+            style={{ background: 'linear-gradient(135deg, #FF6D3D, #FF5722)' }}
           >
-            <Upload size={20} style={{ color: 'var(--accent)' }} />
+            <Upload size={20} style={{ color: '#FFFFFF' }} />
           </div>
           <div>
-            <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+            <p className="text-sm font-semibold text-[#2C2C2C] dark:text-white">
               Drop files here or click to browse
             </p>
-            <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-xs mt-1 text-[#6B6B6B] dark:text-gray-400">
               {multiple ? 'Upload multiple files' : 'Upload a file'}
             </p>
           </div>
@@ -104,21 +103,21 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
           {files.map((file, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-3 rounded-lg"
-              style={{ background: 'var(--hover)', border: '1px solid var(--border)' }}
+              className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-[#2C2C2C] border border-gray-200 dark:border-gray-700"
+              style={{ boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)' }}
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'var(--accent-tint)' }}
+                  style={{ background: 'rgba(255, 109, 61, 0.1)' }}
                 >
-                  <FileText size={14} style={{ color: 'var(--accent)' }} />
+                  <FileText size={14} style={{ color: '#FF6D3D' }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>
+                  <p className="text-sm font-semibold truncate text-[#2C2C2C] dark:text-white">
                     {file.name}
                   </p>
-                  <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+                  <p className="text-xs text-[#6B6B6B] dark:text-gray-400">
                     {formatFileSize(file.size)}
                   </p>
                 </div>
@@ -127,8 +126,8 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
                 type="button"
                 onClick={() => removeFile(index)}
                 className="p-1.5 rounded-lg cursor-pointer transition-colors flex-shrink-0"
-                style={{ color: 'var(--error)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--error-tint)')}
+                style={{ color: '#FF5722' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255, 87, 34, 0.1)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
                 <X size={14} />

@@ -8,7 +8,7 @@ import {
   List, UserCheck, FilePlus, FileText, CheckSquare, CheckCircle,
   Banknote, X, Calendar, BarChart2, TrendingUp, AlertTriangle,
   Star, ClipboardList, Activity, PanelLeftClose, PanelLeftOpen,
-  Plus, Wallet, Calculator
+  Plus, Wallet, Calculator, Settings, LogOut, User, Bell, HelpCircle
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -54,7 +54,6 @@ const NAV: NavGroup[] = [
       { label: 'Approved', path: '/loans/approved', icon: CheckCircle },
       { label: 'Disbursed', path: '/loans/disbursed', icon: Banknote },
       { label: 'Pending Approval', path: '/loans/approval', icon: CheckSquare, badge: 'New' },
-      { label: 'Nominee Details', path: '/loans/nominee-details', icon: UserCircle },
     ],
   },
   {
@@ -101,6 +100,7 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
   const pathname = usePathname()
   const router = useRouter()
   const [expanded, setExpanded] = useState<string[]>(['Loans', 'EMI'])
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const toggle = (label: string) =>
     setExpanded(p => p.includes(label) ? p.filter(x => x !== label) : [...p, label])
@@ -365,33 +365,114 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
           })}
         </nav>
 
-        {/* ── Footer ───────────────────────────────────────── */}
-        {!collapsed && (
-          <div
-            className="px-3 py-3 shrink-0"
-            style={{ borderTop: '1px solid var(--border)' }}
-          >
-            <div
-              className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg"
-              style={{ background: 'var(--hover)' }}
-            >
-              <div
-                className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-                style={{ background: 'linear-gradient(135deg, #5B7FA6, #3B5F8A)' }}
+        {/* ── Settings Dropdown (Stuck at Bottom) ───────────────────────────────────────── */}
+        <div
+          className="px-3 py-3 shrink-0 relative"
+          style={{ borderTop: '1px solid var(--border)' }}
+        >
+          {!collapsed ? (
+            <>
+              <button
+                onClick={() => setSettingsOpen(!settingsOpen)}
+                className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer transition-colors"
+                style={{ background: settingsOpen ? 'var(--accent-tint)' : 'transparent' }}
+                onMouseEnter={e => { if (!settingsOpen) e.currentTarget.style.background = 'var(--hover)' }}
+                onMouseLeave={e => { if (!settingsOpen) e.currentTarget.style.background = 'transparent' }}
               >
-                D
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
-                  Dada Finance
+                <div
+                  className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                  style={{ background: 'var(--accent-tint)' }}
+                >
+                  <Settings size={15} style={{ color: 'var(--accent)' }} />
                 </div>
-                <div className="text-[10px] truncate" style={{ color: 'var(--text-secondary)' }}>
-                  v1.0 · LMS
+                <span className="flex-1 text-left text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                  Settings
+                </span>
+                <ChevronDown
+                  size={14}
+                  style={{
+                    color: 'var(--text-secondary)',
+                    transition: 'transform 0.2s',
+                    transform: settingsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  }}
+                />
+              </button>
+
+              {/* Dropdown Menu */}
+              {settingsOpen && (
+                <div
+                  className="absolute bottom-full left-3 right-3 mb-2 rounded-lg shadow-lg overflow-hidden"
+                  style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}
+                >
+                  <button
+                    onClick={() => { router.push('/profile'); setSettingsOpen(false); onClose?.() }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <User size={14} style={{ color: 'var(--text-secondary)' }} />
+                    <span className="text-sm">Profile</span>
+                  </button>
+                  <button
+                    onClick={() => { router.push('/notifications'); setSettingsOpen(false); onClose?.() }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <Bell size={14} style={{ color: 'var(--text-secondary)' }} />
+                    <span className="text-sm">Notifications</span>
+                  </button>
+                  <button
+                    onClick={() => { router.push('/help'); setSettingsOpen(false); onClose?.() }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <HelpCircle size={14} style={{ color: 'var(--text-secondary)' }} />
+                    <span className="text-sm">Help & Support</span>
+                  </button>
+                  <div className="my-1" style={{ borderTop: '1px solid var(--border)' }} />
+                  <button
+                    onClick={() => { /* Add logout logic */ setSettingsOpen(false) }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
+                    style={{ color: '#EF4444' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#FEE2E2'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <LogOut size={14} />
+                    <span className="text-sm font-medium">Logout</span>
+                  </button>
                 </div>
+              )}
+            </>
+          ) : (
+            /* Collapsed Settings Icon */
+            <div className="relative group/settings">
+              <button
+                onClick={() => {
+                  onToggleCollapse()
+                  setSettingsOpen(true)
+                }}
+                className="w-full flex items-center justify-center p-2.5 rounded-lg cursor-pointer transition-colors"
+                style={{ background: 'transparent', color: 'var(--text-secondary)' }}
+                onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+              >
+                <Settings size={17} style={{ color: 'var(--accent)' }} />
+              </button>
+              {/* Tooltip */}
+              <div
+                className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap pointer-events-none opacity-0 group-hover/settings:opacity-100 transition-opacity z-50 shadow-lg"
+                style={{ background: 'var(--text-primary)', color: 'var(--bg)' }}
+              >
+                Settings
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </aside>
     </>
   )

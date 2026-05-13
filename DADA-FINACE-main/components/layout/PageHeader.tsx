@@ -27,16 +27,16 @@ export function PageHeader({ title, action }: PageHeaderProps) {
   ]
 
   return (
-    <div className="flex items-start justify-between mb-6">
+    <div className="flex items-start justify-between mb-6 pb-4 border-b border-gray-200 dark:border-gray-800">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{title}</h1>
-        <nav className="flex items-center gap-1 mt-1">
+        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">{title}</h1>
+        <nav className="flex items-center gap-1 mt-2">
           {crumbs.map((c, i) => (
             <span key={c.path} className="flex items-center gap-1">
-              {i > 0 && <ChevronRight size={12} className="text-slate-400 dark:text-slate-500" />}
+              {i > 0 && <ChevronRight size={14} className="text-gray-400 dark:text-gray-600" />}
               {i === crumbs.length - 1
-                ? <span className="text-xs text-slate-500 dark:text-slate-400">{c.label}</span>
-                : <Link href={c.path} className="text-xs text-blue-600 dark:text-blue-400 hover:underline">{c.label}</Link>}
+                ? <span className="text-xs font-medium text-[#FF6D3D]">{c.label}</span>
+                : <Link href={c.path} className="text-xs text-gray-600 dark:text-gray-400 hover:text-[#FF6D3D] transition-colors">{c.label}</Link>}
             </span>
           ))}
         </nav>

@@ -465,94 +465,10 @@ export default function CalculatorPage() {
           </div>
 
           {/* Comparison strip (only when both are calculated) */}
-          <div className="rounded-2xl p-4 flex flex-col sm:flex-row gap-3 items-center justify-between"
-            style={{ background: 'var(--hover)', border: '1px solid var(--border)' }}>
-            <div className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>
-              Quick Comparison
-            </div>
-            <div className="flex gap-4 text-xs">
-              <div className="text-center">
-                <div className="font-bold" style={{ color: tab === 'flat' ? 'var(--accent)' : 'var(--text-secondary)' }}>
-                  {fmt(flat.monthlyPayment)}
-                </div>
-                <div style={{ color: 'var(--text-secondary)' }}>Flat / month</div>
-              </div>
-              <div className="flex items-center" style={{ color: 'var(--border)' }}>vs</div>
-              <div className="text-center">
-                <div className="font-bold" style={{ color: tab === 'reducing' ? 'var(--accent)' : 'var(--text-secondary)' }}>
-                  {fmt(emi.emi)}
-                </div>
-                <div style={{ color: 'var(--text-secondary)' }}>EMI / month</div>
-              </div>
-              <div className="flex items-center" style={{ color: 'var(--border)' }}>·</div>
-              <div className="text-center">
-                <div className="font-bold text-amber-500">
-                  {fmt(Math.abs(flat.totalInterest - emi.totalInterest))}
-                </div>
-                <div style={{ color: 'var(--text-secondary)' }}>
-                  {flat.totalInterest > emi.totalInterest ? 'Flat costs more' : 'EMI costs more'}
-                </div>
-              </div>
-            </div>
-          </div>
+          
 
           {/* EMI Schedule toggle (reducing only) */}
-          {tab === 'reducing' && (
-            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
-              <button
-                onClick={() => setShowSchedule(p => !p)}
-                className="w-full flex items-center justify-between px-5 py-3.5 cursor-pointer transition-colors"
-                style={{ background: 'var(--bg)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--hover)')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'var(--bg)')}
-              >
-                <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
-                  Amortisation Schedule
-                </span>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{months} months</span>
-                  <ChevronRight
-                    size={15}
-                    style={{
-                      color: 'var(--text-secondary)',
-                      transition: 'transform 0.2s',
-                      transform: showSchedule ? 'rotate(90deg)' : 'rotate(0deg)',
-                    }}
-                  />
-                </div>
-              </button>
-
-              {showSchedule && (
-                <div className="overflow-x-auto max-h-72 overflow-y-auto" style={{ borderTop: '1px solid var(--border)' }}>
-                  <table className="w-full text-xs">
-                    <thead className="sticky top-0" style={{ background: 'var(--hover)' }}>
-                      <tr>
-                        {['Month', 'EMI', 'Principal', 'Interest', 'Balance'].map(h => (
-                          <th key={h} className="px-4 py-2.5 text-left font-semibold uppercase tracking-wide"
-                            style={{ color: 'var(--text-secondary)' }}>{h}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {emi.schedule.map((row, i) => (
-                        <tr key={row.month}
-                          style={{
-                            background: i % 2 === 1 ? 'var(--hover)' : 'var(--bg)',
-                            borderTop: '1px solid var(--border)',
-                          }}>
-                          <td className="px-4 py-2 font-medium" style={{ color: 'var(--text-secondary)' }}>{row.month}</td>
-                          <td className="px-4 py-2 font-semibold" style={{ color: 'var(--text-primary)' }}>{fmt(row.emi)}</td>
-                          <td className="px-4 py-2" style={{ color: '#5B7FA6' }}>{fmt(row.principal)}</td>
-                          <td className="px-4 py-2" style={{ color: '#F59E0B' }}>{fmt(row.interest)}</td>
-                          <td className="px-4 py-2" style={{ color: 'var(--text-secondary)' }}>{fmt(row.balance)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          )}
+          
         </div>
       </div>
     </div>
