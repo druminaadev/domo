@@ -116,9 +116,9 @@ export default function Dashboard() {
   const customerGrowthData = Object.entries(customerGrowthMap).map(([month, count]) => ({ month, customers: count })).slice(-6)
 
   const loanTypeData = [
-    { name: 'Personal', value: Math.floor(loans.length * 0.45), color: '#8B5CF6' },
-    { name: 'Business', value: Math.floor(loans.length * 0.30), color: '#EC4899' },
-    { name: 'Home', value: Math.floor(loans.length * 0.15), color: '#F59E0B' },
+    { name: 'Personal', value: Math.floor(loans.length * 0.45), color: '#FF6D3D' },
+    { name: 'Business', value: Math.floor(loans.length * 0.30), color: '#F59E0B' },
+    { name: 'Home', value: Math.floor(loans.length * 0.15), color: '#EC4899' },
     { name: 'Auto', value: Math.floor(loans.length * 0.10), color: '#10B981' },
   ].filter(d => d.value > 0)
 
@@ -185,7 +185,7 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="min-h-screen space-y-5 bg-[#FFF8F3] p-4 sm:p-6">
+    <div className="min-h-screen space-y-5 bg-linear-to-r from-white via-orange-50 to-white p-4 sm:p-6">
       <section className="relative overflow-hidden rounded-3xl border border-orange-100 bg-white p-5 text-[#222831] shadow-[0_24px_70px_rgba(255,109,61,0.16)] sm:p-7">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(255,167,38,0.25),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(255,109,61,0.18),transparent_30%),linear-gradient(135deg,#FFFFFF_0%,#FFF7ED_56%,#FFE8DA_100%)]" />
         <div className="absolute right-8 top-8 hidden h-32 w-32 rounded-full border border-orange-200/70 sm:block" />
@@ -402,41 +402,77 @@ export default function Dashboard() {
       </section>
 
       <section className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-        <NeumorphicCard>
-          <PanelHeader icon={<Users size={18} />} title="Customer Growth" subtitle="New customer registrations by month" />
+        <NeumorphicCard className="border-blue-100 bg-white p-5 shadow-[0_14px_36px_rgba(37,99,235,0.08)]">
+          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <PanelHeader icon={<Users size={18} />} title="Customer Growth" subtitle="New customer registrations by month" compact />
+            <div className="rounded-xl bg-blue-50 px-4 py-2 text-right">
+              <p className="text-[11px] font-bold uppercase tracking-wide text-[#2563EB]">Customers</p>
+              <p className="text-2xl font-black text-[#1A1A1A] dark:text-white">{customers.length}</p>
+            </div>
+          </div>
           <ResponsiveContainer width="100%" height={240}>
             <LineChart data={customerGrowthData} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E8E8E8" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="4 4" stroke="#DDEAFE" vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#8A7A70' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 12, fill: '#B09A8C' }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip {...tooltipStyle} formatter={(v) => [v, 'Customers']} />
               <Line
                 type="monotone"
                 dataKey="customers"
-                stroke="#8B5CF6"
+                stroke="#2563EB"
                 strokeWidth={3}
-                dot={{ fill: '#8B5CF6', r: 4, strokeWidth: 2, stroke: '#FFFFFF' }}
-                activeDot={{ r: 7 }}
+                dot={{ fill: '#2563EB', r: 4, strokeWidth: 2, stroke: '#FFFFFF' }}
+                activeDot={{ r: 7, fill: '#1D4ED8', stroke: '#FFFFFF', strokeWidth: 3 }}
               />
             </LineChart>
           </ResponsiveContainer>
         </NeumorphicCard>
 
-        <NeumorphicCard>
-          <PanelHeader icon={<CalendarDays size={18} />} title="Loan Categories" subtitle="Estimated split by loan product type" />
+        <NeumorphicCard className="border-blue-100 bg-white p-5 shadow-[0_14px_36px_rgba(37,99,235,0.08)]">
+          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <PanelHeader icon={<CalendarDays size={18} />} title="Loan Categories" subtitle="Estimated split by loan product type" compact />
+            <div className="rounded-xl bg-orange-50 px-4 py-2 text-right">
+              <p className="text-[11px] font-bold uppercase tracking-wide text-[#FF6D3D]">Products</p>
+              <p className="text-2xl font-black text-[#1A1A1A] dark:text-white">{loanTypeData.length}</p>
+            </div>
+          </div>
           {loanTypeData.length ? (
-            <div className="space-y-4">
-              {loanTypeData.map(d => (
-                <div key={d.name}>
-                  <div className="mb-2 flex items-center justify-between text-sm">
-                    <span className="font-bold text-[#393E46] dark:text-gray-200">{d.name}</span>
-                    <span className="font-black text-[#1A1A1A] dark:text-white">{d.value}</span>
+            <div className="grid items-center gap-4 sm:grid-cols-[1fr_0.9fr]">
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie 
+                    data={loanTypeData} 
+                    cx="50%" 
+                    cy="50%" 
+                    innerRadius={45} 
+                    outerRadius={75} 
+                    paddingAngle={3} 
+                    dataKey="value"
+                  >
+                    {loanTypeData.map((entry, i) => (
+                      <Cell key={i} fill={entry.color} stroke="#FFFFFF" strokeWidth={2} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={tooltipStyle.contentStyle} 
+                    labelStyle={tooltipStyle.labelStyle} 
+                    formatter={(v, name) => [v, name]} 
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="space-y-3">
+                {loanTypeData.map(d => (
+                  <div key={d.name} className="rounded-xl border border-gray-100 p-3 dark:border-gray-800">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="flex items-center gap-2 font-bold text-[#2C2C2C] dark:text-white">
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: d.color }} />
+                        {d.name}
+                      </span>
+                      <span className="text-sm font-black text-[#1A1A1A] dark:text-white">{d.value}</span>
+                    </div>
                   </div>
-                  <div className="h-3 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
-                    <div className="h-full rounded-full" style={{ width: `${loans.length ? (d.value / loans.length) * 100 : 0}%`, background: d.color }} />
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ) : (
             <EmptyState label="No category data yet" />
@@ -467,7 +503,7 @@ export default function Dashboard() {
                 const customer = customers.find(c => c.id === loan.customerId)
                 const employee = employees.find(e => e.id === loan.employeeId)
                 return (
-                  <tr key={loan.id} className="border-t border-gray-100 transition-colors hover:bg-orange-50/60 dark:border-gray-800 dark:hover:bg-orange-950/10">
+                  <tr key={loan.id} className="border-t border-gray-100 transition-colors hover:bg-blue-50/70 dark:border-gray-800 dark:hover:bg-blue-950/10">
                     <td className="px-5 py-4 font-black text-[#FF6D3D]">{loan.loanNo}</td>
                     <td className="px-5 py-4 font-bold text-[#1A1A1A] dark:text-white">{customer?.name ?? '-'}</td>
                     <td className="px-5 py-4 text-[#6B6B6B] dark:text-gray-400">{employee?.name ?? '-'}</td>

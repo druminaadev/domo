@@ -405,6 +405,16 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                   style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}
                 >
                   <button
+                    onClick={() => { router.push('/master/states'); setSettingsOpen(false); onClose?.() }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
+                    style={{ color: 'var(--text-primary)' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <Database size={14} style={{ color: 'var(--text-secondary)' }} />
+                    <span className="text-sm">Master Setup</span>
+                  </button>
+                  <button
                     onClick={() => { router.push('/profile'); setSettingsOpen(false); onClose?.() }}
                     className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
                     style={{ color: 'var(--text-primary)' }}
