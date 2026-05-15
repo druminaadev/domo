@@ -15,30 +15,19 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const hasHydrated = useAuthStore((state) => state.hasHydrated)
   const router = useRouter()
 
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
   const [collapsed, setCollapsed] = useState<boolean>(false)
-  const [mounted, setMounted] = useState<boolean>(false)
 
-  // Step 1: Handle Mounting to prevent Hydration errors
   useEffect(() => {
-    setMounted(true)
-
-    return () => {
-      setMounted(false)
-    }
-  }, [])
-
-  // Step 2: Handle Authentication Redirect
-  useEffect(() => {
-    if (mounted && !isAuthenticated) {
+    if (hasHydrated && !isAuthenticated) {
       router.replace('/login')
     }
-  }, [mounted, isAuthenticated, router])
+  }, [hasHydrated, isAuthenticated, router])
 
-  // Step 3: Only render content if mounted AND authenticated
-  if (!mounted || !isAuthenticated) {
+  if (!hasHydrated || !isAuthenticated) {
     return (
       <div
         className="min-h-screen"

@@ -5,6 +5,8 @@ interface AuthUser { id: number; name: string; role: string; branchId: number }
 interface AuthStore {
   user: AuthUser | null
   isAuthenticated: boolean
+  hasHydrated: boolean
+  setHasHydrated: (value: boolean) => void
   login: (username: string, password: string) => boolean
   logout: () => void
 }
@@ -20,10 +22,17 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       user: null,
       isAuthenticated: false,
+      hasHydrated: false,
+      setHasHydrated: (value) => set({ hasHydrated: value }),
       login: (username, password) => {
         const found = DEMO_USERS.find(u => u.username === username && u.password === password)
         if (found) {
-          const { password: _, username: __, ...user } = found
+          const user = {
+            id: found.id,
+            name: found.name,
+            role: found.role,
+            branchId: found.branchId,
+          }
           set({ user, isAuthenticated: true })
           return true
         }
@@ -31,6 +40,11 @@ export const useAuthStore = create<AuthStore>()(
       },
       logout: () => set({ user: null, isAuthenticated: false }),
     }),
-    { name: 'dada-auth' }
+    {
+      name: 'dada-auth',
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true)
+      },
+    }
   )
 )
