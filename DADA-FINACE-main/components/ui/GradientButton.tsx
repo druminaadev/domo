@@ -30,7 +30,7 @@ export function GradientButton({
       <button
         {...props}
         disabled={disabled || loading}
-        className={`${baseStyle} ${sizes[size]} bg-white dark:bg-[#2C2C2C] border-2 hover:text-white hover:border-transparent hover:scale-105 hover:shadow-lg ${className}`}
+        className={`${baseStyle} ${sizes[size]} bg-white dark:bg-[#2C2C2C] border-2 hover:scale-105 hover:shadow-lg ${className}`}
         style={{
           color: COLORS.orange,
           borderColor: COLORS.orange,
@@ -38,7 +38,7 @@ export function GradientButton({
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = `linear-gradient(to right, ${COLORS.orange}, ${COLORS.orangeLight})`
-          e.currentTarget.style.color = 'white'
+          e.currentTarget.style.color = '#1A1A1A'
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.background = 'white'
@@ -55,9 +55,10 @@ export function GradientButton({
     <button
       {...props}
       disabled={disabled || loading}
-      className={`${baseStyle} ${sizes[size]} text-white hover:scale-105 ${className}`}
+      className={`${baseStyle} ${sizes[size]} hover:scale-105 ${className}`}
       style={{
         background: `linear-gradient(to right, ${COLORS.orange}, ${COLORS.orangeLight})`,
+        color: '#1A1A1A',
         boxShadow: `0 4px 14px ${COLORS.orangeShadow}`,
       }}
       onMouseEnter={(e) => {
@@ -69,7 +70,7 @@ export function GradientButton({
         e.currentTarget.style.boxShadow = `0 4px 14px ${COLORS.orangeShadow}`
       }}
     >
-      {loading && <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />}
+      {loading && <span className="w-4 h-4 border-2 border-[#1A1A1A] border-t-transparent rounded-full animate-spin" />}
       {children}
     </button>
   )

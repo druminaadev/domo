@@ -185,7 +185,7 @@ export default function Dashboard() {
   ]
 
   return (
-    <div className="min-h-screen space-y-5 bg-linear-to-r from-white via-orange-50 to-white p-4 sm:p-6">
+    <div className="min-h-screen space-y-5 p-4 sm:p-6">
       <section className="relative overflow-hidden rounded-3xl border border-orange-100 bg-white p-5 text-[#222831] shadow-[0_24px_70px_rgba(255,109,61,0.16)] sm:p-7">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(255,167,38,0.25),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(255,109,61,0.18),transparent_30%),linear-gradient(135deg,#FFFFFF_0%,#FFF7ED_56%,#FFE8DA_100%)]" />
         <div className="absolute right-8 top-8 hidden h-32 w-32 rounded-full border border-orange-200/70 sm:block" />

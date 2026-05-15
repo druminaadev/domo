@@ -12,10 +12,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variants: Record<Variant, string> = {
-  primary: `bg-gradient-to-r from-[${COLORS.orange}] to-[${COLORS.orangeLight}] hover:from-[${COLORS.orangeDark}] hover:to-[${COLORS.orange}] text-white border-0 shadow-lg hover:shadow-xl hover:scale-105`,
+  primary: `bg-gradient-to-r from-[${COLORS.orange}] to-[${COLORS.orangeLight}] hover:from-[${COLORS.orangeDark}] hover:to-[${COLORS.orange}] text-[#1A1A1A] border-0 shadow-lg hover:shadow-xl hover:scale-105`,
   success: 'bg-gradient-to-r from-[#1A1A1A] to-[#2C2C2C] hover:from-[#2C2C2C] hover:to-[#3C3C3C] text-white border-0 shadow-lg hover:scale-105',
   danger:  'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white border-0 shadow-lg shadow-red-500/30 hover:scale-105',
-  outline: `bg-white dark:bg-transparent hover:bg-gradient-to-r hover:from-[${COLORS.orange}] hover:to-[${COLORS.orangeLight}] text-[${COLORS.orange}] hover:text-white border-2 border-[${COLORS.orange}] hover:border-transparent transition-all duration-300`,
+  outline: `bg-white dark:bg-transparent hover:bg-gradient-to-r hover:from-[${COLORS.orange}] hover:to-[${COLORS.orangeLight}] text-[${COLORS.orange}] hover:text-[#1A1A1A] border-2 border-[${COLORS.orange}] hover:border-transparent transition-all duration-300`,
   ghost:   'bg-transparent hover:bg-gradient-to-r hover:from-[#F4F4F4] hover:to-[#EEEEEE] dark:hover:from-[#2C2C2C] dark:hover:to-[#3C3C3C] text-[#1A1A1A] dark:text-white border border-transparent hover:scale-105',
 }
 const sizes: Record<Size, string> = {

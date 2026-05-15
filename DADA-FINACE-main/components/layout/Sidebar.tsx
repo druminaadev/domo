@@ -22,17 +22,6 @@ interface NavGroup {
 
 const NAV: NavGroup[] = [
   {
-    label: 'Master Setup', icon: Database, color: '#8B5CF6',
-    children: [
-      { label: 'States', path: '/master/states', icon: MapPin },
-      { label: 'Cities', path: '/master/cities', icon: Building2 },
-      { label: 'Areas', path: '/master/areas', icon: MapPin },
-      { label: 'Branches', path: '/master/branches', icon: Landmark },
-      { label: 'Loan Types', path: '/master/loan-types', icon: Tag },
-      { label: 'Banks', path: '/master/banks', icon: Landmark },
-    ],
-  },
-  {
     label: 'Employees', icon: Users, color: '#0EA5E9',
     children: [
       { label: 'Add Employee', path: '/employees/add', icon: UserPlus },
@@ -89,6 +78,16 @@ const NAV: NavGroup[] = [
   },
 ]
 
+// Master Setup items for Settings dropdown only
+const MASTER_SETUP_ITEMS: NavChild[] = [
+  { label: 'States', path: '/master/states', icon: MapPin },
+  { label: 'Cities', path: '/master/cities', icon: Building2 },
+  { label: 'Areas', path: '/master/areas', icon: MapPin },
+  { label: 'Branches', path: '/master/branches', icon: Landmark },
+  { label: 'Loan Types', path: '/master/loan-types', icon: Tag },
+  { label: 'Banks', path: '/master/banks', icon: Landmark },
+]
+
 interface SidebarProps {
   open: boolean
   onClose?: () => void
@@ -101,6 +100,7 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
   const router = useRouter()
   const [expanded, setExpanded] = useState<string[]>(['Loans', 'EMI'])
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [masterSetupOpen, setMasterSetupOpen] = useState(false)
 
   const toggle = (label: string) =>
     setExpanded(p => p.includes(label) ? p.filter(x => x !== label) : [...p, label])
@@ -128,20 +128,27 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
           open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         ].join(' ')}
         style={{
-          background: 'var(--bg)',
-          borderRight: '1px solid var(--border)',
+          background: 'linear-gradient(180deg, #FFFFFF 0%, #FFF8F5 100%)',
+          borderRight: '1px solid rgba(255, 109, 61, 0.1)',
+          boxShadow: '4px 0 24px rgba(255, 109, 61, 0.08)',
         }}
       >
         {/* ── Brand Header ─────────────────────────────────── */}
         <div
           className="flex items-center justify-between shrink-0 px-4 h-16"
-          style={{ borderBottom: '1px solid var(--border)' }}
+          style={{ 
+            borderBottom: '1px solid rgba(255, 109, 61, 0.15)',
+            background: 'linear-gradient(135deg, rgba(255, 109, 61, 0.05) 0%, rgba(255, 183, 153, 0.05) 100%)',
+          }}
         >
           <div className="flex items-center gap-3 min-w-0">
             {/* Logo mark */}
             <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-sm"
-              style={{ background: 'linear-gradient(135deg, #5B7FA6, #3B5F8A)' }}
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
+              style={{ 
+                background: 'linear-gradient(135deg, #FF6D3D 0%, #FF8A5B 100%)',
+                boxShadow: '0 4px 12px rgba(255, 109, 61, 0.3)',
+              }}
             >
               <Wallet size={16} />
             </div>
@@ -150,13 +157,18 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
               <div className="min-w-0">
                 <div
                   className="text-sm font-bold leading-tight truncate"
-                  style={{ color: 'var(--text-primary)' }}
+                  style={{ 
+                    background: 'linear-gradient(135deg, #FF6D3D 0%, #FF8A5B 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
                 >
                   Dada Finance
                 </div>
                 <div
                   className="text-[10px] font-medium mt-0.5 truncate"
-                  style={{ color: 'var(--text-secondary)' }}
+                  style={{ color: '#FF6D3D' }}
                 >
                   Loan Management
                 </div>
@@ -404,16 +416,51 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                   className="absolute bottom-full left-3 right-3 mb-2 rounded-lg shadow-lg overflow-hidden"
                   style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}
                 >
-                  <button
-                    onClick={() => { router.push('/master/states'); setSettingsOpen(false); onClose?.() }}
-                    className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
-                    style={{ color: 'var(--text-primary)' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                  >
-                    <Database size={14} style={{ color: 'var(--text-secondary)' }} />
-                    <span className="text-sm">Master Setup</span>
-                  </button>
+                  {/* Master Setup with nested dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setMasterSetupOpen(!masterSetupOpen)}
+                      className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
+                      style={{ color: 'var(--text-primary)' }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <Database size={14} style={{ color: 'var(--text-secondary)' }} />
+                      <span className="flex-1 text-sm">Master Setup</span>
+                      <ChevronDown
+                        size={12}
+                        style={{
+                          color: 'var(--text-secondary)',
+                          transition: 'transform 0.2s',
+                          transform: masterSetupOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                        }}
+                      />
+                    </button>
+                    {/* Master Setup Submenu */}
+                    {masterSetupOpen && (
+                      <div className="pl-6 py-1" style={{ background: 'var(--hover)' }}>
+                        {MASTER_SETUP_ITEMS.map(item => (
+                          <button
+                            key={item.path}
+                            onClick={() => { router.push(item.path); setSettingsOpen(false); setMasterSetupOpen(false); onClose?.() }}
+                            className="w-full flex items-center gap-2 px-3 py-2 cursor-pointer transition-colors text-left"
+                            style={{ color: 'var(--text-secondary)' }}
+                            onMouseEnter={e => {
+                              e.currentTarget.style.background = 'var(--accent-tint)'
+                              e.currentTarget.style.color = 'var(--text-primary)'
+                            }}
+                            onMouseLeave={e => {
+                              e.currentTarget.style.background = 'transparent'
+                              e.currentTarget.style.color = 'var(--text-secondary)'
+                            }}
+                          >
+                            <item.icon size={12} />
+                            <span className="text-xs">{item.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <button
                     onClick={() => { router.push('/profile'); setSettingsOpen(false); onClose?.() }}
                     className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"

@@ -1,9 +1,10 @@
 'use client'
 import { useStore } from '@/store/appStore'
 import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
 import { format, parseISO } from 'date-fns'
 import { Button } from '@/components/ui/Button'
+import { Edit, Save } from 'lucide-react'
 
 function getLabel(score: number) {
   if (score >= 800) return 'Excellent'
@@ -17,6 +18,7 @@ function DocumentContent() {
   const loanId = Number(params.get('loanId'))
   const docType = params.get('type') ?? 'contract'
   const { loans, customers, employees, loanTypes, civilScores } = useStore()
+  const [isEditing, setIsEditing] = useState(false)
 
   const loan = loans.find(l => l.id === loanId)
   const customer = loan ? customers.find(c => c.id === loan.customerId) : null
@@ -33,16 +35,16 @@ function DocumentContent() {
 
   const Header = () => (
     <div className="text-center mb-8 pb-4 border-b-2 border-slate-800">
-      <h1 className="text-2xl font-bold text-slate-900">DADA FINANCE & CORPORATION</h1>
-      <p className="text-sm text-slate-600 mt-1">Loan Management System</p>
-      <p className="text-xs text-slate-500 mt-0.5">Confidential Document</p>
+      <h1 className="text-2xl font-bold text-slate-900" contentEditable={isEditing} suppressContentEditableWarning>DADA FINANCE & CORPORATION</h1>
+      <p className="text-sm text-slate-600 mt-1" contentEditable={isEditing} suppressContentEditableWarning>Loan Management System</p>
+      <p className="text-xs text-slate-500 mt-0.5" contentEditable={isEditing} suppressContentEditableWarning>Confidential Document</p>
     </div>
   )
 
   const Field = ({ label, value }: { label: string; value: string | number | undefined }) => (
     <div className="flex gap-2 py-1 border-b border-slate-100">
       <span className="text-xs font-semibold text-slate-500 w-40 flex-shrink-0">{label}:</span>
-      <span className="text-xs text-slate-800">{value ?? '—'}</span>
+      <span className="text-xs text-slate-800" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '2px 4px' : '0' }}>{value ?? '—'}</span>
     </div>
   )
 
@@ -50,11 +52,11 @@ function DocumentContent() {
     <div className="flex justify-between mt-12 pt-4">
       <div className="text-center">
         <div className="border-t border-slate-400 w-40 mb-1" />
-        <p className="text-xs text-slate-500">Customer Signature</p>
+        <p className="text-xs text-slate-500" contentEditable={isEditing} suppressContentEditableWarning>Customer Signature</p>
       </div>
       <div className="text-center">
         <div className="border-t border-slate-400 w-40 mb-1" />
-        <p className="text-xs text-slate-500">Authorised Signatory</p>
+        <p className="text-xs text-slate-500" contentEditable={isEditing} suppressContentEditableWarning>Authorised Signatory</p>
       </div>
     </div>
   )
@@ -65,7 +67,7 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">LOAN AGREEMENT</h2>
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>LOAN AGREEMENT</h2>
             <div className="grid grid-cols-2 gap-x-8 gap-y-0 mb-6">
               <Field label="Loan No" value={loan.loanNo} />
               <Field label="Loan Date" value={fmtDate(loan.loanDate)} />
@@ -88,7 +90,7 @@ function DocumentContent() {
               <Field label="Employee" value={employee?.name} />
               <Field label="Remarks" value={loan.remarks} />
             </div>
-            <div className="mt-4 p-3 bg-slate-50 rounded text-xs text-slate-600 leading-relaxed">
+            <div className="mt-4 p-3 bg-slate-50 rounded text-xs text-slate-600 leading-relaxed" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none' }}>
               I/We hereby agree to repay the above loan amount along with interest as per the schedule. I/We confirm that all information provided is accurate and true.
             </div>
             <SignatureRow />
@@ -98,11 +100,11 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">LOAN SANCTION LETTER</h2>
-            <p className="text-sm text-slate-700 mb-4">Date: {fmtDate(loan.loanDate)}</p>
-            <p className="text-sm text-slate-700 mb-6">To,<br /><strong>{customer.name}</strong><br />{customer.mobile}</p>
-            <p className="text-sm text-slate-700 mb-4">Dear {customer.name},</p>
-            <p className="text-sm text-slate-700 mb-4">
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>LOAN SANCTION LETTER</h2>
+            <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning>Date: {fmtDate(loan.loanDate)}</p>
+            <p className="text-sm text-slate-700 mb-6" contentEditable={isEditing} suppressContentEditableWarning>To,<br /><strong>{customer.name}</strong><br />{customer.mobile}</p>
+            <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning>Dear {customer.name},</p>
+            <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>
               We are pleased to inform you that your loan application <strong>{customer.appNo}</strong> has been sanctioned by Dada Finance & Corporation.
             </p>
             <div className="my-4 grid grid-cols-2 gap-x-8">
@@ -111,7 +113,7 @@ function DocumentContent() {
               <Field label="Repayment Period" value={`${loan.installments} installments`} />
               <Field label="EMI Start Date" value={fmtDate(loan.emiStartDate)} />
             </div>
-            <p className="text-sm text-slate-700 mt-4">Please collect the disbursed amount from our branch at the earliest.</p>
+            <p className="text-sm text-slate-700 mt-4" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>Please collect the disbursed amount from our branch at the earliest.</p>
             <SignatureRow />
           </>
         )
@@ -119,8 +121,8 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">PROMISSORY NOTE</h2>
-            <p className="text-sm text-slate-700 mb-6">
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>PROMISSORY NOTE</h2>
+            <p className="text-sm text-slate-700 mb-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>
               I, <strong>{customer.name}</strong>, son/daughter of <strong>{customer.fatherName}</strong>, residing at {customer.mobile}, hereby promise to pay Dada Finance & Corporation or order, the sum of <strong>{fmt(loan.amount)}</strong> (Rupees {loan.amount} only) with interest at <strong>{loan.interestRate}%</strong> per annum, in <strong>{loan.installments}</strong> equal installments commencing from <strong>{fmtDate(loan.emiStartDate)}</strong>.
             </p>
             <div className="grid grid-cols-2 gap-x-8">
@@ -136,7 +138,7 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">CASH VOUCHER</h2>
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>CASH VOUCHER</h2>
             <div className="grid grid-cols-2 gap-x-8">
               <Field label="Voucher Date" value={fmtDate(loan.loanDate)} />
               <Field label="Loan No" value={loan.loanNo} />
@@ -146,8 +148,8 @@ function DocumentContent() {
               <Field label="Prepared By" value={employee?.name} />
             </div>
             <div className="mt-6 p-3 border border-slate-300 rounded text-center">
-              <p className="text-sm font-semibold text-slate-800">Amount in Words:</p>
-              <p className="text-sm text-slate-600 mt-1">Rupees {loan.amount} Only</p>
+              <p className="text-sm font-semibold text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>Amount in Words:</p>
+              <p className="text-sm text-slate-600 mt-1" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>Rupees {loan.amount} Only</p>
             </div>
             <SignatureRow />
           </>
@@ -156,7 +158,7 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">MORTGAGE / SECURITY DETAILS</h2>
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>MORTGAGE / SECURITY DETAILS</h2>
             <div className="grid grid-cols-2 gap-x-8 mb-4">
               <Field label="Loan No" value={loan.loanNo} />
               <Field label="Customer" value={customer.name} />
@@ -184,7 +186,7 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">GOLD RECEIPT</h2>
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>GOLD RECEIPT</h2>
             <div className="grid grid-cols-2 gap-x-8">
               <Field label="Receipt Date" value={fmtDate(loan.loanDate)} />
               <Field label="Loan No" value={loan.loanNo} />
@@ -195,7 +197,7 @@ function DocumentContent() {
               <Field label="No. of Pieces" value={loan.security.pieces ?? '—'} />
               <Field label="Loan Amount" value={fmt(loan.amount)} />
             </div>
-            <p className="text-xs text-slate-500 mt-6">The above gold items have been received as security against the loan. Items will be returned upon full repayment.</p>
+            <p className="text-xs text-slate-500 mt-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>The above gold items have been received as security against the loan. Items will be returned upon full repayment.</p>
             <SignatureRow />
           </>
         )
@@ -203,9 +205,9 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">DECLARATION FORM</h2>
-            <p className="text-sm text-slate-700 mb-4">I, <strong>{customer.name}</strong>, hereby declare that:</p>
-            <ol className="list-decimal list-inside space-y-2 text-sm text-slate-700 mb-6">
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>DECLARATION FORM</h2>
+            <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning>I, <strong>{customer.name}</strong>, hereby declare that:</p>
+            <ol className="list-decimal list-inside space-y-2 text-sm text-slate-700 mb-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '8px' : '0' }}>
               <li>All information provided in the loan application is true and accurate.</li>
               <li>I have not suppressed any material information.</li>
               <li>I agree to repay the loan as per the agreed schedule.</li>
@@ -225,7 +227,7 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">NOMINEE DETAILS</h2>
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>NOMINEE DETAILS</h2>
             {customer.nominee ? (
               <div className="grid grid-cols-2 gap-x-8">
                 <Field label="Nominee Name" value={customer.nominee.name} />
@@ -236,7 +238,7 @@ function DocumentContent() {
                 <Field label="Identity No" value={customer.nominee.identityNo} />
                 <Field label="Address" value={customer.nominee.address} />
               </div>
-            ) : <p className="text-sm text-slate-500">No nominee details recorded.</p>}
+            ) : <p className="text-sm text-slate-500" contentEditable={isEditing} suppressContentEditableWarning>No nominee details recorded.</p>}
             <SignatureRow />
           </>
         )
@@ -247,7 +249,7 @@ function DocumentContent() {
         return (
           <>
             <Header />
-            <h2 className="text-lg font-bold text-center mb-6 text-slate-800">GUARANTOR {slot} DETAILS</h2>
+            <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>GUARANTOR {slot} DETAILS</h2>
             {g ? (
               <div className="grid grid-cols-2 gap-x-8">
                 <Field label="Name" value={g.name} />
@@ -261,7 +263,7 @@ function DocumentContent() {
                 <Field label="Bank Name" value={g.bankName} />
                 <Field label="IFSC Code" value={g.ifsc} />
               </div>
-            ) : <p className="text-sm text-slate-500">No guarantor {slot} details recorded.</p>}
+            ) : <p className="text-sm text-slate-500" contentEditable={isEditing} suppressContentEditableWarning>No guarantor {slot} details recorded.</p>}
             <SignatureRow />
           </>
         )
@@ -276,6 +278,13 @@ function DocumentContent() {
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-10 print:shadow-none print:rounded-none">
         {renderDoc()}
         <div className="mt-8 pt-4 border-t border-slate-200 text-center print:hidden">
+          <Button 
+            onClick={() => setIsEditing(!isEditing)} 
+            variant={isEditing ? 'success' : 'outline'}
+            className="mr-3"
+          >
+            {isEditing ? <><Save size={16} /> Save Changes</> : <><Edit size={16} /> Edit Document</>}
+          </Button>
           <Button onClick={() => window.print()} className="mr-3">
             Print / Save PDF
           </Button>
