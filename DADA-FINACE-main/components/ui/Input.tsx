@@ -15,9 +15,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         </label>
       )}
       <input ref={ref} {...props}
-        className={`h-11 px-4 text-sm rounded-xl outline-none transition-all bg-white dark:bg-[#2C2C2C] text-[#2C2C2C] dark:text-white ${className}`}
+        className={`h-11 px-4 text-sm rounded-xl outline-none transition-all bg-white dark:bg-[var(--form-field)] text-[#2C2C2C] dark:text-[var(--text-primary)] ${className}`}
         style={{
-          border: `1.5px solid ${error ? COLORS.orange : '#E8E8E8'}`,
+          border: `1.5px solid ${error ? COLORS.orange : 'var(--border)'}`,
           boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
           ...style,
         }}
@@ -26,7 +26,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           e.currentTarget.style.boxShadow = `0 0 0 3px ${COLORS.orangeTint}`
         }}
         onBlur={e => {
-          e.currentTarget.style.borderColor = error ? COLORS.orange : '#E8E8E8'
+          e.currentTarget.style.borderColor = error ? COLORS.orange : 'var(--border)'
           e.currentTarget.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.04)'
         }}
       />

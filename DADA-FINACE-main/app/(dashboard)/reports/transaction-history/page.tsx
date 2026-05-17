@@ -62,7 +62,7 @@ export default function TransactionHistoryPage() {
                         <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{e.paymentMode ?? '—'}</td>
                         <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{emp?.name ?? '—'}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${e.status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400'}`}>
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${e.status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400'}`}>
                             {e.status === 'paid' ? 'On Time' : 'Late'}
                           </span>
                         </td>

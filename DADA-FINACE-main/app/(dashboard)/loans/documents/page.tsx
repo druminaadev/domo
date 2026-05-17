@@ -44,7 +44,7 @@ function DocumentContent() {
   const Field = ({ label, value }: { label: string; value: string | number | undefined }) => (
     <div className="flex gap-2 py-1 border-b border-slate-100">
       <span className="text-xs font-semibold text-slate-500 w-40 flex-shrink-0">{label}:</span>
-      <span className="text-xs text-slate-800" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '2px 4px' : '0' }}>{value ?? '—'}</span>
+      <span className="text-xs text-slate-800" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #831C91' : 'none', padding: isEditing ? '2px 4px' : '0' }}>{value ?? '—'}</span>
     </div>
   )
 
@@ -90,7 +90,7 @@ function DocumentContent() {
               <Field label="Employee" value={employee?.name} />
               <Field label="Remarks" value={loan.remarks} />
             </div>
-            <div className="mt-4 p-3 bg-slate-50 rounded text-xs text-slate-600 leading-relaxed" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none' }}>
+            <div className="mt-4 p-3 bg-slate-50 rounded text-xs text-slate-600 leading-relaxed" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #831C91' : 'none' }}>
               I/We hereby agree to repay the above loan amount along with interest as per the schedule. I/We confirm that all information provided is accurate and true.
             </div>
             <SignatureRow />
@@ -104,7 +104,7 @@ function DocumentContent() {
             <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning>Date: {fmtDate(loan.loanDate)}</p>
             <p className="text-sm text-slate-700 mb-6" contentEditable={isEditing} suppressContentEditableWarning>To,<br /><strong>{customer.name}</strong><br />{customer.mobile}</p>
             <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning>Dear {customer.name},</p>
-            <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>
+            <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #831C91' : 'none', padding: isEditing ? '4px' : '0' }}>
               We are pleased to inform you that your loan application <strong>{customer.appNo}</strong> has been sanctioned by Dada Finance & Corporation.
             </p>
             <div className="my-4 grid grid-cols-2 gap-x-8">
@@ -113,7 +113,7 @@ function DocumentContent() {
               <Field label="Repayment Period" value={`${loan.installments} installments`} />
               <Field label="EMI Start Date" value={fmtDate(loan.emiStartDate)} />
             </div>
-            <p className="text-sm text-slate-700 mt-4" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>Please collect the disbursed amount from our branch at the earliest.</p>
+            <p className="text-sm text-slate-700 mt-4" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #831C91' : 'none', padding: isEditing ? '4px' : '0' }}>Please collect the disbursed amount from our branch at the earliest.</p>
             <SignatureRow />
           </>
         )
@@ -122,7 +122,7 @@ function DocumentContent() {
           <>
             <Header />
             <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>PROMISSORY NOTE</h2>
-            <p className="text-sm text-slate-700 mb-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>
+            <p className="text-sm text-slate-700 mb-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #831C91' : 'none', padding: isEditing ? '4px' : '0' }}>
               I, <strong>{customer.name}</strong>, son/daughter of <strong>{customer.fatherName}</strong>, residing at {customer.mobile}, hereby promise to pay Dada Finance & Corporation or order, the sum of <strong>{fmt(loan.amount)}</strong> (Rupees {loan.amount} only) with interest at <strong>{loan.interestRate}%</strong> per annum, in <strong>{loan.installments}</strong> equal installments commencing from <strong>{fmtDate(loan.emiStartDate)}</strong>.
             </p>
             <div className="grid grid-cols-2 gap-x-8">
@@ -149,7 +149,7 @@ function DocumentContent() {
             </div>
             <div className="mt-6 p-3 border border-slate-300 rounded text-center">
               <p className="text-sm font-semibold text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>Amount in Words:</p>
-              <p className="text-sm text-slate-600 mt-1" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>Rupees {loan.amount} Only</p>
+              <p className="text-sm text-slate-600 mt-1" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #831C91' : 'none', padding: isEditing ? '4px' : '0' }}>Rupees {loan.amount} Only</p>
             </div>
             <SignatureRow />
           </>
@@ -197,7 +197,7 @@ function DocumentContent() {
               <Field label="No. of Pieces" value={loan.security.pieces ?? '—'} />
               <Field label="Loan Amount" value={fmt(loan.amount)} />
             </div>
-            <p className="text-xs text-slate-500 mt-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '4px' : '0' }}>The above gold items have been received as security against the loan. Items will be returned upon full repayment.</p>
+            <p className="text-xs text-slate-500 mt-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #831C91' : 'none', padding: isEditing ? '4px' : '0' }}>The above gold items have been received as security against the loan. Items will be returned upon full repayment.</p>
             <SignatureRow />
           </>
         )
@@ -207,7 +207,7 @@ function DocumentContent() {
             <Header />
             <h2 className="text-lg font-bold text-center mb-6 text-slate-800" contentEditable={isEditing} suppressContentEditableWarning>DECLARATION FORM</h2>
             <p className="text-sm text-slate-700 mb-4" contentEditable={isEditing} suppressContentEditableWarning>I, <strong>{customer.name}</strong>, hereby declare that:</p>
-            <ol className="list-decimal list-inside space-y-2 text-sm text-slate-700 mb-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #FF6D3D' : 'none', padding: isEditing ? '8px' : '0' }}>
+            <ol className="list-decimal list-inside space-y-2 text-sm text-slate-700 mb-6" contentEditable={isEditing} suppressContentEditableWarning style={{ outline: isEditing ? '1px dashed #831C91' : 'none', padding: isEditing ? '8px' : '0' }}>
               <li>All information provided in the loan application is true and accurate.</li>
               <li>I have not suppressed any material information.</li>
               <li>I agree to repay the loan as per the agreed schedule.</li>

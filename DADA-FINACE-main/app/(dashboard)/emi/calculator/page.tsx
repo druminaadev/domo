@@ -1,156 +1,4 @@
-git fetch origin
-remote: Enumerating objects: 189, done.
-  remote: Counting objects: 100 % (189 / 189), done.
-    remote: Compressing objects: 100 % (112 / 112), done.
-      remote: Total 189(delta 51), reused 162(delta 24), pack - reused 0(from 0)
-Receiving objects: 100 % (189 / 189), 165.23 KiB | 1.24 MiB / s, done.
-Resolving deltas: 100 % (51 / 51), done.
-From https://github.com/druminaadev/new-dada
- * [new branch]      main -> origin / main
-  * [new branch]      master -> origin / master
-dipak @Bhairav: ~/Downloads/2 / Money / Finace / test1 / new- dada - main$ git status
-On branch main
-nothing to commit, working tree clean
-dipak @Bhairav: ~/Downloads/2 / Money / Finace / test1 / new- dada - main$ git pull origin main--rebase
-From https://github.com/druminaadev/new-dada
- * branch            main -> FETCH_HEAD
-Auto - merging DADA - FINACE - main / app / (dashboard) / dashboard / page.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / (dashboard) / dashboard / page.tsx
-Auto - merging DADA - FINACE - main / app / (dashboard) / layout.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / (dashboard) / layout.tsx
-Auto - merging DADA - FINACE - main / app / globals.css
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / globals.css
-Auto - merging DADA - FINACE - main / components / layout / Sidebar.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / layout / Sidebar.tsx
-Auto - merging DADA - FINACE - main / components / ui / DownloadDropdown.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / ui / DownloadDropdown.tsx
-Auto - merging DADA - FINACE - main / components / ui / Toast.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / ui / Toast.tsx
-Auto - merging DADA - FINACE - main / package - lock.json
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / package - lock.json
-Auto - merging DADA - FINACE - main / store / appStore.ts
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / store / appStore.ts
-error: could not apply 51479ab... new page with feaures
-hint: Resolve all conflicts manually, mark them as resolved with
-hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
-  hint: You can instead skip this commit: run "git rebase --skip".
-    hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
-      hint: Disable this message with "git config set advice.mergeConflict false"
-Could not apply 51479ab... # new page with feauresgit fetch origin
-remote: Enumerating objects: 189, done.
-  remote: Counting objects: 100 % (189 / 189), done.
-    remote: Compressing objects: 100 % (112 / 112), done.
-      remote: Total 189(delta 51), reused 162(delta 24), pack - reused 0(from 0)
-Receiving objects: 100 % (189 / 189), 165.23 KiB | 1.24 MiB / s, done.
-Resolving deltas: 100 % (51 / 51), done.
-From https://github.com/druminaadev/new-dada
- * [new branch]      main -> origin / main
-  * [new branch]      master -> origin / master
-dipak @Bhairav: ~/Downloads/2 / Money / Finace / test1 / new- dada - main$ git status
-On branch main
-nothing to commit, working tree clean
-dipak @Bhairav: ~/Downloads/2 / Money / Finace / test1 / new- dada - main$ git pull origin main--rebase
-From https://github.com/druminaadev/new-dada
- * branch            main -> FETCH_HEAD
-Auto - merging DADA - FINACE - main / app / (dashboard) / dashboard / page.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / (dashboard) / dashboard / page.tsx
-Auto - merging DADA - FINACE - main / app / (dashboard) / layout.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / (dashboard) / layout.tsx
-Auto - merging DADA - FINACE - main / app / globals.css
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / globals.css
-Auto - merging DADA - FINACE - main / components / layout / Sidebar.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / layout / Sidebar.tsx
-Auto - merging DADA - FINACE - main / components / ui / DownloadDropdown.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / ui / DownloadDropdown.tsx
-Auto - merging DADA - FINACE - main / components / ui / Toast.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / ui / Toast.tsx
-Auto - merging DADA - FINACE - main / package - lock.json
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / package - lock.json
-Auto - merging DADA - FINACE - main / store / appStore.ts
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / store / appStore.ts
-error: could not apply 51479ab... new page with feaures
-hint: Resolve all conflicts manually, mark them as resolved with
-hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
-  hint: You can instead skip this commit: run "git rebase --skip".
-    hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
-      hint: Disable this message with "git config set advice.mergeConflict false"
-Could not apply 51479ab... # new page with feauresgit fetch origin
-remote: Enumerating objects: 189, done.
-  remote: Counting objects: 100 % (189 / 189), done.
-    remote: Compressing objects: 100 % (112 / 112), done.
-      remote: Total 189(delta 51), reused 162(delta 24), pack - reused 0(from 0)
-Receiving objects: 100 % (189 / 189), 165.23 KiB | 1.24 MiB / s, done.
-Resolving deltas: 100 % (51 / 51), done.
-From https://github.com/druminaadev/new-dada
- * [new branch]      main -> origin / main
-  * [new branch]      master -> origin / master
-dipak @Bhairav: ~/Downloads/2 / Money / Finace / test1 / new- dada - main$ git status
-On branch main
-nothing to commit, working tree clean
-dipak @Bhairav: ~/Downloads/2 / Money / Finace / test1 / new- dada - main$ git pull origin main--rebase
-From https://github.com/druminaadev/new-dada
- * branch            main -> FETCH_HEAD
-Auto - merging DADA - FINACE - main / app / (dashboard) / dashboard / page.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / (dashboard) / dashboard / page.tsx
-Auto - merging DADA - FINACE - main / app / (dashboard) / layout.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / (dashboard) / layout.tsx
-Auto - merging DADA - FINACE - main / app / globals.css
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / globals.css
-Auto - merging DADA - FINACE - main / components / layout / Sidebar.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / layout / Sidebar.tsx
-Auto - merging DADA - FINACE - main / components / ui / DownloadDropdown.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / ui / DownloadDropdown.tsx
-Auto - merging DADA - FINACE - main / components / ui / Toast.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / ui / Toast.tsx
-Auto - merging DADA - FINACE - main / package - lock.json
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / package - lock.json
-Auto - merging DADA - FINACE - main / store / appStore.ts
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / store / appStore.ts
-error: could not apply 51479ab... new page with feaures
-hint: Resolve all conflicts manually, mark them as resolved with
-hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
-  hint: You can instead skip this commit: run "git rebase --skip".
-    hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
-      hint: Disable this message with "git config set advice.mergeConflict false"
-Could not apply 51479ab... # new page with feauresgit fetch origin
-remote: Enumerating objects: 189, done.
-  remote: Counting objects: 100 % (189 / 189), done.
-    remote: Compressing objects: 100 % (112 / 112), done.
-      remote: Total 189(delta 51), reused 162(delta 24), pack - reused 0(from 0)
-Receiving objects: 100 % (189 / 189), 165.23 KiB | 1.24 MiB / s, done.
-Resolving deltas: 100 % (51 / 51), done.
-From https://github.com/druminaadev/new-dada
- * [new branch]      main -> origin / main
-  * [new branch]      master -> origin / master
-dipak @Bhairav: ~/Downloads/2 / Money / Finace / test1 / new- dada - main$ git status
-On branch main
-nothing to commit, working tree clean
-dipak @Bhairav: ~/Downloads/2 / Money / Finace / test1 / new- dada - main$ git pull origin main--rebase
-From https://github.com/druminaadev/new-dada
- * branch            main -> FETCH_HEAD
-Auto - merging DADA - FINACE - main / app / (dashboard) / dashboard / page.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / (dashboard) / dashboard / page.tsx
-Auto - merging DADA - FINACE - main / app / (dashboard) / layout.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / (dashboard) / layout.tsx
-Auto - merging DADA - FINACE - main / app / globals.css
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / app / globals.css
-Auto - merging DADA - FINACE - main / components / layout / Sidebar.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / layout / Sidebar.tsx
-Auto - merging DADA - FINACE - main / components / ui / DownloadDropdown.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / ui / DownloadDropdown.tsx
-Auto - merging DADA - FINACE - main / components / ui / Toast.tsx
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / components / ui / Toast.tsx
-Auto - merging DADA - FINACE - main / package - lock.json
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / package - lock.json
-Auto - merging DADA - FINACE - main / store / appStore.ts
-CONFLICT(add / add): Merge conflict in DADA - FINACE - main / store / appStore.ts
-error: could not apply 51479ab... new page with feaures
-hint: Resolve all conflicts manually, mark them as resolved with
-hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
-  hint: You can instead skip this commit: run "git rebase --skip".
-    hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
-      hint: Disable this message with "git config set advice.mergeConflict false"
-Could not apply 51479ab... # new page with feaures'use client'
+'use client'
 import { useState, useMemo, useEffect } from 'react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Button } from '@/components/ui/Button'
@@ -238,10 +86,12 @@ export default function EMICalculatorPage() {
     if (saved) {
       try {
         const data = JSON.parse(saved)
-        setLoanAmount(data.loanAmount || 500000)
-        setInterestRate(data.interestRate || 12)
-        setTenureYears(data.tenureYears || 2)
-      } catch (e) { }
+        queueMicrotask(() => {
+          setLoanAmount(data.loanAmount || 500000)
+          setInterestRate(data.interestRate || 12)
+          setTenureYears(data.tenureYears || 2)
+        })
+      } catch { }
     }
   }, [])
 
@@ -397,12 +247,12 @@ export default function EMICalculatorPage() {
                 </div>
                 <div className="text-lg font-bold text-green-900 dark:text-green-100">₹{loanAmount.toLocaleString('en-IN')}</div>
               </div>
-              <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur rounded-lg p-4 border border-orange-200 dark:border-orange-800/50">
-                <div className="text-xs text-orange-700 dark:text-orange-300 mb-1 flex items-center gap-1">
-                  <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+              <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur rounded-lg p-4 border border-[#831C91]/20">
+                <div className="text-xs text-[#831C91] dark:text-[#D552A3] mb-1 flex items-center gap-1">
+                  <span className="w-2 h-2 bg-[#831C91] rounded-full"></span>
                   Interest
                 </div>
-                <div className="text-lg font-bold text-orange-900 dark:text-orange-100">₹{totalInterest.toLocaleString('en-IN')}</div>
+                <div className="text-lg font-bold text-[#831C91] dark:text-[#D552A3]">₹{totalInterest.toLocaleString('en-IN')}</div>
               </div>
             </div>
 
@@ -419,13 +269,13 @@ export default function EMICalculatorPage() {
                   style={{ width: `${principalPercent}%` }}
                 />
                 <div
-                  className="bg-gradient-to-r from-orange-400 to-orange-500 transition-all duration-700 ease-out"
+                  className="bg-gradient-to-r from-[#831C91] to-[#D552A3] transition-all duration-700 ease-out"
                   style={{ width: `${interestPercent}%` }}
                 />
               </div>
               <div className="flex justify-between mt-2 text-xs">
                 <span className="text-green-700 dark:text-green-300 font-medium">{principalPercent.toFixed(1)}%</span>
-                <span className="text-orange-700 dark:text-orange-300 font-medium">{interestPercent.toFixed(1)}%</span>
+                <span className="text-[#831C91] dark:text-[#D552A3] font-medium">{interestPercent.toFixed(1)}%</span>
               </div>
             </div>
           </div>
@@ -444,7 +294,7 @@ export default function EMICalculatorPage() {
           </div>
 
           <div className="space-y-3 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar">
-            {schedule.map((item, idx) => {
+            {schedule.map((item) => {
               const isSelected = selectedMonth === item.month
               const isPaid = item.status === 'paid'
               const isCurrent = item.status === 'current'
@@ -507,12 +357,12 @@ export default function EMICalculatorPage() {
                           </div>
                           <div className="text-lg font-bold text-green-900 dark:text-green-100">₹{item.principal.toLocaleString('en-IN')}</div>
                         </div>
-                        <div className="bg-white/70 dark:bg-slate-900/50 rounded-lg p-3 border border-orange-200 dark:border-orange-800/50">
-                          <div className="text-xs text-orange-700 dark:text-orange-300 flex items-center gap-1 mb-1">
-                            <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                        <div className="bg-white/70 dark:bg-slate-900/50 rounded-lg p-3 border border-[#831C91]/20">
+                          <div className="text-xs text-[#831C91] dark:text-[#D552A3] flex items-center gap-1 mb-1">
+                            <span className="w-2 h-2 bg-[#831C91] rounded-full"></span>
                             Interest
                           </div>
-                          <div className="text-lg font-bold text-orange-900 dark:text-orange-100">₹{item.interest.toLocaleString('en-IN')}</div>
+                          <div className="text-lg font-bold text-[#831C91] dark:text-[#D552A3]">₹{item.interest.toLocaleString('en-IN')}</div>
                         </div>
                       </div>
                       <div className="bg-white/70 dark:bg-slate-900/50 rounded-lg p-3 border border-slate-300 dark:border-slate-600">
@@ -521,7 +371,7 @@ export default function EMICalculatorPage() {
                       </div>
                       <div className="flex h-2 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-700">
                         <div className="bg-green-500 transition-all" style={{ width: `${(item.principal / item.emi) * 100}%` }} />
-                        <div className="bg-orange-500 transition-all" style={{ width: `${(item.interest / item.emi) * 100}%` }} />
+                        <div className="bg-[#831C91] transition-all" style={{ width: `${(item.interest / item.emi) * 100}%` }} />
                       </div>
                     </div>
                   ) : (

@@ -39,14 +39,9 @@ import { Badge } from '@/components/ui/Badge'
 import { GradientButton } from '@/components/ui/GradientButton'
 import { NeumorphicCard } from '@/components/ui/NeumorphicCard'
 import { useStore } from '@/store/appStore'
+import { COLORS, statusColors } from '@/lib/colors'
 
 type IconType = typeof CreditCard
-
-const statusColors = {
-  pending: '#F59E0B',
-  approved: '#6366F1',
-  disbursed: '#10B981',
-}
 
 export default function Dashboard() {
   const { loans, customers, employees } = useStore()
@@ -116,24 +111,24 @@ export default function Dashboard() {
   const customerGrowthData = Object.entries(customerGrowthMap).map(([month, count]) => ({ month, customers: count })).slice(-6)
 
   const loanTypeData = [
-    { name: 'Personal', value: Math.floor(loans.length * 0.45), color: '#FF6D3D' },
-    { name: 'Business', value: Math.floor(loans.length * 0.30), color: '#F59E0B' },
-    { name: 'Home', value: Math.floor(loans.length * 0.15), color: '#EC4899' },
-    { name: 'Auto', value: Math.floor(loans.length * 0.10), color: '#10B981' },
+    { name: 'Personal', value: Math.floor(loans.length * 0.45), color: COLORS.chart.personal },
+    { name: 'Business', value: Math.floor(loans.length * 0.30), color: COLORS.chart.business },
+    { name: 'Home', value: Math.floor(loans.length * 0.15), color: COLORS.chart.home },
+    { name: 'Auto', value: Math.floor(loans.length * 0.10), color: COLORS.chart.auto },
   ].filter(d => d.value > 0)
 
   const recentLoans = [...loans].sort((a, b) => b.id - a.id).slice(0, 6)
 
   const tooltipStyle = {
     contentStyle: {
-      background: '#FFFFFF',
-      border: '1px solid #E8E8E8',
+      background: COLORS.white,
+      border: `1px solid ${COLORS.lightGray}`,
       borderRadius: '14px',
-      color: '#222831',
+      color: COLORS.dark,
       fontSize: '12px',
-      boxShadow: '0 16px 40px rgba(34, 40, 49, 0.12)',
+      boxShadow: COLORS.shadowCard,
     },
-    labelStyle: { color: '#393E46', fontWeight: 700 },
+    labelStyle: { color: COLORS.darkSecondary, fontWeight: 700 },
   }
 
   const kpis: Array<{
@@ -149,32 +144,32 @@ export default function Dashboard() {
       value: loans.length,
       hint: `${thisMonthLoans} opened this month`,
       icon: CreditCard,
-      color: '#FF6D3D',
-      bg: 'rgba(255, 109, 61, 0.12)',
+      color: COLORS.primary,
+      bg: COLORS.primaryAlpha12,
     },
     {
       label: 'Customers',
       value: customers.length,
       hint: 'Registered borrowers',
       icon: Users,
-      color: '#14B8A6',
-      bg: 'rgba(20, 184, 166, 0.12)',
+      color: COLORS.teal,
+      bg: COLORS.primaryAlpha12,
     },
     {
       label: 'Avg Ticket',
       value: formatINR(avgLoanAmount),
       hint: 'Across all applications',
       icon: Wallet,
-      color: '#8B5CF6',
-      bg: 'rgba(139, 92, 246, 0.12)',
+      color: COLORS.purple,
+      bg: COLORS.primaryAlpha12,
     },
     {
       label: 'Approval Rate',
       value: `${approvalRate}%`,
       hint: 'Approved + disbursed',
       icon: Target,
-      color: '#10B981',
-      bg: 'rgba(16, 185, 129, 0.12)',
+      color: COLORS.green,
+      bg: COLORS.primaryAlpha12,
     },
   ]
 
@@ -186,20 +181,20 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen space-y-5 p-4 sm:p-6">
-      <section className="relative overflow-hidden rounded-3xl border border-orange-100 bg-white p-5 text-[#222831] shadow-[0_24px_70px_rgba(255,109,61,0.16)] sm:p-7">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(255,167,38,0.25),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(255,109,61,0.18),transparent_30%),linear-gradient(135deg,#FFFFFF_0%,#FFF7ED_56%,#FFE8DA_100%)]" />
-        <div className="absolute right-8 top-8 hidden h-32 w-32 rounded-full border border-orange-200/70 sm:block" />
-        <div className="absolute bottom-0 right-0 h-28 w-64 rounded-tl-full bg-orange-100/70" />
+      <section className="relative overflow-hidden rounded-3xl border border-[#D552A3]/20 bg-white p-5 text-[#1E293B] shadow-[0_24px_70px_rgba(70,44,125,0.16)] sm:p-7">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(70,44,125,0.25),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(131,28,145,0.18),transparent_30%),linear-gradient(135deg,#FFFFFF_0%,#FFF5F8_56%,#F5E6F0_100%)]" />
+        <div className="absolute right-8 top-8 hidden h-32 w-32 rounded-full border border-[#D552A3]/30 sm:block" />
+        <div className="absolute bottom-0 right-0 h-28 w-64 rounded-tl-full bg-[#D552A3]/20" />
 
         <div className="relative z-10 grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
           <div className="space-y-5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#FF6D3D] shadow-sm backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#D552A3]/30 bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#462C7D] shadow-sm backdrop-blur">
               <Sparkles size={14} />
               Finance command center
             </div>
             <div>
               <h1 className="max-w-3xl text-3xl font-black leading-tight sm:text-5xl">Good Morning, John!</h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#6B6B6B] sm:text-base">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#64748B] sm:text-base">
                 Track disbursements, approvals, collections, and customer momentum from one polished workspace.
               </p>
             </div>
@@ -213,27 +208,27 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-orange-200 bg-white/80 p-5 shadow-[0_18px_45px_rgba(255,109,61,0.16)] backdrop-blur-xl">
+          <div className="rounded-2xl border border-[#D552A3]/30 bg-white/80 p-5 shadow-[0_18px_45px_rgba(70,44,125,0.16)] backdrop-blur-xl">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#FF6D3D]">Disbursed Portfolio</p>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#462C7D]">Disbursed Portfolio</p>
                 <h2 className="mt-3 text-3xl font-black sm:text-4xl">{formatINR(totalDisbursed)}</h2>
-                <p className="mt-2 text-sm text-[#6B6B6B]">From {disbursedLoans.length} completed loans</p>
+                <p className="mt-2 text-sm text-[#64748B]">From {disbursedLoans.length} completed loans</p>
               </div>
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#FFF0E8] text-[#FF6D3D]">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#FFF5F8] text-[#462C7D]">
                 <IndianRupee size={24} />
               </span>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <div className="rounded-2xl border border-orange-100 bg-[#FFF7ED] p-3">
-                <p className="text-xs text-[#6B6B6B]">Monthly Growth</p>
+              <div className="rounded-2xl border border-[#D552A3]/20 bg-[#FFF5F8] p-3">
+                <p className="text-xs text-[#64748B]">Monthly Growth</p>
                 <div className="mt-2 flex items-center gap-1 text-lg font-black">
                   {isGrowthPositive ? <ArrowUpRight size={18} /> : <ArrowDownRight size={18} />}
                   {Math.abs(loanGrowth).toFixed(1)}%
                 </div>
               </div>
-              <div className="rounded-2xl border border-orange-100 bg-[#FFF7ED] p-3">
-                <p className="text-xs text-[#6B6B6B]">Portfolio Value</p>
+              <div className="rounded-2xl border border-[#D552A3]/20 bg-[#FFF5F8] p-3">
+                <p className="text-xs text-[#64748B]">Portfolio Value</p>
                 <p className="mt-2 text-lg font-black">{formatINR(totalPortfolio)}</p>
               </div>
             </div>
@@ -248,9 +243,9 @@ export default function Dashboard() {
             <NeumorphicCard key={item.label} className="group overflow-hidden p-5 hover:-translate-y-1 hover:shadow-xl">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wide text-[#6B6B6B] dark:text-gray-400">{item.label}</p>
+                  <p className="text-xs font-bold uppercase tracking-wide text-[#64748B] dark:text-gray-400">{item.label}</p>
                   <p className="mt-3 text-2xl font-black leading-none text-[#1A1A1A] dark:text-white">{item.value}</p>
-                  <p className="mt-2 text-xs text-[#6B6B6B] dark:text-gray-400">{item.hint}</p>
+                  <p className="mt-2 text-xs text-[#64748B] dark:text-gray-400">{item.hint}</p>
                 </div>
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110" style={{ background: item.bg, color: item.color }}>
                   <Icon size={23} />
@@ -272,21 +267,21 @@ export default function Dashboard() {
             <AreaChart data={trendData} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
               <defs>
                 <linearGradient id="loanGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#FF6D3D" stopOpacity={0.35} />
-                  <stop offset="95%" stopColor="#FF6D3D" stopOpacity={0.02} />
+                  <stop offset="5%" stopColor="#462C7D" stopOpacity={0.35} />
+                  <stop offset="95%" stopColor="#462C7D" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E8E8E8" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 12, fill: '#6B6B6B' }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#64748B' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 12, fill: '#64748B' }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip {...tooltipStyle} formatter={(v) => [v, 'Loans']} />
               <Area
                 type="monotone"
                 dataKey="loans"
-                stroke="#FF6D3D"
+                stroke="#462C7D"
                 strokeWidth={3}
                 fill="url(#loanGrad)"
-                dot={{ fill: '#FF6D3D', r: 4, strokeWidth: 2, stroke: '#FFFFFF' }}
+                dot={{ fill: '#462C7D', r: 4, strokeWidth: 2, stroke: '#FFFFFF' }}
                 activeDot={{ r: 7 }}
               />
             </AreaChart>
@@ -305,7 +300,7 @@ export default function Dashboard() {
                     </span>
                     <div>
                       <p className="text-sm font-black text-[#1A1A1A] dark:text-white">{item.label}</p>
-                      <p className="text-xs text-[#6B6B6B] dark:text-gray-400">{item.count} loans</p>
+                      <p className="text-xs text-[#64748B] dark:text-gray-400">{item.count} loans</p>
                     </div>
                   </div>
                   <p className="text-right text-lg font-black text-[#1A1A1A] dark:text-white">{formatINR(item.amount)}</p>
@@ -350,29 +345,29 @@ export default function Dashboard() {
           )}
         </NeumorphicCard>
 
-        <NeumorphicCard className="xl:col-span-7 bg-[#FFFDFC] p-5 shadow-[0_18px_45px_rgba(255,109,61,0.10)]">
+        <NeumorphicCard className="xl:col-span-7 bg-[#FEFEFF] p-5 shadow-[0_18px_45px_rgba(70,44,125,0.10)]">
           <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h2 className="text-base font-black text-[#1A1A1A] dark:text-white">Monthly Disbursement</h2>
-              <p className="mt-5 text-xs font-semibold text-[#A0A0A0]">Total amount disbursed</p>
+              <p className="mt-5 text-xs font-semibold text-[#94A3B8]">Total amount disbursed</p>
               <div className="mt-1 flex items-end gap-1">
                 <span className="text-3xl font-black leading-none text-[#1A1A1A] dark:text-white">{formatINR(totalDisbursed)}</span>
-                <span className="pb-0.5 text-sm font-semibold text-[#A0A0A0]">/ {formatINR(totalPortfolio || totalDisbursed)}</span>
+                <span className="pb-0.5 text-sm font-semibold text-[#94A3B8]">/ {formatINR(totalPortfolio || totalDisbursed)}</span>
               </div>
             </div>
-            <div className="flex w-fit rounded-full bg-[#F4F4F4] p-1 text-xs font-bold text-[#9A9A9A]">
-              <button type="button" className="rounded-full px-4 py-2 transition-colors hover:text-[#FF6D3D]">Weekly</button>
+            <div className="flex w-fit rounded-full bg-[#F1F5F9] p-1 text-xs font-bold text-[#94A3B8]">
+              <button type="button" className="rounded-full px-4 py-2 transition-colors hover:text-[#462C7D]">Weekly</button>
               <button type="button" className="rounded-full bg-white px-4 py-2 text-[#1A1A1A] shadow-[0_3px_10px_rgba(0,0,0,0.10)]">Monthly</button>
             </div>
           </div>
 
-          <div className="mb-3 flex flex-wrap items-center gap-4 pl-1 text-[11px] font-semibold text-[#6B6B6B]">
+          <div className="mb-3 flex flex-wrap items-center gap-4 pl-1 text-[11px] font-semibold text-[#64748B]">
             <span className="inline-flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#FF6D3D]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#462C7D]" />
               Disbursed
             </span>
             <span className="inline-flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#FFD7BF]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#D552A3]" />
               Monthly capacity
             </span>
           </div>
@@ -381,102 +376,23 @@ export default function Dashboard() {
             <BarChart data={barData} margin={{ top: 10, right: 8, left: -18, bottom: 0 }} barSize={34}>
               <defs>
                 <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#FFB347" stopOpacity={1} />
-                  <stop offset="52%" stopColor="#FF8A3D" stopOpacity={0.96} />
-                  <stop offset="100%" stopColor="#FF5722" stopOpacity={0.9} />
+                  <stop offset="0%" stopColor="#D552A3" stopOpacity={1} />
+                  <stop offset="52%" stopColor="#831C91" stopOpacity={0.96} />
+                  <stop offset="100%" stopColor="#462C7D" stopOpacity={0.9} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#EDE7E2" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#9A9A9A' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#B0B0B0' }} axisLine={false} tickLine={false} tickFormatter={v => `${Number(v) / 1000}k`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#F0E6ED" vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#94A3B8' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: '#94A3B8' }} axisLine={false} tickLine={false} tickFormatter={v => `${Number(v) / 1000}k`} />
               <Tooltip {...tooltipStyle} formatter={(v) => [formatINR(Number(v)), 'Disbursed']} />
               <Bar
                 dataKey="amount"
                 fill="url(#barGrad)"
                 radius={[14, 14, 5, 5]}
-                background={{ fill: '#F5F2EF', radius: 14 }}
+                background={{ fill: '#FFF5F8', radius: 14 }}
               />
             </BarChart>
           </ResponsiveContainer>
-        </NeumorphicCard>
-      </section>
-
-      <section className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-        <NeumorphicCard className="border-blue-100 bg-white p-5 shadow-[0_14px_36px_rgba(37,99,235,0.08)]">
-          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <PanelHeader icon={<Users size={18} />} title="Customer Growth" subtitle="New customer registrations by month" compact />
-            <div className="rounded-xl bg-blue-50 px-4 py-2 text-right">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-[#2563EB]">Customers</p>
-              <p className="text-2xl font-black text-[#1A1A1A] dark:text-white">{customers.length}</p>
-            </div>
-          </div>
-          <ResponsiveContainer width="100%" height={240}>
-            <LineChart data={customerGrowthData} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="4 4" stroke="#DDEAFE" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#8A7A70' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 12, fill: '#B09A8C' }} axisLine={false} tickLine={false} allowDecimals={false} />
-              <Tooltip {...tooltipStyle} formatter={(v) => [v, 'Customers']} />
-              <Line
-                type="monotone"
-                dataKey="customers"
-                stroke="#2563EB"
-                strokeWidth={3}
-                dot={{ fill: '#2563EB', r: 4, strokeWidth: 2, stroke: '#FFFFFF' }}
-                activeDot={{ r: 7, fill: '#1D4ED8', stroke: '#FFFFFF', strokeWidth: 3 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </NeumorphicCard>
-
-        <NeumorphicCard className="border-blue-100 bg-white p-5 shadow-[0_14px_36px_rgba(37,99,235,0.08)]">
-          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <PanelHeader icon={<CalendarDays size={18} />} title="Loan Categories" subtitle="Estimated split by loan product type" compact />
-            <div className="rounded-xl bg-orange-50 px-4 py-2 text-right">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-[#FF6D3D]">Products</p>
-              <p className="text-2xl font-black text-[#1A1A1A] dark:text-white">{loanTypeData.length}</p>
-            </div>
-          </div>
-          {loanTypeData.length ? (
-            <div className="grid items-center gap-4 sm:grid-cols-[1fr_0.9fr]">
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie 
-                    data={loanTypeData} 
-                    cx="50%" 
-                    cy="50%" 
-                    innerRadius={45} 
-                    outerRadius={75} 
-                    paddingAngle={3} 
-                    dataKey="value"
-                  >
-                    {loanTypeData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} stroke="#FFFFFF" strokeWidth={2} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    contentStyle={tooltipStyle.contentStyle} 
-                    labelStyle={tooltipStyle.labelStyle} 
-                    formatter={(v, name) => [v, name]} 
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="space-y-3">
-                {loanTypeData.map(d => (
-                  <div key={d.name} className="rounded-xl border border-gray-100 p-3 dark:border-gray-800">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="flex items-center gap-2 font-bold text-[#2C2C2C] dark:text-white">
-                        <span className="h-2.5 w-2.5 rounded-full" style={{ background: d.color }} />
-                        {d.name}
-                      </span>
-                      <span className="text-sm font-black text-[#1A1A1A] dark:text-white">{d.value}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <EmptyState label="No category data yet" />
-          )}
         </NeumorphicCard>
       </section>
 
@@ -490,9 +406,9 @@ export default function Dashboard() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[860px] text-sm">
             <thead>
-              <tr className="bg-[#FAFAFA] dark:bg-[#222831]">
+              <tr className="bg-[#FAFAFA] dark:bg-[var(--card)]">
                 {['Loan ID', 'Customer', 'Employee', 'Amount', 'Installments', 'Status', 'Date'].map(h => (
-                  <th key={h} className="px-5 py-4 text-left text-xs font-black uppercase tracking-wide text-[#6B6B6B] dark:text-gray-400">
+                  <th key={h} className="px-5 py-4 text-left text-xs font-black uppercase tracking-wide text-[#64748B] dark:text-gray-400">
                     {h}
                   </th>
                 ))}
@@ -503,14 +419,14 @@ export default function Dashboard() {
                 const customer = customers.find(c => c.id === loan.customerId)
                 const employee = employees.find(e => e.id === loan.employeeId)
                 return (
-                  <tr key={loan.id} className="border-t border-gray-100 transition-colors hover:bg-blue-50/70 dark:border-gray-800 dark:hover:bg-blue-950/10">
-                    <td className="px-5 py-4 font-black text-[#FF6D3D]">{loan.loanNo}</td>
+                  <tr key={loan.id} className="border-t border-gray-100 transition-colors hover:bg-[#FFF5F8]/70 dark:border-gray-800 dark:hover:bg-[#462C7D]/10">
+                    <td className="px-5 py-4 font-black text-[#462C7D]">{loan.loanNo}</td>
                     <td className="px-5 py-4 font-bold text-[#1A1A1A] dark:text-white">{customer?.name ?? '-'}</td>
-                    <td className="px-5 py-4 text-[#6B6B6B] dark:text-gray-400">{employee?.name ?? '-'}</td>
+                    <td className="px-5 py-4 text-[#64748B] dark:text-gray-400">{employee?.name ?? '-'}</td>
                     <td className="px-5 py-4 font-black text-[#1A1A1A] dark:text-white">{formatINR(loan.amount)}</td>
-                    <td className="px-5 py-4 text-[#6B6B6B] dark:text-gray-400">{loan.installments}</td>
+                    <td className="px-5 py-4 text-[#64748B] dark:text-gray-400">{loan.installments}</td>
                     <td className="px-5 py-4"><Badge status={loan.status} /></td>
-                    <td className="px-5 py-4 text-xs font-semibold text-[#6B6B6B] dark:text-gray-400">{format(parseISO(loan.loanDate), 'dd/MM/yyyy')}</td>
+                    <td className="px-5 py-4 text-xs font-semibold text-[#64748B] dark:text-gray-400">{format(parseISO(loan.loanDate), 'dd/MM/yyyy')}</td>
                   </tr>
                 )
               })}
@@ -535,12 +451,12 @@ function PanelHeader({
 }) {
   return (
     <div className={`flex items-center gap-3 ${compact ? '' : 'mb-5'}`}>
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-100 text-[#FF6D3D] dark:bg-orange-950/30">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#FFF5F8] text-[#462C7D] dark:bg-[#462C7D]/30">
         {icon}
       </span>
       <div>
         <h2 className="text-base font-black text-[#1A1A1A] dark:text-white">{title}</h2>
-        <p className="mt-0.5 text-xs text-[#6B6B6B] dark:text-gray-400">{subtitle}</p>
+        <p className="mt-0.5 text-xs text-[#64748B] dark:text-gray-400">{subtitle}</p>
       </div>
     </div>
   )
@@ -548,7 +464,7 @@ function PanelHeader({
 
 function EmptyState({ label }: { label: string }) {
   return (
-    <div className="flex min-h-40 items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-gray-50 text-sm font-semibold text-[#6B6B6B] dark:border-gray-800 dark:bg-[#222831] dark:text-gray-400">
+    <div className="flex min-h-40 items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-gray-50 text-sm font-semibold text-[#64748B] dark:border-[var(--border)] dark:bg-[var(--card)] dark:text-[var(--text-secondary)]">
       {label}
     </div>
   )

@@ -26,24 +26,35 @@ export function GradientButton({
   const baseStyle = 'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed'
 
   if (variant === 'outline') {
+    const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.currentTarget.style.background = `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryLight})`
+      e.currentTarget.style.color = '#FFFFFF'
+      e.currentTarget.style.borderColor = 'transparent'
+      e.currentTarget.style.transform = 'scale(1.02)'
+      e.currentTarget.style.boxShadow = COLORS.shadowSecondary
+    }
+
+    const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.currentTarget.style.background = 'transparent'
+      e.currentTarget.style.color = COLORS.primary
+      e.currentTarget.style.borderColor = COLORS.primary
+      e.currentTarget.style.transform = 'scale(1)'
+      e.currentTarget.style.boxShadow = `0 4px 14px ${COLORS.primaryAlpha16}`
+    }
+
     return (
       <button
         {...props}
         disabled={disabled || loading}
-        className={`${baseStyle} ${sizes[size]} bg-white dark:bg-[#2C2C2C] border-2 hover:scale-105 hover:shadow-lg ${className}`}
+        className={`${baseStyle} ${sizes[size]} ${className}`}
         style={{
-          color: COLORS.orange,
-          borderColor: COLORS.orange,
-          boxShadow: `0 4px 14px ${COLORS.orangeShadowLight}`,
+          background: 'transparent',
+          color: COLORS.primary,
+          border: `2px solid ${COLORS.primary}`,
+          boxShadow: `0 4px 14px ${COLORS.primaryAlpha16}`,
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = `linear-gradient(to right, ${COLORS.orange}, ${COLORS.orangeLight})`
-          e.currentTarget.style.color = '#1A1A1A'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'white'
-          e.currentTarget.style.color = COLORS.orange
-        }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         {loading && <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />}
         {children}
@@ -51,26 +62,33 @@ export function GradientButton({
     )
   }
 
+  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.background = `linear-gradient(135deg, ${COLORS.primaryDark} 0%, ${COLORS.primary} 50%, ${COLORS.primaryLight} 100%)`
+    e.currentTarget.style.transform = 'scale(1.02)'
+    e.currentTarget.style.boxShadow = COLORS.shadowSecondary
+  }
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.background = `linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryLight} 50%, ${COLORS.secondary} 100%)`
+    e.currentTarget.style.transform = 'scale(1)'
+    e.currentTarget.style.boxShadow = COLORS.shadowPrimary
+  }
+
   return (
     <button
       {...props}
       disabled={disabled || loading}
-      className={`${baseStyle} ${sizes[size]} hover:scale-105 ${className}`}
+      className={`${baseStyle} ${sizes[size]} ${className}`}
       style={{
-        background: `linear-gradient(to right, ${COLORS.orange}, ${COLORS.orangeLight})`,
-        color: '#1A1A1A',
-        boxShadow: `0 4px 14px ${COLORS.orangeShadow}`,
+        background: `linear-gradient(135deg, ${COLORS.primary} 0%, ${COLORS.primaryLight} 50%, ${COLORS.secondary} 100%)`,
+        color: '#FFFFFF',
+        border: 'none',
+        boxShadow: COLORS.shadowPrimary,
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.background = `linear-gradient(to right, ${COLORS.orangeDark}, ${COLORS.orange})`
-        e.currentTarget.style.boxShadow = `0 6px 20px ${COLORS.orangeShadow}`
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.background = `linear-gradient(to right, ${COLORS.orange}, ${COLORS.orangeLight})`
-        e.currentTarget.style.boxShadow = `0 4px 14px ${COLORS.orangeShadow}`
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {loading && <span className="w-4 h-4 border-2 border-[#1A1A1A] border-t-transparent rounded-full animate-spin" />}
+      {loading && <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />}
       {children}
     </button>
   )

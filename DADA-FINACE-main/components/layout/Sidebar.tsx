@@ -11,6 +11,7 @@ import {
   Plus, Wallet, Calculator, Settings, LogOut, User, Bell, HelpCircle
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { COLORS, GRADIENTS } from '@/lib/colors'
 
 interface NavChild { label: string; path: string; icon: React.ElementType; badge?: string }
 interface NavGroup {
@@ -22,21 +23,21 @@ interface NavGroup {
 
 const NAV: NavGroup[] = [
   {
-    label: 'Employees', icon: Users, color: '#0EA5E9',
+    label: 'Employees', icon: Users, color: '#831C91',
     children: [
       { label: 'Add Employee', path: '/employees/add', icon: UserPlus },
       { label: 'Employee List', path: '/employees/list', icon: List },
     ],
   },
   {
-    label: 'Customers', icon: UserCircle, color: '#10B981',
+    label: 'Customers', icon: UserCircle, color: '#D552A3',
     children: [
       { label: 'Add Customer', path: '/customers/add', icon: UserPlus },
       { label: 'Customer List', path: '/customers/list', icon: UserCheck },
     ],
   },
   {
-    label: 'Loans', icon: CreditCard, color: '#F59E0B',
+    label: 'Loans', icon: CreditCard, color: '#462C7D',
     children: [
       { label: 'Add Loan', path: '/loans/add', icon: FilePlus },
       { label: 'All Loans', path: '/loans/list', icon: FileText },
@@ -46,14 +47,14 @@ const NAV: NavGroup[] = [
     ],
   },
   {
-    label: 'EMI', icon: Calendar, color: '#EF4444',
+    label: 'EMI', icon: Calendar, color: '#831C91',
     children: [
       { label: 'EMI Collection', path: '/emi/collection', icon: ClipboardList },
       { label: 'EMI Calendar', path: '/emi/calendar', icon: Calendar },
     ],
   },
   {
-    label: 'Reports', icon: BarChart2, color: '#6366F1',
+    label: 'Reports', icon: BarChart2, color: '#D552A3',
     children: [
       { label: 'Daily Collection', path: '/reports/daily-collection', icon: Activity },
       { label: 'Transaction History', path: '/reports/transaction-history', icon: FileText },
@@ -65,13 +66,13 @@ const NAV: NavGroup[] = [
     ],
   },
   {
-    label: 'Civil Score', icon: Star, color: '#F97316',
+    label: 'Civil Score', icon: Star, color: '#462C7D',
     children: [
       { label: 'Civil Score Board', path: '/civil-score', icon: Star },
     ],
   },
   {
-    label: 'Tools', icon: Calculator, color: '#14B8A6',
+    label: 'Tools', icon: Calculator, color: '#831C91',
     children: [
       { label: 'EMI Calculator', path: '/tools/emi-calculator', icon: Calculator },
     ],
@@ -128,17 +129,17 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
           open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         ].join(' ')}
         style={{
-          background: 'linear-gradient(180deg, #FFFFFF 0%, #FFF8F5 100%)',
-          borderRight: '1px solid rgba(255, 109, 61, 0.1)',
-          boxShadow: '4px 0 24px rgba(255, 109, 61, 0.08)',
+          background: GRADIENTS.sidebar,
+          borderRight: `1px solid ${COLORS.borderPrimary}`,
+          boxShadow: COLORS.shadowSecondary,
         }}
       >
         {/* ── Brand Header ─────────────────────────────────── */}
         <div
           className="flex items-center justify-between shrink-0 px-4 h-16"
           style={{ 
-            borderBottom: '1px solid rgba(255, 109, 61, 0.15)',
-            background: 'linear-gradient(135deg, rgba(255, 109, 61, 0.05) 0%, rgba(255, 183, 153, 0.05) 100%)',
+            borderBottom: `1px solid ${COLORS.borderPrimary}`,
+            background: COLORS.bgPrimary,
           }}
         >
           <div className="flex items-center gap-3 min-w-0">
@@ -146,8 +147,8 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
             <div
               className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm shrink-0"
               style={{ 
-                background: 'linear-gradient(135deg, #FF6D3D 0%, #FF8A5B 100%)',
-                boxShadow: '0 4px 12px rgba(255, 109, 61, 0.3)',
+                background: GRADIENTS.primary,
+                boxShadow: COLORS.shadowPrimary,
               }}
             >
               <Wallet size={16} />
@@ -158,7 +159,7 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                 <div
                   className="text-sm font-bold leading-tight truncate"
                   style={{ 
-                    background: 'linear-gradient(135deg, #FF6D3D 0%, #FF8A5B 100%)',
+                    background: GRADIENTS.primary,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -168,7 +169,7 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                 </div>
                 <div
                   className="text-[10px] font-medium mt-0.5 truncate"
-                  style={{ color: '#FF6D3D' }}
+                  style={{ color: COLORS.primary }}
                 >
                   Loan Management
                 </div>
@@ -182,8 +183,8 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
               <button
                 onClick={onClose}
                 className="lg:hidden p-1.5 rounded-lg cursor-pointer transition-colors"
-                style={{ color: 'var(--text-secondary)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--hover)')}
+                style={{ color: COLORS.gray }}
+                onMouseEnter={e => (e.currentTarget.style.background = COLORS.bgSecondary)}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
                 <X size={15} />
@@ -193,65 +194,21 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
             <button
               onClick={onToggleCollapse}
               className="hidden lg:flex p-1.5 rounded-lg cursor-pointer transition-colors"
-              style={{ color: 'var(--text-secondary)' }}
+              style={{ color: COLORS.gray }}
               title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               onMouseEnter={e => {
-                e.currentTarget.style.background = 'var(--hover)'
-                e.currentTarget.style.color = 'var(--text-primary)'
+                e.currentTarget.style.background = COLORS.bgSecondary
+                e.currentTarget.style.color = COLORS.dark
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.background = 'transparent'
-                e.currentTarget.style.color = 'var(--text-secondary)'
+                e.currentTarget.style.color = COLORS.gray
               }}
             >
               {collapsed ? <PanelLeftOpen size={15} /> : <PanelLeftClose size={15} />}
             </button>
           </div>
         </div>
-
-        {/* ── Quick Actions ─────────────────────────────────── */}
-        {/* {!collapsed && (
-          <div className="px-3 pt-3 pb-3 flex gap-3" style={{ borderBottom: '1px solid var(--border)' }}>
-            <button
-              onClick={() => { router.push('/customers/add'); onClose?.() }}
-              className="w-1/2 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-semibold cursor-pointer transition-all"
-              style={{
-                background: 'var(--accent-tint)',
-                color: 'var(--accent)',
-                border: '1px solid var(--accent)',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent)', (e.currentTarget.style.color = '#fff'))}
-              onMouseLeave={e => (e.currentTarget.style.background = 'var(--accent-tint)', (e.currentTarget.style.color = 'var(--accent)'))}
-            >
-              <UserPlus size={12} /> Customer
-            </button>
-            <button
-              onClick={() => { router.push('/loans/add'); onClose?.() }}
-              className="w-1/2 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-semibold cursor-pointer transition-all text-white"
-              style={{ background: 'var(--accent)' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-hover)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'var(--accent)')}
-            >
-              <Plus size={12} /> Add Loan
-            </button>
-          </div>
-        )} */}
-
-        {/* Collapsed quick-add icon
-        {collapsed && (
-          <div className="px-2 pt-3 pb-3 flex flex-col gap-2" style={{ borderBottom: '1px solid var(--border)' }}>
-            <button
-              onClick={() => router.push('/loans/add')}
-              className="w-full flex items-center justify-center p-2 rounded-lg cursor-pointer transition-colors text-white"
-              style={{ background: 'var(--accent)' }}
-              title="Add Loan"
-              onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-hover)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'var(--accent)')}
-            >
-              <Plus size={15} />
-            </button>
-          </div>
-        )} */}
 
         {/* ── Navigation ───────────────────────────────────── */}
         <nav
@@ -264,15 +221,12 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
               href="/"
               active={isDashboard}
               icon={LayoutDashboard}
-              iconColor="#5B7FA6"
+              iconColor="#462C7D"
               label="Dashboard"
               collapsed={collapsed}
               onClick={onClose}
             />
           </div>
-
-          {/* Divider */}
-          {/* <div className="mx-3 my-2" style={{ borderTop: '1px solid var(--border)' }} /> */}
 
           {/* Groups */}
           {NAV.map((group) => {
@@ -287,10 +241,10 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                     <button
                       className="w-full flex items-center justify-center p-2.5 rounded-lg cursor-pointer transition-colors"
                       style={{
-                        background: groupActive ? 'var(--accent-tint)' : 'transparent',
-                        color: groupActive ? 'var(--accent)' : 'var(--text-secondary)',
+                        background: groupActive ? COLORS.primaryAlpha12 : 'transparent',
+                        color: groupActive ? COLORS.primary : COLORS.gray,
                       }}
-                      onMouseEnter={e => { if (!groupActive) e.currentTarget.style.background = 'var(--hover)' }}
+                      onMouseEnter={e => { if (!groupActive) e.currentTarget.style.background = COLORS.bgSecondary }}
                       onMouseLeave={e => { if (!groupActive) e.currentTarget.style.background = 'transparent' }}
                       onClick={() => {
                         // expand sidebar and open group
@@ -298,12 +252,12 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                         setExpanded(p => p.includes(group.label) ? p : [...p, group.label])
                       }}
                     >
-                      <group.icon size={17} style={{ color: groupActive ? 'var(--accent)' : group.color, opacity: groupActive ? 1 : 0.7 }} />
+                      <group.icon size={17} style={{ color: groupActive ? COLORS.primary : group.color, opacity: groupActive ? 1 : 0.7 }} />
                     </button>
                     {/* Tooltip */}
                     <div
                       className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap pointer-events-none opacity-0 group-hover/tip:opacity-100 transition-opacity z-50 shadow-lg"
-                      style={{ background: 'var(--text-primary)', color: 'var(--bg)' }}
+                      style={{ background: COLORS.dark, color: COLORS.white }}
                     >
                       {group.label}
                     </div>
@@ -315,9 +269,9 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                       onClick={() => toggle(group.label)}
                       className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer transition-colors group/header"
                       style={{
-                        background: groupActive && !isOpen ? 'var(--accent-tint)' : 'transparent',
+                        background: groupActive && !isOpen ? COLORS.primaryAlpha12 : 'transparent',
                       }}
-                      onMouseEnter={e => { if (!(groupActive && !isOpen)) e.currentTarget.style.background = 'var(--hover)' }}
+                      onMouseEnter={e => { if (!(groupActive && !isOpen)) e.currentTarget.style.background = COLORS.bgSecondary }}
                       onMouseLeave={e => { if (!(groupActive && !isOpen)) e.currentTarget.style.background = 'transparent' }}
                     >
                       {/* Colored icon container */}
@@ -330,7 +284,7 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
 
                       <span
                         className="flex-1 text-left text-xs font-semibold uppercase tracking-wider truncate"
-                        style={{ color: groupActive ? 'var(--text-primary)' : 'var(--text-secondary)' }}
+                        style={{ color: groupActive ? COLORS.dark : COLORS.gray }}
                       >
                         {group.label}
                       </span>
@@ -338,7 +292,7 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                       <ChevronDown
                         size={13}
                         style={{
-                          color: 'var(--text-secondary)',
+                          color: COLORS.gray,
                           transition: 'transform 0.2s',
                           transform: isOpen ? 'rotate(0deg)' : 'rotate(-90deg)',
                           flexShrink: 0,
@@ -351,7 +305,7 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                       className="overflow-hidden transition-all duration-200 ease-in-out"
                       style={{ maxHeight: isOpen ? '600px' : '0', opacity: isOpen ? 1 : 0 }}
                     >
-                      <div className="mt-0.5 ml-3 pl-3 space-y-0.5" style={{ borderLeft: '1px solid var(--border)' }}>
+                      <div className="mt-0.5 ml-3 pl-3 space-y-0.5" style={{ borderLeft: `1px solid ${COLORS.borderLight}` }}>
                         {group.children.map(child => {
                           const childActive = pathname === child.path || pathname.startsWith(child.path + '/')
                           return (
@@ -380,30 +334,30 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
         {/* ── Settings Dropdown (Stuck at Bottom) ───────────────────────────────────────── */}
         <div
           className="px-3 py-3 shrink-0 relative"
-          style={{ borderTop: '1px solid var(--border)' }}
+          style={{ borderTop: `1px solid ${COLORS.borderLight}` }}
         >
           {!collapsed ? (
             <>
               <button
                 onClick={() => setSettingsOpen(!settingsOpen)}
                 className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer transition-colors"
-                style={{ background: settingsOpen ? 'var(--accent-tint)' : 'transparent' }}
-                onMouseEnter={e => { if (!settingsOpen) e.currentTarget.style.background = 'var(--hover)' }}
+                style={{ background: settingsOpen ? COLORS.primaryAlpha12 : 'transparent' }}
+                onMouseEnter={e => { if (!settingsOpen) e.currentTarget.style.background = COLORS.bgSecondary }}
                 onMouseLeave={e => { if (!settingsOpen) e.currentTarget.style.background = 'transparent' }}
               >
                 <div
                   className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ background: 'var(--accent-tint)' }}
+                  style={{ background: COLORS.primaryAlpha12 }}
                 >
-                  <Settings size={15} style={{ color: 'var(--accent)' }} />
+                  <Settings size={15} style={{ color: COLORS.primary }} />
                 </div>
-                <span className="flex-1 text-left text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                <span className="flex-1 text-left text-sm font-medium" style={{ color: COLORS.dark }}>
                   Settings
                 </span>
                 <ChevronDown
                   size={14}
                   style={{
-                    color: 'var(--text-secondary)',
+                    color: COLORS.gray,
                     transition: 'transform 0.2s',
                     transform: settingsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                   }}
@@ -414,23 +368,23 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
               {settingsOpen && (
                 <div
                   className="absolute bottom-full left-3 right-3 mb-2 rounded-lg shadow-lg overflow-hidden"
-                  style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}
+                  style={{ background: COLORS.white, border: `1px solid ${COLORS.borderLight}` }}
                 >
                   {/* Master Setup with nested dropdown */}
                   <div className="relative">
                     <button
                       onClick={() => setMasterSetupOpen(!masterSetupOpen)}
                       className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
-                      style={{ color: 'var(--text-primary)' }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                      style={{ color: COLORS.dark }}
+                      onMouseEnter={e => e.currentTarget.style.background = COLORS.bgSecondary}
                       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                     >
-                      <Database size={14} style={{ color: 'var(--text-secondary)' }} />
+                      <Database size={14} style={{ color: COLORS.gray }} />
                       <span className="flex-1 text-sm">Master Setup</span>
                       <ChevronDown
                         size={12}
                         style={{
-                          color: 'var(--text-secondary)',
+                          color: COLORS.gray,
                           transition: 'transform 0.2s',
                           transform: masterSetupOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                         }}
@@ -438,20 +392,20 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                     </button>
                     {/* Master Setup Submenu */}
                     {masterSetupOpen && (
-                      <div className="pl-6 py-1" style={{ background: 'var(--hover)' }}>
+                      <div className="pl-6 py-1" style={{ background: COLORS.bgSecondary }}>
                         {MASTER_SETUP_ITEMS.map(item => (
                           <button
                             key={item.path}
                             onClick={() => { router.push(item.path); setSettingsOpen(false); setMasterSetupOpen(false); onClose?.() }}
                             className="w-full flex items-center gap-2 px-3 py-2 cursor-pointer transition-colors text-left"
-                            style={{ color: 'var(--text-secondary)' }}
+                            style={{ color: COLORS.gray }}
                             onMouseEnter={e => {
-                              e.currentTarget.style.background = 'var(--accent-tint)'
-                              e.currentTarget.style.color = 'var(--text-primary)'
+                              e.currentTarget.style.background = COLORS.primaryAlpha12
+                              e.currentTarget.style.color = COLORS.dark
                             }}
                             onMouseLeave={e => {
                               e.currentTarget.style.background = 'transparent'
-                              e.currentTarget.style.color = 'var(--text-secondary)'
+                              e.currentTarget.style.color = COLORS.gray
                             }}
                           >
                             <item.icon size={12} />
@@ -464,34 +418,34 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                   <button
                     onClick={() => { router.push('/profile'); setSettingsOpen(false); onClose?.() }}
                     className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
-                    style={{ color: 'var(--text-primary)' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                    style={{ color: COLORS.dark }}
+                    onMouseEnter={e => e.currentTarget.style.background = COLORS.bgSecondary}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
-                    <User size={14} style={{ color: 'var(--text-secondary)' }} />
+                    <User size={14} style={{ color: COLORS.gray }} />
                     <span className="text-sm">Profile</span>
                   </button>
                   <button
                     onClick={() => { router.push('/notifications'); setSettingsOpen(false); onClose?.() }}
                     className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
-                    style={{ color: 'var(--text-primary)' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                    style={{ color: COLORS.dark }}
+                    onMouseEnter={e => e.currentTarget.style.background = COLORS.bgSecondary}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
-                    <Bell size={14} style={{ color: 'var(--text-secondary)' }} />
+                    <Bell size={14} style={{ color: COLORS.gray }} />
                     <span className="text-sm">Notifications</span>
                   </button>
                   <button
                     onClick={() => { router.push('/help'); setSettingsOpen(false); onClose?.() }}
                     className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
-                    style={{ color: 'var(--text-primary)' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                    style={{ color: COLORS.dark }}
+                    onMouseEnter={e => e.currentTarget.style.background = COLORS.bgSecondary}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
-                    <HelpCircle size={14} style={{ color: 'var(--text-secondary)' }} />
+                    <HelpCircle size={14} style={{ color: COLORS.gray }} />
                     <span className="text-sm">Help & Support</span>
                   </button>
-                  <div className="my-1" style={{ borderTop: '1px solid var(--border)' }} />
+                  <div className="my-1" style={{ borderTop: `1px solid ${COLORS.borderLight}` }} />
                   <button
                     onClick={() => { /* Add logout logic */ setSettingsOpen(false) }}
                     className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
@@ -514,16 +468,16 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                   setSettingsOpen(true)
                 }}
                 className="w-full flex items-center justify-center p-2.5 rounded-lg cursor-pointer transition-colors"
-                style={{ background: 'transparent', color: 'var(--text-secondary)' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'var(--hover)'}
+                style={{ background: 'transparent', color: COLORS.gray }}
+                onMouseEnter={e => e.currentTarget.style.background = COLORS.bgSecondary}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
-                <Settings size={17} style={{ color: 'var(--accent)' }} />
+                <Settings size={17} style={{ color: COLORS.primary }} />
               </button>
               {/* Tooltip */}
               <div
                 className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap pointer-events-none opacity-0 group-hover/settings:opacity-100 transition-opacity z-50 shadow-lg"
-                style={{ background: 'var(--text-primary)', color: 'var(--bg)' }}
+                style={{ background: COLORS.dark, color: COLORS.white }}
               >
                 Settings
               </div>
@@ -554,11 +508,11 @@ function NavItem({ href, active, icon: Icon, iconColor, label, badge, collapsed,
       onClick={onClick}
       className="relative flex items-center gap-2.5 px-2.5 py-2 rounded-lg transition-all duration-150 group/item"
       style={{
-        color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
-        background: active ? 'var(--accent-tint)' : 'transparent',
+        color: active ? COLORS.dark : COLORS.gray,
+        background: active ? COLORS.primaryAlpha12 : 'transparent',
         fontWeight: active ? 600 : 400,
       }}
-      onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'var(--hover)' }}
+      onMouseEnter={e => { if (!active) e.currentTarget.style.background = COLORS.bgSecondary }}
       onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent' }}
       title={collapsed ? label : undefined}
     >
@@ -566,14 +520,14 @@ function NavItem({ href, active, icon: Icon, iconColor, label, badge, collapsed,
       {active && (
         <span
           className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full"
-          style={{ background: 'var(--accent)' }}
+          style={{ background: COLORS.primary }}
         />
       )}
 
       <Icon
         size={14}
         style={{
-          color: active ? 'var(--accent)' : iconColor,
+          color: active ? COLORS.primary : iconColor,
           opacity: active ? 1 : 0.65,
           flexShrink: 0,
           transition: 'color 0.15s',
@@ -596,7 +550,7 @@ function NavItem({ href, active, icon: Icon, iconColor, label, badge, collapsed,
           {active && (
             <span
               className="w-1.5 h-1.5 rounded-full shrink-0"
-              style={{ background: 'var(--accent)' }}
+              style={{ background: COLORS.primary }}
             />
           )}
         </>
@@ -606,7 +560,7 @@ function NavItem({ href, active, icon: Icon, iconColor, label, badge, collapsed,
       {collapsed && (
         <div
           className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap pointer-events-none opacity-0 group-hover/item:opacity-100 transition-opacity z-50 shadow-lg"
-          style={{ background: 'var(--text-primary)', color: 'var(--bg)' }}
+          style={{ background: COLORS.dark, color: COLORS.white }}
         >
           {label}
         </div>

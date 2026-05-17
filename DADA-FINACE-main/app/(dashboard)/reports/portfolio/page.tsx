@@ -73,10 +73,10 @@ export default function LoanPortfolioPage() {
                       <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{c?.name ?? '—'}</td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{lt?.name ?? '—'}</td>
                       <td className="px-4 py-3 font-semibold text-slate-800 dark:text-slate-200">{fmt(l.amount)}</td>
-                      <td className="px-4 py-3 text-orange-600 dark:text-orange-400">{outstanding > 0 ? fmt(outstanding) : '—'}</td>
+                      <td className="px-4 py-3 text-purple-600 dark:text-purple-400">{outstanding > 0 ? fmt(outstanding) : '—'}</td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{l.installments}</td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${l.status === 'disbursed' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' : l.status === 'approved' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400'}`}>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${l.status === 'disbursed' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' : l.status === 'approved' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400'}`}>
                           {l.status}
                         </span>
                       </td>

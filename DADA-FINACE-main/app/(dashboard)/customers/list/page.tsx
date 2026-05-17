@@ -6,6 +6,7 @@ import { DataTable } from '@/components/ui/Table'
 import { useStore, type Customer } from '@/store/appStore'
 import { useUIStore } from '@/store/uiStore'
 import { format } from 'date-fns'
+import { COLORS } from '@/lib/colors'
 
 export default function CustomerListPage() {
   const { customers, branches, employees, deleteCustomer } = useStore()
@@ -31,9 +32,9 @@ export default function CustomerListPage() {
           return (
             <div className="flex gap-1.5">
               {[
-                { icon: Eye,    title: 'View', action: () => router.push(`/customers/${c.id}/details`), color: 'var(--accent)', tint: 'var(--accent-tint)' },
-                { icon: Pencil, title: 'Edit', action: () => router.push(`/customers/${c.id}/details`), color: 'var(--accent)', tint: 'var(--accent-tint)' },
-                { icon: Trash2, title: 'Delete', action: () => { deleteCustomer(c.id); showToast(`Customer "${c.name}" deleted`, 'warning') }, color: 'var(--error)', tint: 'var(--error-tint)' },
+                { icon: Eye,    title: 'View', action: () => router.push(`/customers/${c.id}/details`), color: COLORS.primary, tint: COLORS.primaryAlpha12 },
+                { icon: Pencil, title: 'Edit', action: () => router.push(`/customers/${c.id}/details`), color: COLORS.primary, tint: COLORS.primaryAlpha12 },
+                { icon: Trash2, title: 'Delete', action: () => { deleteCustomer(c.id); showToast(`Customer "${c.name}" deleted`, 'warning') }, color: COLORS.rejected, tint: 'rgba(239, 68, 68, 0.12)' },
               ].map(btn => (
                 <button key={btn.title} title={btn.title} onClick={btn.action}
                   className="p-1.5 rounded-lg cursor-pointer transition-colors"

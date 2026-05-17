@@ -148,13 +148,13 @@ export default function AddLoanPage() {
     background: string,
     iconTint = '#fff'
   ) => (
-    <div className="flex items-center gap-3 mb-4 pb-3 border-b border-orange-200 dark:border-orange-900/30">
-      <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm ring-2 ring-orange-100 dark:ring-orange-500/10" style={{ background }}>
+    <div className="flex items-center gap-3 mb-4 pb-3 border-b border-[#D552A3]/30 dark:border-[var(--border)]">
+      <div className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm ring-2 ring-[#D552A3]/20 dark:ring-[var(--border)]" style={{ background }}>
         <span style={{ color: iconTint }}>{icon}</span>
       </div>
       <div>
-        <h3 className="text-sm font-bold text-[#2C2C2C] dark:text-white">{title}</h3>
-        <p className="text-[11px] text-[#666666] dark:text-gray-400 mt-0.5">{subtitle}</p>
+        <h3 className="text-sm font-bold text-[#2C2C2C] dark:text-[var(--text-primary)]">{title}</h3>
+        <p className="text-[11px] text-[#666666] dark:text-[var(--text-secondary)] mt-0.5">{subtitle}</p>
       </div>
     </div>
   )
@@ -173,8 +173,8 @@ export default function AddLoanPage() {
           <Textarea label="Address" placeholder="Complete address" rows={2} {...register(`${prefix}Address` as keyof LoanForm)} />
         </div>
       </div>
-      <div className="mt-4 pt-4 border-t border-orange-100 dark:border-orange-900/30">
-        <h4 className="text-sm font-bold mb-4 text-[#2C2C2C] dark:text-white">
+      <div className="mt-4 pt-4 border-t border-[#D552A3]/20 dark:border-[var(--border)]">
+        <h4 className="text-sm font-bold mb-4 text-[#2C2C2C] dark:text-[var(--text-primary)]">
           {prefix === 'nominee' ? 'Nominee' : prefix === 'guarantor1' ? 'Guarantor 1' : 'Guarantor 2'} Bank Details
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -192,7 +192,7 @@ export default function AddLoanPage() {
     <div className="min-h-screen pb-6">
       <PageHeader title="Add New Loan" />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <div className="rounded-xl border border-orange-200 bg-white p-3 shadow-sm dark:border-orange-900/30 dark:bg-[#1A1A1A]">
+        <div className="rounded-xl border border-[#D552A3]/30 bg-white p-3 shadow-sm dark:border-[var(--border)] dark:bg-[var(--card)]">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5">
             {STEPS.map((step, index) => {
               const number = index + 1
@@ -207,14 +207,14 @@ export default function AddLoanPage() {
                   className="group flex min-h-14 items-center gap-2.5 rounded-lg p-2.5 text-left transition-all hover:-translate-y-0.5 hover:shadow-md"
                   style={{
                     background: '#FFFFFF',
-                    border: `1.5px solid ${isActive ? '#FF6D3D' : isComplete ? '#FFB399' : '#F0D8CF'}`,
-                    color: isActive || isComplete ? '#FF5722' : '#6B4A3F',
+                    border: `1.5px solid ${isActive ? '#462C7D' : isComplete ? '#831C91' : '#D552A3'}`,
+                    color: isActive || isComplete ? '#462C7D' : '#831C91',
                   }}
                 >
                   <span
                     style={{
-                      background: isActive || isComplete ? 'rgba(255, 109, 61, 0.1)' : '#FFF3ED',
-                      color: '#FF5722',
+                      background: isActive || isComplete ? 'rgba(70, 44, 125, 0.1)' : '#FFF5F8',
+                      color: '#462C7D',
                     }}
                     className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-sm"
                   >
@@ -228,8 +228,8 @@ export default function AddLoanPage() {
         </div>
 
         {currentStep === 1 && (
-          <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-            {sectionHeader(<BadgeCheck size={18} />, 'Aadhaar Authentication', 'Aadhaar details and verification document', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+          <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+            {sectionHeader(<BadgeCheck size={18} />, 'Aadhaar Authentication', 'Aadhaar details and verification document', 'linear-gradient(135deg, #462C7D, #831C91)')}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <Input label="Application No" value={watch('appNo')} disabled {...register('appNo')} />
               <Input label="Aadhaar No" placeholder="12-digit Aadhaar" {...register('aadhar')} />
@@ -241,8 +241,8 @@ export default function AddLoanPage() {
         )}
 
         {currentStep === 2 && (
-          <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-            {sectionHeader(<User size={18} />, 'Personal Details', 'Customer personal and contact information', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+          <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+            {sectionHeader(<User size={18} />, 'Personal Details', 'Customer personal and contact information', 'linear-gradient(135deg, #462C7D, #831C91)')}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               <Select label="Branch" placeholder="Select Branch" options={branches.map(b => ({ value: b.id, label: b.name }))} {...register('branchId')} />
               <Select label="Employee" placeholder="Select Employee" options={employees.map(e => ({ value: e.id, label: e.name }))} {...register('employeeId')} />
@@ -272,7 +272,7 @@ export default function AddLoanPage() {
             </div>
             <div className="mt-3 flex flex-col gap-2">
               <label className="text-xs font-medium text-[#6B6B6B] dark:text-gray-300">Profile Photo</label>
-              <div className="flex flex-wrap items-center gap-3 rounded-lg border border-dashed border-orange-300 bg-orange-50/40 p-3 dark:border-orange-900/30 dark:bg-[#1A1A1A]">
+              <div className="flex flex-wrap items-center gap-3 rounded-lg border border-dashed border-[#D552A3]/50 bg-[#FFF5F8]/40 p-3 dark:border-[var(--border)] dark:bg-[var(--card)]">
                 {profilePhoto && (
                   <div className="w-20 h-20 rounded-xl overflow-hidden" style={{ border: '2px solid var(--border)' }}>
                     {/* Local object URLs are already client-only previews. */}
@@ -280,7 +280,7 @@ export default function AddLoanPage() {
                     <img src={URL.createObjectURL(profilePhoto)} alt="Profile" className="w-full h-full object-cover" />
                   </div>
                 )}
-                <label className="cursor-pointer px-4 py-2 rounded-xl font-semibold text-sm transition-all shadow-sm hover:shadow-md" style={{ background: 'linear-gradient(135deg, #FF6D3D, #FF5722)', color: '#fff' }}>
+                <label className="cursor-pointer px-4 py-2 rounded-xl font-semibold text-sm transition-all shadow-sm hover:shadow-md" style={{ background: 'linear-gradient(135deg, #462C7D, #831C91)', color: '#fff' }}>
                   {profilePhoto ? 'Change Photo' : 'Upload Photo'}
                   <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files && setProfilePhoto(e.target.files[0])} />
                 </label>
@@ -291,8 +291,8 @@ export default function AddLoanPage() {
 
         {currentStep === 3 && (
           <>
-            <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-              {sectionHeader(<FileText size={18} />, 'Loan Information', 'Basic loan schedule and type', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+            <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+              {sectionHeader(<FileText size={18} />, 'Loan Information', 'Basic loan schedule and type', 'linear-gradient(135deg, #462C7D, #831C91)')}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 <Input label="Loan Date" type="date" {...register('loanDate')} />
                 <Input label="EMI Start Date" type="date" {...register('emiStartDate')} />
@@ -301,8 +301,8 @@ export default function AddLoanPage() {
               </div>
             </NeumorphicCard>
 
-            <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-              {sectionHeader(<FileText size={18} />, 'Bank Details', 'Customer bank account information', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+            <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+              {sectionHeader(<FileText size={18} />, 'Bank Details', 'Customer bank account information', 'linear-gradient(135deg, #462C7D, #831C91)')}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 <Input label="Bank Account Number" placeholder="Account number" {...register('bankAccountNo')} />
                 <Input label="Account Holder Name" placeholder="As per bank records" {...register('bankHolderName')} />
@@ -315,8 +315,8 @@ export default function AddLoanPage() {
               </div>
             </NeumorphicCard>
 
-            <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-              {sectionHeader(<Calculator size={18} />, 'Financial Details', 'Loan amount, interest, and payment terms', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+            <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+              {sectionHeader(<Calculator size={18} />, 'Financial Details', 'Loan amount, interest, and payment terms', 'linear-gradient(135deg, #462C7D, #831C91)')}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 <Input label="Loan Amount (Rs.)" type="number" placeholder="e.g. 100000" {...register('amount')} />
                 <Input label="Interest Rate (%)" type="number" step="0.1" placeholder="e.g. 12" {...register('interestRate')} />
@@ -325,19 +325,19 @@ export default function AddLoanPage() {
                 <Input label="Other Charges (Rs.)" type="number" placeholder="0" {...register('otherCharges')} />
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs font-semibold text-[#6B6B6B] dark:text-gray-300">Interest Amount (Rs.)</label>
-                  <div className="h-11 px-4 flex items-center text-sm rounded-xl font-bold" style={{ background: 'linear-gradient(135deg, rgba(255, 109, 61, 0.1), rgba(255, 87, 34, 0.15))', color: '#FF5722', border: '1.5px solid rgba(255, 109, 61, 0.3)' }}>
+                  <div className="h-11 px-4 flex items-center text-sm rounded-xl font-bold" style={{ background: 'linear-gradient(135deg, rgba(70, 44, 125, 0.1), rgba(131, 28, 145, 0.15))', color: '#462C7D', border: '1.5px solid rgba(70, 44, 125, 0.3)' }}>
                     {formatINR(interestAmount)}
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-4 border-t border-orange-200 dark:border-orange-900/30">
-                <div className="rounded-xl p-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #FFF5F0, #FFE8DD)', border: '1.5px solid #FFD4C2' }}>
-                  <p className="text-xs font-semibold" style={{ color: '#FF6D3D' }}>Principal Amount</p>
-                  <p className="text-xl font-bold mt-1" style={{ color: '#FF5722' }}>{formatINR(Number(watchAmount || 0))}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-4 border-t border-[#D552A3]/30 dark:border-[var(--border)]">
+                <div className="rounded-xl p-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #FFF5F8, #F8F4F6)', border: '1.5px solid #D552A3' }}>
+                  <p className="text-xs font-semibold" style={{ color: '#462C7D' }}>Principal Amount</p>
+                  <p className="text-xl font-bold mt-1" style={{ color: '#462C7D' }}>{formatINR(Number(watchAmount || 0))}</p>
                 </div>
-                <div className="rounded-xl p-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #FFF9E6, #FFF3CC)', border: '1.5px solid #FFE699' }}>
-                  <p className="text-xs font-semibold" style={{ color: '#D97706' }}>Total Interest</p>
-                  <p className="text-xl font-bold mt-1" style={{ color: '#B45309' }}>{formatINR(interestAmount)}</p>
+                <div className="rounded-xl p-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #F8F4F6, #F0E6ED)', border: '1.5px solid #831C91' }}>
+                  <p className="text-xs font-semibold" style={{ color: '#831C91' }}>Total Interest</p>
+                  <p className="text-xl font-bold mt-1" style={{ color: '#831C91' }}>{formatINR(interestAmount)}</p>
                 </div>
                 <div className="rounded-xl p-4 shadow-sm" style={{ background: 'linear-gradient(135deg, #ECFDF5, #D1FAE5)', border: '1.5px solid #A7F3D0' }}>
                   <p className="text-xs font-semibold" style={{ color: '#059669' }}>Total Payable</p>
@@ -349,9 +349,9 @@ export default function AddLoanPage() {
               </div>
             </NeumorphicCard>
 
-            <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-              {sectionHeader(<Shield size={18} />, 'Security Deposit', 'Collateral details for the loan', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4 rounded-lg bg-orange-50 p-2 dark:bg-[#1A1A1A]">
+            <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+              {sectionHeader(<Shield size={18} />, 'Security Deposit', 'Collateral details for the loan', 'linear-gradient(135deg, #462C7D, #831C91)')}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4 rounded-lg bg-[#FFF5F8] p-2 dark:bg-[var(--card)]">
                 {(['vehicle', 'gold'] as const).map(t => (
                   <button
                     key={t}
@@ -359,9 +359,9 @@ export default function AddLoanPage() {
                     onClick={() => setSecurityType(t)}
                     className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm transition-all hover:-translate-y-0.5"
                     style={{
-                      background: securityType === t ? 'linear-gradient(135deg, #FF6D3D, #FF5722)' : '#FFFFFF',
+                      background: securityType === t ? 'linear-gradient(135deg, #462C7D, #831C91)' : '#FFFFFF',
                       color: securityType === t ? '#fff' : '#111111',
-                      border: `1.5px solid ${securityType === t ? '#FF6D3D' : '#FFFFFF'}`,
+                      border: `1.5px solid ${securityType === t ? '#462C7D' : '#FFFFFF'}`,
                     }}
                   >
                     {t === 'vehicle' ? <Car size={16} /> : <Gem size={16} />}
@@ -381,9 +381,9 @@ export default function AddLoanPage() {
                       <div className="flex gap-3 h-11">
                         {['yes', 'no'].map(v => (
                           <label key={v} className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold cursor-pointer rounded-xl transition-all" style={{
-                            background: watchRcReceived === v ? 'linear-gradient(135deg, #FF6D3D, #FF5722)' : '#FFFFFF',
+                            background: watchRcReceived === v ? 'linear-gradient(135deg, #462C7D, #831C91)' : '#FFFFFF',
                             color: watchRcReceived === v ? '#FFFFFF' : '#6B6B6B',
-                            border: `1.5px solid ${watchRcReceived === v ? '#FF5722' : '#F0D8CF'}`,
+                            border: `1.5px solid ${watchRcReceived === v ? '#462C7D' : '#D552A3'}`,
                           }}>
                             <input type="radio" value={v} {...register('rcReceived')} className="hidden" />
                             {v === 'yes' ? 'Yes' : 'No'}
@@ -410,8 +410,8 @@ export default function AddLoanPage() {
               )}
             </NeumorphicCard>
 
-            <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-              {sectionHeader(<User size={18} />, 'Receiver Customer Details', 'Person receiving the loan amount', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+            <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+              {sectionHeader(<User size={18} />, 'Receiver Customer Details', 'Person receiving the loan amount', 'linear-gradient(135deg, #462C7D, #831C91)')}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <Input label="Phone Number" placeholder="10-digit mobile" {...register('receiverMobile')} />
               </div>
@@ -424,24 +424,24 @@ export default function AddLoanPage() {
 
         {currentStep === 4 && (
           <>
-            <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-              {sectionHeader(<UserCheck size={18} />, 'Nominee Details', 'Nominee information for the loan', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+            <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+              {sectionHeader(<UserCheck size={18} />, 'Nominee Details', 'Nominee information for the loan', 'linear-gradient(135deg, #462C7D, #831C91)')}
               {personSupportFields('nominee', watchNomineeAge)}
               <div className="mt-3">
                 <FileUpload label="Upload Nominee Documents" accept="image/*,.pdf" />
               </div>
             </NeumorphicCard>
 
-            <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-              {sectionHeader(<Users size={18} />, 'Guarantor 1 Details', 'Primary guarantor information', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+            <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+              {sectionHeader(<Users size={18} />, 'Guarantor 1 Details', 'Primary guarantor information', 'linear-gradient(135deg, #462C7D, #831C91)')}
               {personSupportFields('guarantor1', watchGuarantor1Age)}
               <div className="mt-3">
                 <FileUpload label="Upload Guarantor 1 Documents" accept="image/*,.pdf" />
               </div>
             </NeumorphicCard>
 
-            <NeumorphicCard className="rounded-xl border-orange-200 bg-white/95 p-5">
-              {sectionHeader(<Users size={18} />, 'Guarantor 2 Details', 'Secondary guarantor information', 'linear-gradient(135deg, #FF6D3D, #FF5722)')}
+            <NeumorphicCard className="rounded-xl border-[#D552A3]/30 bg-white/95 p-5">
+              {sectionHeader(<Users size={18} />, 'Guarantor 2 Details', 'Secondary guarantor information', 'linear-gradient(135deg, #462C7D, #831C91)')}
               {personSupportFields('guarantor2', watchGuarantor2Age)}
               <div className="mt-3">
                 <FileUpload label="Upload Guarantor 2 Documents" accept="image/*,.pdf" />
@@ -450,7 +450,7 @@ export default function AddLoanPage() {
           </>
         )}
 
-        <div className="flex flex-wrap items-center justify-end gap-3 rounded-xl border border-orange-200 bg-white px-4 py-3 shadow-sm dark:border-orange-900/30 dark:bg-[#1A1A1A]">
+        <div className="flex flex-wrap items-center justify-end gap-3 rounded-xl border border-[#D552A3]/30 bg-white px-4 py-3 shadow-sm dark:border-[var(--border)] dark:bg-[var(--card)]">
           <div className="flex flex-wrap gap-2.5">
             {currentStep > 1 && <GradientButton type="button" variant="outline" size="lg" onClick={goPrevious}>Previous</GradientButton>}
             {currentStep < STEPS.length && <GradientButton type="button" size="lg" onClick={goNext}>Next</GradientButton>}

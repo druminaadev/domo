@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge'
 import { DownloadDropdown } from '@/components/ui/DownloadDropdown'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
+import { COLORS } from '@/lib/colors'
 import { useStore, type Loan } from '@/store/appStore'
 import { useUIStore } from '@/store/uiStore'
 import { format } from 'date-fns'
@@ -73,16 +74,16 @@ export function LoanListView({ filterStatus, title, showApprove, showDisburse }:
               <DownloadDropdown loanId={loan.id} />
               <button title="Edit" onClick={() => router.push('/loans/add')}
                 className="p-1.5 rounded-lg cursor-pointer transition-colors"
-                style={{ color: 'var(--accent)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-tint)')}
+                style={{ color: COLORS.primary }}
+                onMouseEnter={e => (e.currentTarget.style.background = COLORS.primaryAlpha12)}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                 <Pencil size={13} />
               </button>
               {(showApprove || loan.status === 'pending') && (
                 <button title="Approve" onClick={() => confirm(loan.id, 'approve')}
                   className="p-1.5 rounded-lg cursor-pointer transition-colors"
-                  style={{ color: 'var(--success)' }}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--success-tint)')}
+                  style={{ color: COLORS.green }}
+                  onMouseEnter={e => (e.currentTarget.style.background = COLORS.secondaryAlpha12)}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                   <CheckCircle size={13} />
                 </button>
@@ -90,16 +91,16 @@ export function LoanListView({ filterStatus, title, showApprove, showDisburse }:
               {(showDisburse || loan.status === 'approved') && (
                 <button title="Disburse" onClick={() => confirm(loan.id, 'disburse')}
                   className="p-1.5 rounded-lg cursor-pointer transition-colors"
-                  style={{ color: 'var(--success)' }}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--success-tint)')}
+                  style={{ color: COLORS.green }}
+                  onMouseEnter={e => (e.currentTarget.style.background = COLORS.secondaryAlpha12)}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                   <Banknote size={13} />
                 </button>
               )}
               <button title="Delete" onClick={() => confirm(loan.id, 'delete')}
                 className="p-1.5 rounded-lg cursor-pointer transition-colors"
-                style={{ color: 'var(--error)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'var(--error-tint)')}
+                style={{ color: COLORS.rejected }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
                 <Trash2 size={13} />
               </button>

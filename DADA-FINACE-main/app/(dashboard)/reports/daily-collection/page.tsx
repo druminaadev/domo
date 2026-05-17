@@ -41,7 +41,7 @@ export default function DailyCollectionPage() {
             { label: 'Total Collected', value: fmt(total), color: 'text-green-600 dark:text-green-400' },
             { label: 'Cash', value: fmt(byCash), color: 'text-blue-600 dark:text-blue-400' },
             { label: 'UPI', value: fmt(byUPI), color: 'text-purple-600 dark:text-purple-400' },
-            { label: 'Bank Transfer', value: fmt(byBank), color: 'text-orange-600 dark:text-orange-400' },
+            { label: 'Bank Transfer', value: fmt(byBank), color: 'text-purple-600 dark:text-purple-400' },
           ].map(s => (
             <div key={s.label} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
               <div className="text-xs text-slate-500 dark:text-slate-400">{s.label}</div>

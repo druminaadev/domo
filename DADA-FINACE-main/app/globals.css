@@ -2,23 +2,27 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ── Premium Futuristic Finance CRM Theme ───────────────────── */
+/* ── Premium Purple-Pink Finance CRM Theme ───────────────────── */
 :root {
-  --bg:             #EEEEEE;
+  --bg:             #FFF5F8;
   --surface:        #FFFFFF;
+  --card:           #FFFFFF;
   --form-field:     #FFFFFF;
   --text-primary:   #222831;
   --text-secondary: #393E46;
-  --border:         #E8E8E8;
-  --hover:          #F5F5F5;
-  --accent:         #FFA726;
-  --accent-hover:   #FF9800;
-  --accent-tint:    rgba(255, 167, 38, 0.15);
-  --success:        #22C55E;
-  --warning:        #F59E0B;
+  --border:         #F0E6ED;
+  --hover:          #F2E3F4;
+  --accent:         #462C7D;
+  --accent-hover:   #3A2366;
+  --accent-light:   #831C91;
+  --accent-dark:    #462C7D;
+  --accent-pink:    #D552A3;
+  --accent-tint:    rgba(70, 44, 125, 0.15);
+  --success:        #10B981;
+  --warning:        #831C91;
   --error:          #EF4444;
-  --success-tint:   rgba(34, 197, 94, 0.15);
-  --warning-tint:   rgba(245, 158, 11, 0.15);
+  --success-tint:   rgba(16, 185, 129, 0.15);
+  --warning-tint:   rgba(131, 28, 145, 0.15);
   --error-tint:     rgba(239, 68, 68, 0.15);
   --toast-success-bg:     #166534;
   --toast-success-border: #15803d;
@@ -28,39 +32,42 @@
   --toast-error-border:   #dc2626;
   --toast-error-icon:     #fca5a5;
   --toast-error-text:     #fef2f2;
-  --toast-warning-bg:     #92400e;
-  --toast-warning-border: #d97706;
-  --toast-warning-icon:   #fcd34d;
-  --toast-warning-text:   #fffbeb;
+  --toast-warning-bg:     #462C7D;
+  --toast-warning-border: #831C91;
+  --toast-warning-icon:   #D552A3;
+  --toast-warning-text:   #FFF5F8;
   --toast-info-bg:        #1e3a5f;
   --toast-info-border:    #3b82f6;
   --toast-info-icon:      #93c5fd;
   --toast-info-text:      #eff6ff;
 }
 
-/* ── Premium Dark Fintech SaaS Theme ──────────────────────────────────────── */
+/* ── Premium Dark Purple-Pink Theme ──────────────────────────────────────── */
 .dark {
-  --bg:             #222831;
-  --surface:        #393E46;
-  --card:           #393E46;
-  --form-field:     #2C3139;
-  --text-primary:   #EEEEEE;
-  --text-secondary: #9CA3AF;
-  --border:         #4A5058;
-  --hover:          #434950;
-  --accent:         #FFA726;
-  --accent-hover:   #FF9800;
-  --accent-glow:    #FFB74D;
-  --accent-tint:    rgba(255, 167, 38, 0.15);
-  --gradient-start: #FFA726;
-  --gradient-end:   #FFB74D;
-  --glow:           rgba(255, 167, 38, 0.5);
-  --glow-strong:    rgba(255, 167, 38, 0.8);
-  --success:        #22C55E;
-  --warning:        #F59E0B;
+  --bg:             #100B18;
+  --surface:        #1B1326;
+  --card:           #241833;
+  --form-field:     #241833;
+  --text-primary:   #FFF5F8;
+  --text-secondary: #D9C8E2;
+  --border:         rgba(213, 82, 163, 0.28);
+  --hover:          rgba(131, 28, 145, 0.22);
+  --accent:         #D552A3;
+  --accent-hover:   #831C91;
+  --accent-light:   #831C91;
+  --accent-dark:    #462C7D;
+  --accent-pink:    #D552A3;
+  --accent-glow:    #D552A3;
+  --accent-tint:    rgba(213, 82, 163, 0.15);
+  --gradient-start: #462C7D;
+  --gradient-end:   #D552A3;
+  --glow:           rgba(213, 82, 163, 0.5);
+  --glow-strong:    rgba(213, 82, 163, 0.8);
+  --success:        #10B981;
+  --warning:        #D552A3;
   --error:          #EF4444;
-  --success-tint:   rgba(34, 197, 94, 0.15);
-  --warning-tint:   rgba(245, 158, 11, 0.15);
+  --success-tint:   rgba(16, 185, 129, 0.15);
+  --warning-tint:   rgba(213, 82, 163, 0.15);
   --error-tint:     rgba(239, 68, 68, 0.15);
   --toast-success-bg:     #14532d;
   --toast-success-border: #16a34a;
@@ -70,10 +77,10 @@
   --toast-error-border:   #ef4444;
   --toast-error-icon:     #fca5a5;
   --toast-error-text:     #fef2f2;
-  --toast-warning-bg:     #78350f;
-  --toast-warning-border: #f59e0b;
-  --toast-warning-icon:   #fcd34d;
-  --toast-warning-text:   #fffbeb;
+  --toast-warning-bg:     #462C7D;
+  --toast-warning-border: #D552A3;
+  --toast-warning-icon:   #D552A3;
+  --toast-warning-text:   #FFF5F8;
   --toast-info-bg:        #1e3a5f;
   --toast-info-border:    #60a5fa;
   --toast-info-icon:      #93c5fd;
@@ -86,7 +93,7 @@
 
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #EEEEEE;
+    background-color: #FFF5F8;
     color: var(--text-primary);
     transition: background-color 0.3s ease, color 0.3s ease;
     -webkit-font-smoothing: antialiased;
@@ -94,85 +101,87 @@
   }
 
   .dark body {
-    background: #222831;
+    background: #100B18;
+    background-image: radial-gradient(circle at 18% 82%, rgba(70, 44, 125, 0.22) 0%, transparent 44%),
+                      radial-gradient(circle at 86% 12%, rgba(213, 82, 163, 0.16) 0%, transparent 42%);
   }
 
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(255, 167, 38, 0.3); border-radius: 99px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(255, 167, 38, 0.5); }
+  ::-webkit-scrollbar-thumb { background: rgba(70, 44, 125, 0.3); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(70, 44, 125, 0.5); }
   
-  .dark ::-webkit-scrollbar-thumb { background: rgba(255, 167, 38, 0.3); }
-  .dark ::-webkit-scrollbar-thumb:hover { background: rgba(255, 167, 38, 0.5); }
+  .dark ::-webkit-scrollbar-thumb { background: rgba(213, 82, 163, 0.3); }
+  .dark ::-webkit-scrollbar-thumb:hover { background: rgba(213, 82, 163, 0.5); }
 }
 
 /* ── Premium Glassmorphism & Neon Effects ──────────────────────────────────────── */
 .glass-card {
-  background: rgba(26, 26, 26, 0.6);
+  background: rgba(26, 22, 37, 0.6);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(213, 82, 163, 0.08);
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .glass-card-premium {
-  background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(17, 17, 17, 0.6) 100%);
+  background: linear-gradient(135deg, rgba(26, 22, 37, 0.8) 0%, rgba(17, 15, 25, 0.6) 100%);
   backdrop-filter: blur(32px) saturate(200%);
   -webkit-backdrop-filter: blur(32px) saturate(200%);
-  border: 1px solid rgba(255, 107, 44, 0.2);
+  border: 1px solid rgba(213, 82, 163, 0.2);
   border-radius: 24px;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.neon-glow-orange {
+.neon-glow-purple {
   box-shadow: 
-    0 0 20px rgba(255, 107, 44, 0.4),
-    0 0 40px rgba(255, 107, 44, 0.2),
-    0 0 60px rgba(255, 107, 44, 0.1),
+    0 0 20px rgba(213, 82, 163, 0.4),
+    0 0 40px rgba(213, 82, 163, 0.2),
+    0 0 60px rgba(213, 82, 163, 0.1),
     0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.neon-glow-orange-strong {
+.neon-glow-purple-strong {
   box-shadow: 
-    0 0 30px rgba(255, 107, 44, 0.6),
-    0 0 60px rgba(255, 107, 44, 0.4),
-    0 0 90px rgba(255, 107, 44, 0.2),
+    0 0 30px rgba(213, 82, 163, 0.6),
+    0 0 60px rgba(213, 82, 163, 0.4),
+    0 0 90px rgba(213, 82, 163, 0.2),
     0 12px 48px rgba(0, 0, 0, 0.4);
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
-.gradient-orange {
-  background: linear-gradient(135deg, #FF5E3A 0%, #FF9A3D 100%);
+.gradient-purple {
+  background: linear-gradient(135deg, #462C7D 0%, #D552A3 100%);
 }
 
-.gradient-orange-vertical {
-  background: linear-gradient(180deg, #FF5E3A 0%, #FF9A3D 100%);
+.gradient-purple-vertical {
+  background: linear-gradient(180deg, #462C7D 0%, #D552A3 100%);
 }
 
 .border-glow {
-  border: 1px solid rgba(255, 107, 44, 0.3);
-  box-shadow: inset 0 0 20px rgba(255, 107, 44, 0.1);
+  border: 1px solid rgba(213, 82, 163, 0.3);
+  box-shadow: inset 0 0 20px rgba(213, 82, 163, 0.1);
 }
 
 .text-glow {
-  text-shadow: 0 0 20px rgba(255, 107, 44, 0.5), 0 0 40px rgba(255, 107, 44, 0.3);
+  text-shadow: 0 0 20px rgba(213, 82, 163, 0.5), 0 0 40px rgba(213, 82, 163, 0.3);
 }
 
 /* ── Animations ──────────────────────────────────────── */
 @keyframes pulse-glow {
   0%, 100% { 
     box-shadow: 
-      0 0 30px rgba(255, 107, 44, 0.6),
-      0 0 60px rgba(255, 107, 44, 0.4),
-      0 0 90px rgba(255, 107, 44, 0.2),
+      0 0 30px rgba(213, 82, 163, 0.6),
+      0 0 60px rgba(213, 82, 163, 0.4),
+      0 0 90px rgba(213, 82, 163, 0.2),
       0 12px 48px rgba(0, 0, 0, 0.4);
   }
   50% { 
     box-shadow: 
-      0 0 40px rgba(255, 107, 44, 0.8),
-      0 0 80px rgba(255, 107, 44, 0.6),
-      0 0 120px rgba(255, 107, 44, 0.3),
+      0 0 40px rgba(213, 82, 163, 0.8),
+      0 0 80px rgba(213, 82, 163, 0.6),
+      0 0 120px rgba(213, 82, 163, 0.3),
       0 16px 64px rgba(0, 0, 0, 0.5);
   }
 }
@@ -192,7 +201,7 @@
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 107, 44, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(213, 82, 163, 0.1), transparent);
   background-size: 1000px 100%;
   animation: shimmer 3s infinite;
 }
@@ -200,4 +209,60 @@
 @keyframes slideInRight {
   from { opacity: 0; transform: translateX(100%); }
   to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Dark Mode Specific Styles ──────────────────────────────────────── */
+.dark .bg-white { background-color: var(--surface) !important; }
+.dark .bg-gray-50 { background-color: var(--hover) !important; }
+.dark .bg-gray-100 { background-color: var(--hover) !important; }
+.dark .text-gray-900 { color: var(--text-primary) !important; }
+.dark .text-gray-700 { color: var(--text-primary) !important; }
+.dark .text-gray-600 { color: var(--text-secondary) !important; }
+.dark .text-gray-500 { color: var(--text-secondary) !important; }
+.dark .border-gray-200 { border-color: rgba(70, 44, 125, 0.3) !important; }
+.dark .border-gray-300 { border-color: rgba(70, 44, 125, 0.3) !important; }
+.dark .border-gray-800 { border-color: rgba(70, 44, 125, 0.4) !important; }
+
+/* ── Custom Dark Mode Overrides ──────────────────────────────────────── */
+.dark .text-slate-800 { color: var(--text-primary) !important; }
+.dark .text-slate-700 { color: var(--text-primary) !important; }
+.dark .text-slate-600 { color: var(--text-secondary) !important; }
+.dark .text-slate-500 { color: var(--text-secondary) !important; }
+.dark .text-slate-400 { color: var(--text-secondary) !important; }
+.dark .bg-slate-50 { background-color: var(--hover) !important; }
+.dark .bg-slate-100 { background-color: var(--border) !important; }
+.dark .bg-slate-800 { background-color: var(--surface) !important; }
+.dark .border-slate-200 { border-color: var(--border) !important; }
+.dark .border-slate-700 { border-color: var(--border) !important; }
+
+/* ── Purple Theme Colors for Dark Mode ──────────────────────────────────────── */
+.dark .text-purple-600 { color: #D552A3 !important; }
+.dark .text-purple-700 { color: #D552A3 !important; }
+.dark .text-purple-400 { color: #D552A3 !important; }
+.dark .bg-purple-100 { background-color: rgba(213, 82, 163, 0.15) !important; }
+.dark .bg-purple-50 { background-color: rgba(213, 82, 163, 0.1) !important; }
+.dark .bg-purple-900 { background-color: rgba(70, 44, 125, 0.3) !important; }
+.dark .border-purple-200 { border-color: rgba(213, 82, 163, 0.3) !important; }
+
+/* ── Enhanced Dark Mode Shadows ──────────────────────────────────────── */
+.dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important; }
+.dark .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important; }
+.dark .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4) !important; }
+
+/* Light mode button hover tint */
+:root:not(.dark) button.hover\:bg-slate-50:hover,
+:root:not(.dark) button.hover\:bg-slate-100:hover,
+:root:not(.dark) button.hover\:bg-gray-100:hover,
+:root:not(.dark) button.hover\:bg-gray-200:hover,
+:root:not(.dark) .hover\:bg-slate-50:hover,
+:root:not(.dark) .hover\:bg-slate-100:hover,
+:root:not(.dark) .hover\:bg-gray-100:hover,
+:root:not(.dark) .hover\:bg-gray-200:hover {
+  background-color: #F2E3F4 !important;
+}
+
+/* ── Print Styles ──────────────────────────────────────── */
+@media print {
+  .dark body { background: white !important; color: black !important; }
+  .dark * { background: white !important; color: black !important; }
 }

@@ -1,21 +1,23 @@
 'use client'
+import { statusColors } from '@/lib/colors'
+
 type Status = 'pending' | 'approved' | 'disbursed'
 
 const cfg: Record<Status, { dot: string; text: string; bg: string }> = {
   pending: {
-    dot: '#F59E0B',
-    text: 'text-amber-700 dark:text-amber-300',
-    bg: 'bg-amber-50/80 dark:bg-amber-900/20',
+    dot: statusColors.pending,
+    text: 'text-pink-700 dark:text-pink-300',
+    bg: 'bg-pink-50/80 dark:bg-pink-900/20',
   },
   approved: {
-    dot: '#6366F1',
-    text: 'text-indigo-700 dark:text-indigo-300',
-    bg: 'bg-indigo-50/80 dark:bg-indigo-900/20',
-  },
-  disbursed: {
-    dot: '#10B981',
+    dot: statusColors.approved,
     text: 'text-emerald-700 dark:text-emerald-300',
     bg: 'bg-emerald-50/80 dark:bg-emerald-900/20',
+  },
+  disbursed: {
+    dot: '#462C7D',
+    text: 'text-[#462C7D] dark:text-[#D552A3]',
+    bg: 'bg-[#462C7D]/10 dark:bg-[#D552A3]/15',
   },
 }
 

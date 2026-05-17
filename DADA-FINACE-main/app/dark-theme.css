@@ -1,0 +1,46 @@
+/* Enhanced Dark Mode Theme - 462C7D, 831C91, D552A3, FFF5F8 */
+
+.dark {
+  --bg: #100B18;
+  --surface: #1B1326;
+  --card: #241833;
+  --form-field: #241833;
+  --text-primary: #FFF5F8;
+  --text-secondary: #D9C8E2;
+  --border: rgba(213, 82, 163, 0.28);
+  --hover: rgba(131, 28, 145, 0.22);
+  --accent: #D552A3;
+  --accent-hover: #831C91;
+  --accent-light: #831C91;
+  --accent-dark: #462C7D;
+  --accent-pink: #D552A3;
+}
+
+/* Dark mode input fields */
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: var(--form-field) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(213, 82, 163, 0.1) !important;
+}
+
+/* Dark mode labels */
+.dark label {
+  color: var(--text-primary) !important;
+}
+
+/* Dark mode background gradient */
+.dark body {
+  background: #100B18;
+  background-image: 
+    radial-gradient(circle at 18% 82%, rgba(70, 44, 125, 0.22) 0%, transparent 44%),
+    radial-gradient(circle at 86% 12%, rgba(213, 82, 163, 0.16) 0%, transparent 42%);
+}

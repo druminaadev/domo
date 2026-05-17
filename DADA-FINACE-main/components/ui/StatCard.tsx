@@ -12,15 +12,15 @@ interface StatCardProps {
 export function StatCard({ title, value, icon, trend, className = '' }: StatCardProps) {
   return (
     <div
-      className={`bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 ${className}`}
+      className={`bg-white dark:bg-[var(--card)] rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 ${className}`}
       style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06)' }}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-xs font-semibold mb-2" style={{ color: '#6B6B6B' }}>
+          <p className="text-xs font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>
             {title}
           </p>
-          <h3 className="text-2xl font-bold mb-1" style={{ color: '#2C2C2C' }}>
+          <h3 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>
             {value}
           </h3>
           {trend && (
@@ -31,7 +31,7 @@ export function StatCard({ title, value, icon, trend, className = '' }: StatCard
         </div>
         <div
           className="w-12 h-12 rounded-xl flex items-center justify-center"
-          style={{ background: 'linear-gradient(135deg, #FF6D3D 0%, #FF5722 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #831C91 0%, #D552A3 100%)' }}
         >
           <span className="text-white">{icon}</span>
         </div>

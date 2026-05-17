@@ -54,12 +54,12 @@ export function WebcamCapture({ onCapture, current }: WebcamCaptureProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-6 items-start">
       <div className="flex flex-col items-center gap-3">
-        <div className="w-32 h-32 rounded-xl overflow-hidden border-2 bg-gradient-to-br from-[#FFF5F2] dark:from-[#2C2C2C] to-white dark:to-[#1A1A1A] flex items-center justify-center" style={{ borderColor: captured ? '#FF6D3D' : '#E8E8E8' }}>
+        <div className="w-32 h-32 rounded-xl overflow-hidden border-2 bg-gradient-to-br from-[#FFF5F2] dark:from-[var(--card)] to-white dark:to-[var(--surface)] flex items-center justify-center" style={{ borderColor: captured ? 'var(--accent)' : 'var(--border)' }}>
           {captured ? <img src={captured} className="w-full h-full object-cover" alt="Profile" />
             : streaming ? <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
             : <Camera size={40} className="text-gray-300 dark:text-gray-600" />}
         </div>
-        {error && <p className="text-xs" style={{ color: '#FF5722' }}>{error}</p>}
+        {error && <p className="text-xs" style={{ color: '#831C91' }}>{error}</p>}
       </div>
       <div className="flex flex-col gap-2">
         <input ref={fileRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />

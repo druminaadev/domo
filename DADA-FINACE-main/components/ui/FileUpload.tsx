@@ -66,9 +66,9 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={handleClick}
-        className="border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all bg-[#FAFAFA] dark:bg-[#2C2C2C]"
+        className="border-2 border-dashed rounded-xl p-6 cursor-pointer transition-all bg-[#FAFAFA] dark:bg-[var(--card)]"
         style={{
-          borderColor: isDragging ? '#FF6D3D' : '#E8E8E8',
+          borderColor: isDragging ? 'var(--accent)' : 'var(--border)',
         }}
       >
         <input
@@ -83,15 +83,15 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
         <div className="flex flex-col items-center gap-2 text-center">
           <div
             className="w-12 h-12 rounded-full flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #FF6D3D, #FF5722)' }}
+            style={{ background: 'linear-gradient(135deg, #831C91, #D552A3)' }}
           >
             <Upload size={20} style={{ color: '#FFFFFF' }} />
           </div>
           <div>
-            <p className="text-sm font-semibold text-[#2C2C2C] dark:text-white">
+            <p className="text-sm font-semibold text-[#2C2C2C] dark:text-[var(--text-primary)]">
               Drop files here or click to browse
             </p>
-            <p className="text-xs mt-1 text-[#6B6B6B] dark:text-gray-400">
+            <p className="text-xs mt-1 text-[#6B6B6B] dark:text-[var(--text-secondary)]">
               {multiple ? 'Upload multiple files' : 'Upload a file'}
             </p>
           </div>
@@ -103,21 +103,21 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
           {files.map((file, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-[#2C2C2C] border border-gray-200 dark:border-gray-700"
+              className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-[var(--card)] border border-gray-200 dark:border-[var(--border)]"
               style={{ boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)' }}
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(255, 109, 61, 0.1)' }}
+                  style={{ background: 'var(--accent-tint)' }}
                 >
-                  <FileText size={14} style={{ color: '#FF6D3D' }} />
+                  <FileText size={14} style={{ color: '#831C91' }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold truncate text-[#2C2C2C] dark:text-white">
+                  <p className="text-sm font-semibold truncate text-[#2C2C2C] dark:text-[var(--text-primary)]">
                     {file.name}
                   </p>
-                  <p className="text-xs text-[#6B6B6B] dark:text-gray-400">
+                  <p className="text-xs text-[#6B6B6B] dark:text-[var(--text-secondary)]">
                     {formatFileSize(file.size)}
                   </p>
                 </div>
@@ -126,8 +126,8 @@ export function FileUpload({ label, accept, multiple = true, onChange }: FileUpl
                 type="button"
                 onClick={() => removeFile(index)}
                 className="p-1.5 rounded-lg cursor-pointer transition-colors flex-shrink-0"
-                style={{ color: '#FF5722' }}
-                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255, 87, 34, 0.1)')}
+                style={{ color: '#831C91' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-tint)')}
                 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
               >
                 <X size={14} />

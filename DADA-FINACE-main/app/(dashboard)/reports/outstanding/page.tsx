@@ -39,7 +39,7 @@ export default function OutstandingDuesPage() {
           </div>
           <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
             <div className="text-xs text-slate-500 dark:text-slate-400">Total Overdue EMIs</div>
-            <div className="text-2xl font-bold text-orange-600 dark:text-orange-400 mt-1">{overdueEmis.length}</div>
+            <div className="text-2xl font-bold text-[#831C91] dark:text-[#D552A3] mt-1">{overdueEmis.length}</div>
           </div>
           <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
             <div className="text-xs text-slate-500 dark:text-slate-400">Total Overdue Amount</div>
@@ -66,10 +66,10 @@ export default function OutstandingDuesPage() {
                       <td className="px-4 py-3 font-medium text-slate-800 dark:text-slate-200">{g.customer?.name ?? '—'}</td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{g.customer?.mobile ?? '—'}</td>
                       <td className="px-4 py-3 text-blue-600 dark:text-blue-400 font-medium">{g.loan?.loanNo ?? '—'}</td>
-                      <td className="px-4 py-3 text-center font-semibold text-orange-600 dark:text-orange-400">{g.emis.length}</td>
+                      <td className="px-4 py-3 text-center font-semibold text-[#831C91] dark:text-[#D552A3]">{g.emis.length}</td>
                       <td className="px-4 py-3 font-semibold text-red-600 dark:text-red-400">{fmt(g.totalOverdue)}</td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${g.daysOverdue > 30 ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400'}`}>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${g.daysOverdue > 30 ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400'}`}>
                           {g.daysOverdue} days
                         </span>
                       </td>

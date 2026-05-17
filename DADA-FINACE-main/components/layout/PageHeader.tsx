@@ -27,16 +27,16 @@ export function PageHeader({ title, action }: PageHeaderProps) {
   ]
 
   return (
-    <div className="flex items-start justify-between mb-6 pb-4 border-b border-gray-200 dark:border-gray-800">
+    <div className="flex items-start justify-between mb-6 pb-4 border-b border-gray-200 dark:border-[var(--border)]">
       <div>
-        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">{title}</h1>
+        <h1 className="text-2xl font-bold text-[#1A1A1A] dark:text-[#FFF5F8]">{title}</h1>
         <nav className="flex items-center gap-1 mt-2">
           {crumbs.map((c, i) => (
             <span key={c.path} className="flex items-center gap-1">
-              {i > 0 && <ChevronRight size={14} className="text-gray-400 dark:text-gray-600" />}
+              {i > 0 && <ChevronRight size={14} className="text-gray-400 dark:text-[#B8A8C8]" />}
               {i === crumbs.length - 1
-                ? <span className="text-xs font-medium text-[#FF6D3D]">{c.label}</span>
-                : <Link href={c.path} className="text-xs text-gray-600 dark:text-gray-400 hover:text-[#FF6D3D] transition-colors">{c.label}</Link>}
+                ? <span className="text-xs font-medium text-[#831C91] dark:text-[#D552A3]">{c.label}</span>
+                : <Link href={c.path} className="text-xs text-gray-600 dark:text-[#B8A8C8] hover:text-[#831C91] dark:hover:text-[#D552A3] transition-colors">{c.label}</Link>}
             </span>
           ))}
         </nav>

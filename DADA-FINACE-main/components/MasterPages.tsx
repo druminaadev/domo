@@ -14,14 +14,14 @@ function ActionButtons({ onEdit, onDelete }: { onEdit: () => void; onDelete: () 
   return (
     <div className="flex gap-2">
       <button onClick={onEdit} className="p-1.5 rounded-lg cursor-pointer transition-colors"
-        style={{ color: 'var(--accent)' }}
-        onMouseEnter={e => (e.currentTarget.style.background = 'var(--accent-tint)')}
+        style={{ color: COLORS.primary }}
+        onMouseEnter={e => (e.currentTarget.style.background = COLORS.primaryAlpha12)}
         onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
         <Pencil size={13} />
       </button>
       <button onClick={onDelete} className="p-1.5 rounded-lg cursor-pointer transition-colors"
-        style={{ color: 'var(--error)' }}
-        onMouseEnter={e => (e.currentTarget.style.background = 'var(--error-tint)')}
+        style={{ color: COLORS.rejected }}
+        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)')}
         onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
         <Trash2 size={13} />
       </button>

@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <>
       <div
         className="flex h-screen overflow-hidden"
-        style={{ background: 'var(--surface)' }}
+        style={{ background: 'var(--bg)' }}
       >
         <Sidebar
           open={sidebarOpen}

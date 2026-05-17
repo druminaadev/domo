@@ -12,7 +12,7 @@ import { format, parseISO } from 'date-fns'
 const statusColor: Record<string, string> = {
   upcoming: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300',
   paid: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400',
-  paid_late: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400',
+  paid_late: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400',
   overdue: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400',
 }
 

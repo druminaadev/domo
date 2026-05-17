@@ -198,7 +198,9 @@ export default function CalculatorPage() {
   const [tab, setTab] = useState<Tab>('flat')
   const [inputs, setInputs] = useState<Inputs>({ principal: 100000, rate: 12, tenure: 12, tenureType: 'months' })
   const [errors, setErrors] = useState<Partial<Record<keyof Inputs, string>>>({})
-  const [showSchedule, setShowSchedule] = useState(false)
+  const [hasCalculated, setHasCalculated] = useState(false)
+  const principalColor = '#462C7D'
+  const interestColor = '#831C91'
 
   const months = inputs.tenureType === 'years' ? inputs.tenure * 12 : inputs.tenure
 
@@ -208,8 +210,8 @@ export default function CalculatorPage() {
   const result = tab === 'flat' ? flat : emi
 
   const pieData = [
-    { name: 'Principal', value: Math.round(inputs.principal), color: 'var(--accent)' },
-    { name: 'Interest', value: Math.round(result.totalInterest), color: '#F59E0B' },
+    { name: 'Principal', value: Math.round(inputs.principal), color: principalColor },
+    { name: 'Interest', value: Math.round(result.totalInterest), color: interestColor },
   ]
 
   function validate() {
@@ -219,6 +221,10 @@ export default function CalculatorPage() {
     if (!inputs.tenure || inputs.tenure <= 0) e.tenure = 'Enter a valid tenure'
     setErrors(e)
     return Object.keys(e).length === 0
+  }
+
+  function calculate() {
+    setHasCalculated(validate())
   }
 
   function set(key: keyof Inputs, val: number | string) {
@@ -360,7 +366,7 @@ export default function CalculatorPage() {
 
           {/* Calculate button */}
           <button
-            onClick={validate}
+            onClick={calculate}
             className="w-full py-2.5 rounded-xl text-sm font-bold text-white cursor-pointer transition-opacity flex items-center justify-center gap-2"
             style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-hover))' }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
@@ -371,6 +377,130 @@ export default function CalculatorPage() {
         </div>
 
         {/* ── Right: Results ── */}
+        {!hasCalculated ? (
+        <div className="lg:col-span-3 flex flex-col gap-4">
+          <div
+            className="relative overflow-hidden rounded-2xl p-6 min-h-[430px] flex flex-col justify-between"
+            style={{
+              background: 'linear-gradient(135deg, var(--surface) 0%, var(--bg) 54%, var(--card) 100%)',
+              border: '1px solid var(--border)',
+              boxShadow: '0 18px 45px rgba(70, 44, 125, 0.08)',
+            }}
+          >
+            <div
+              className="absolute -right-16 -top-16 h-52 w-52 rounded-full opacity-20"
+              style={{ background: 'radial-gradient(circle, var(--accent-pink), transparent 68%)' }}
+            />
+            <div
+              className="absolute -bottom-20 left-12 h-56 w-56 rounded-full opacity-15"
+              style={{ background: 'radial-gradient(circle, var(--accent-light), transparent 70%)' }}
+            />
+
+            <div className="relative z-10 flex flex-col gap-5">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide" style={{ color: 'var(--accent)' }}>
+                    Estimate Preview
+                  </p>
+                  <h2 className="mt-2 text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>
+                    Your loan summary will appear here
+                  </h2>
+                  <p className="mt-2 max-w-md text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                    Adjust the values on the left and calculate to view monthly payment, total interest, and payable amount.
+                  </p>
+                </div>
+                <div
+                  className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0"
+                  style={{ background: 'var(--accent-tint)', color: 'var(--accent)' }}
+                >
+                  <Calculator size={20} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {[
+                  { label: 'Amount', value: fmt(inputs.principal), icon: IndianRupee },
+                  { label: 'Rate', value: `${inputs.rate}% p.a.`, icon: Percent },
+                  { label: 'Tenure', value: `${months} months`, icon: Clock },
+                ].map(item => {
+                  const Icon = item.icon
+                  return (
+                    <div
+                      key={item.label}
+                      className="rounded-xl p-4"
+                      style={{ background: 'rgba(255,255,255,0.55)', border: '1px solid var(--border)' }}
+                    >
+                      <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>
+                        <Icon size={13} style={{ color: 'var(--accent)' }} />
+                        {item.label}
+                      </div>
+                      <div className="mt-2 text-base font-bold tabular-nums" style={{ color: 'var(--text-primary)' }}>
+                        {item.value}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-5 items-center">
+                <div className="relative mx-auto h-40 w-40">
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{ background: 'conic-gradient(var(--accent) 0 72%, var(--accent-pink) 72% 100%)' }}
+                  />
+                  <div
+                    className="absolute inset-6 rounded-full flex items-center justify-center text-center"
+                    style={{ background: 'var(--surface)' }}
+                  >
+                    <div>
+                      <div className="text-[10px] font-semibold uppercase" style={{ color: 'var(--text-secondary)' }}>
+                        Mode
+                      </div>
+                      <div className="mt-1 text-sm font-bold" style={{ color: 'var(--accent)' }}>
+                        {tab === 'flat' ? 'Flat Rate' : 'Reducing'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {[
+                    tab === 'flat' ? 'Monthly payment' : 'Monthly EMI',
+                    'Total interest',
+                    'Total payable',
+                    'Principal and interest breakdown',
+                  ].map((label, index) => (
+                    <div key={label} className="flex items-center gap-3">
+                      <span
+                        className="h-7 w-7 rounded-lg flex items-center justify-center text-xs font-bold"
+                        style={{ background: 'var(--accent-tint)', color: 'var(--accent)' }}
+                      >
+                        {index + 1}
+                      </span>
+                      <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                        {label}
+                      </span>
+                      <ChevronRight size={14} className="ml-auto" style={{ color: 'var(--text-secondary)' }} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="relative z-10 mt-5 flex items-start gap-2 rounded-xl p-3"
+              style={{ background: 'var(--accent-tint)' }}
+            >
+              <Info size={14} className="mt-0.5 shrink-0" style={{ color: 'var(--accent)' }} />
+              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                {tab === 'flat'
+                  ? 'Flat interest keeps interest fixed on the original principal.'
+                  : 'Reducing balance recalculates interest as the principal reduces.'}
+              </p>
+            </div>
+          </div>
+        </div>
+        ) : (
         <div className="lg:col-span-3 flex flex-col gap-4">
 
           {/* Result cards */}
@@ -400,12 +530,23 @@ export default function CalculatorPage() {
                   <Pie data={pieData} cx="50%" cy="50%" innerRadius={48} outerRadius={72}
                     paddingAngle={3} dataKey="value" startAngle={90} endAngle={-270}>
                     {pieData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color === 'var(--accent)' ? '#5B7FA6' : '#F59E0B'} stroke="transparent" />
+                      <Cell key={i} fill={entry.color} stroke="transparent" />
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ background: '#1e293b', border: 'none', borderRadius: '8px', color: '#f1f5f9', fontSize: '12px' }}
-                    formatter={(v) => [fmt(Number(v))]}
+                    contentStyle={{
+                      background: 'var(--surface)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '10px',
+                      color: 'var(--text-primary)',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      boxShadow: '0 10px 24px rgba(70, 44, 125, 0.16)',
+                      padding: '8px 10px',
+                    }}
+                    itemStyle={{ color: 'var(--text-primary)', fontWeight: 700 }}
+                    labelStyle={{ color: 'var(--text-secondary)', fontWeight: 600 }}
+                    formatter={(v, name) => [fmt(Number(v)), name]}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -420,14 +561,14 @@ export default function CalculatorPage() {
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between text-xs">
                   <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#5B7FA6' }} />
+                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: principalColor }} />
                     <span style={{ color: 'var(--text-secondary)' }}>Principal</span>
                   </span>
                   <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{fmt(inputs.principal)}</span>
                 </div>
                 <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--border)' }}>
                   <div className="h-full rounded-full transition-all duration-500"
-                    style={{ width: `${(inputs.principal / result.totalPayable) * 100}%`, background: '#5B7FA6' }} />
+                    style={{ width: `${(inputs.principal / result.totalPayable) * 100}%`, background: principalColor }} />
                 </div>
                 <div className="text-[10px] text-right" style={{ color: 'var(--text-secondary)' }}>
                   {((inputs.principal / result.totalPayable) * 100).toFixed(1)}% of total
@@ -438,14 +579,14 @@ export default function CalculatorPage() {
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between text-xs">
                   <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: interestColor }} />
                     <span style={{ color: 'var(--text-secondary)' }}>Interest</span>
                   </span>
                   <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{fmt(result.totalInterest)}</span>
                 </div>
                 <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--border)' }}>
-                  <div className="h-full rounded-full bg-amber-400 transition-all duration-500"
-                    style={{ width: `${(result.totalInterest / result.totalPayable) * 100}%` }} />
+                  <div className="h-full rounded-full transition-all duration-500"
+                    style={{ width: `${(result.totalInterest / result.totalPayable) * 100}%`, background: interestColor }} />
                 </div>
                 <div className="text-[10px] text-right" style={{ color: 'var(--text-secondary)' }}>
                   {((result.totalInterest / result.totalPayable) * 100).toFixed(1)}% of total
@@ -470,6 +611,7 @@ export default function CalculatorPage() {
           {/* EMI Schedule toggle (reducing only) */}
           
         </div>
+        )}
       </div>
     </div>
   )

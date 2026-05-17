@@ -11,7 +11,7 @@ import { format, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, getDay, 
 
 const DOT: Record<string, string> = {
   paid: 'bg-green-500',
-  paid_late: 'bg-orange-500',
+  paid_late: 'bg-purple-500',
   overdue: 'bg-red-500',
   upcoming: 'bg-slate-300 dark:bg-slate-600',
 }

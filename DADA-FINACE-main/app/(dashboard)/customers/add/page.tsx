@@ -68,7 +68,7 @@ export default function AddCustomerPage() {
   }
 
   return (
-    <div className="min-h-screen dark:bg-transparent" >
+    <div className="min-h-screen bg-[#FFF5F8] dark:bg-[var(--bg)]" >
       <PageHeader title="Add Customer" />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 pb-8">
         <Card title="Personal Information">

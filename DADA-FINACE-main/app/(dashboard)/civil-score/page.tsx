@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 function getLabel(score: number) {
   if (score >= 800) return { label: 'Excellent', color: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' }
   if (score >= 600) return { label: 'Good', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400' }
-  if (score >= 400) return { label: 'Average', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' }
+  if (score >= 400) return { label: 'Average', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400' }
   return { label: 'Risky', color: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400' }
 }
 
@@ -30,7 +30,7 @@ export default function CivilScorePage() {
           {[
             { label: 'Excellent (800+)', count: data.filter(d => d.score >= 800).length, color: 'text-green-600 dark:text-green-400' },
             { label: 'Good (600-799)', count: data.filter(d => d.score >= 600 && d.score < 800).length, color: 'text-blue-600 dark:text-blue-400' },
-            { label: 'Average (400-599)', count: data.filter(d => d.score >= 400 && d.score < 600).length, color: 'text-amber-600 dark:text-amber-400' },
+            { label: 'Average (400-599)', count: data.filter(d => d.score >= 400 && d.score < 600).length, color: 'text-purple-600 dark:text-purple-400' },
             { label: 'Risky (<400)', count: data.filter(d => d.score < 400).length, color: 'text-red-600 dark:text-red-400' },
           ].map(s => (
             <div key={s.label} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
@@ -58,7 +58,7 @@ export default function CivilScorePage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <div className="w-20 h-2 rounded-full bg-slate-200 dark:bg-slate-600 overflow-hidden">
-                          <div className="h-full rounded-full" style={{ width: `${(d.score / 900) * 100}%`, background: d.score >= 800 ? '#10B981' : d.score >= 600 ? '#3B82F6' : d.score >= 400 ? '#F59E0B' : '#EF4444' }} />
+                          <div className="h-full rounded-full" style={{ width: `${(d.score / 900) * 100}%`, background: d.score >= 800 ? '#10B981' : d.score >= 600 ? '#3B82F6' : d.score >= 400 ? '#831C91' : '#EF4444' }} />
                         </div>
                         <span className="font-bold text-slate-800 dark:text-slate-200">{d.score}</span>
                       </div>

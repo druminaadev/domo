@@ -32,7 +32,7 @@ export function PremiumStatCard({ icon: Icon, label, value, trend, iconColor, ic
     >
       {/* Animated background gradient */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#831C91]/5 to-transparent" />
       </div>
 
       {/* Content */}
