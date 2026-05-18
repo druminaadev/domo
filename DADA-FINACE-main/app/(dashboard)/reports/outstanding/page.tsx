@@ -1,11 +1,22 @@
 'use client'
 import { useMemo } from 'react'
-import { useStore } from '@/store/appStore'
-import { PageHeader } from '@/components/layout/PageHeader'
 import { format, parseISO } from 'date-fns'
+import { AlertTriangle, BadgeIndianRupee, CalendarClock, UsersRound } from 'lucide-react'
+import { useStore } from '@/store/appStore'
+import {
+  ReportEmpty,
+  ReportHero,
+  ReportPage,
+  ReportPanel,
+  ReportStatCard,
+  ReportTable,
+  reportCellClass,
+  reportRowClass,
+  reportStrongCellClass,
+} from '@/components/reports/ReportUI'
 
 export default function OutstandingDuesPage() {
-  const { emis, loans, customers, employees } = useStore()
+  const { emis, loans, customers } = useStore()
   const today = new Date().toISOString().split('T')[0]
 
   const overdueEmis = useMemo(() => emis.filter(e => e.status === 'overdue'), [emis])
@@ -26,64 +37,49 @@ export default function OutstandingDuesPage() {
     return Object.values(map)
   }, [overdueEmis, loans, customers, today])
 
-  const fmt = (n: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n)
+  const fmt = (n: number) =>
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n)
 
   return (
-    <>
-      <PageHeader title="Outstanding Dues Report" />
-      <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-            <div className="text-xs text-slate-500 dark:text-slate-400">Overdue Accounts</div>
-            <div className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">{grouped.length}</div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-            <div className="text-xs text-slate-500 dark:text-slate-400">Total Overdue EMIs</div>
-            <div className="text-2xl font-bold text-[#831C91] dark:text-[#D552A3] mt-1">{overdueEmis.length}</div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-            <div className="text-xs text-slate-500 dark:text-slate-400">Total Overdue Amount</div>
-            <div className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">{fmt(grouped.reduce((s, g) => s + g.totalOverdue, 0))}</div>
-          </div>
-        </div>
+    <ReportPage>
+      <ReportHero
+        title="Outstanding Dues Report"
+        subtitle="Prioritize overdue customers by unpaid EMI count, amount at risk, and oldest due date."
+        meta={`${grouped.length} overdue accounts`}
+        icon={<AlertTriangle size={22} />}
+      />
 
-        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
-          {grouped.length === 0 ? (
-            <div className="p-8 text-center text-slate-400 dark:text-slate-500 text-sm">No overdue accounts 🎉</div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-700">
-                    {['Customer', 'Mobile', 'Loan No', 'Overdue EMIs', 'Overdue Amount', 'Days Overdue', 'Oldest Due Date'].map(h => (
-                      <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {grouped.sort((a, b) => b.daysOverdue - a.daysOverdue).map((g, i) => (
-                    <tr key={i} className={`border-b border-slate-100 dark:border-slate-700 ${i % 2 === 1 ? 'bg-slate-50/50 dark:bg-slate-700/20' : ''}`}>
-                      <td className="px-4 py-3 font-medium text-slate-800 dark:text-slate-200">{g.customer?.name ?? '—'}</td>
-                      <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{g.customer?.mobile ?? '—'}</td>
-                      <td className="px-4 py-3 text-blue-600 dark:text-blue-400 font-medium">{g.loan?.loanNo ?? '—'}</td>
-                      <td className="px-4 py-3 text-center font-semibold text-[#831C91] dark:text-[#D552A3]">{g.emis.length}</td>
-                      <td className="px-4 py-3 font-semibold text-red-600 dark:text-red-400">{fmt(g.totalOverdue)}</td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${g.daysOverdue > 30 ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400'}`}>
-                          {g.daysOverdue} days
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-xs text-slate-500 dark:text-slate-400">
-                        {format(parseISO(g.emis.sort((a, b) => a.dueDate.localeCompare(b.dueDate))[0].dueDate), 'dd/MM/yyyy')}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <ReportStatCard label="Overdue Accounts" value={grouped.length} tone="red" icon={<UsersRound size={18} />} />
+        <ReportStatCard label="Total Overdue EMIs" value={overdueEmis.length} tone="pink" icon={<CalendarClock size={18} />} />
+        <ReportStatCard label="Total Overdue Amount" value={fmt(grouped.reduce((s, g) => s + g.totalOverdue, 0))} tone="red" icon={<BadgeIndianRupee size={18} />} />
       </div>
-    </>
+
+      <ReportPanel title="Overdue Accounts" subtitle="Sorted by maximum days overdue for collection follow-up.">
+        {grouped.length === 0 ? (
+          <ReportEmpty>No overdue accounts found</ReportEmpty>
+        ) : (
+          <ReportTable headers={['Customer', 'Mobile', 'Loan No', 'Overdue EMIs', 'Overdue Amount', 'Days Overdue', 'Oldest Due Date']}>
+            {grouped.sort((a, b) => b.daysOverdue - a.daysOverdue).map((g, i) => (
+              <tr key={i} className={`${reportRowClass} ${i % 2 === 1 ? 'bg-[#FFF5F8]/35 dark:bg-[#100B18]/30' : ''}`}>
+                <td className={reportStrongCellClass}>{g.customer?.name ?? '-'}</td>
+                <td className={reportCellClass}>{g.customer?.mobile ?? '-'}</td>
+                <td className="px-4 py-3 font-bold text-[#462C7D] dark:text-[#D552A3]">{g.loan?.loanNo ?? '-'}</td>
+                <td className="px-4 py-3 text-center font-bold text-[#831C91] dark:text-[#D552A3]">{g.emis.length}</td>
+                <td className="px-4 py-3 font-bold text-red-600 dark:text-red-300">{fmt(g.totalOverdue)}</td>
+                <td className="px-4 py-3">
+                  <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${g.daysOverdue > 30 ? 'bg-red-500/10 text-red-700 dark:text-red-300' : 'bg-[#D552A3]/12 text-[#831C91] dark:text-[#D552A3]'}`}>
+                    {g.daysOverdue} days
+                  </span>
+                </td>
+                <td className={reportCellClass}>
+                  {format(parseISO(g.emis.sort((a, b) => a.dueDate.localeCompare(b.dueDate))[0].dueDate), 'dd/MM/yyyy')}
+                </td>
+              </tr>
+            ))}
+          </ReportTable>
+        )}
+      </ReportPanel>
+    </ReportPage>
   )
 }

@@ -35,6 +35,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { useTheme } from 'next-themes'
 import { Badge } from '@/components/ui/Badge'
 import { GradientButton } from '@/components/ui/GradientButton'
 import { NeumorphicCard } from '@/components/ui/NeumorphicCard'
@@ -45,7 +46,9 @@ type IconType = typeof CreditCard
 
 export default function Dashboard() {
   const { loans, customers, employees } = useStore()
+  const { resolvedTheme } = useTheme()
   const router = useRouter()
+  const isDark = resolvedTheme === 'dark'
 
   const formatINR = (n: number) =>
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n)
@@ -121,14 +124,14 @@ export default function Dashboard() {
 
   const tooltipStyle = {
     contentStyle: {
-      background: COLORS.white,
-      border: `1px solid ${COLORS.lightGray}`,
+      background: isDark ? 'var(--card)' : COLORS.white,
+      border: `1px solid ${isDark ? 'var(--border)' : COLORS.lightGray}`,
       borderRadius: '14px',
-      color: COLORS.dark,
+      color: isDark ? 'var(--text-primary)' : COLORS.dark,
       fontSize: '12px',
       boxShadow: COLORS.shadowCard,
     },
-    labelStyle: { color: COLORS.darkSecondary, fontWeight: 700 },
+    labelStyle: { color: isDark ? 'var(--text-secondary)' : COLORS.darkSecondary, fontWeight: 700 },
   }
 
   const kpis: Array<{
@@ -181,20 +184,20 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen space-y-5 p-4 sm:p-6">
-      <section className="relative overflow-hidden rounded-3xl border border-[#D552A3]/20 bg-white p-5 text-[#1E293B] shadow-[0_24px_70px_rgba(70,44,125,0.16)] sm:p-7">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(70,44,125,0.25),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(131,28,145,0.18),transparent_30%),linear-gradient(135deg,#FFFFFF_0%,#FFF5F8_56%,#F5E6F0_100%)]" />
-        <div className="absolute right-8 top-8 hidden h-32 w-32 rounded-full border border-[#D552A3]/30 sm:block" />
-        <div className="absolute bottom-0 right-0 h-28 w-64 rounded-tl-full bg-[#D552A3]/20" />
+      <section className="relative overflow-hidden rounded-3xl border border-[#D552A3]/20 bg-white p-5 text-[#1E293B] shadow-[0_24px_70px_rgba(70,44,125,0.16)] dark:border-[var(--border)] dark:bg-[var(--card)] dark:text-[var(--text-primary)] dark:shadow-[0_24px_70px_rgba(0,0,0,0.36)] sm:p-7">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(70,44,125,0.25),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(131,28,145,0.18),transparent_30%),linear-gradient(135deg,#FFFFFF_0%,#FFF5F8_56%,#F5E6F0_100%)] dark:bg-[radial-gradient(circle_at_12%_12%,rgba(213,82,163,0.20),transparent_30%),radial-gradient(circle_at_82%_18%,rgba(70,44,125,0.32),transparent_30%),linear-gradient(135deg,#241833_0%,#1B1326_56%,#100B18_100%)]" />
+        <div className="absolute right-8 top-8 hidden h-32 w-32 rounded-full border border-[#D552A3]/30 dark:border-[#D552A3]/20 sm:block" />
+        <div className="absolute bottom-0 right-0 h-28 w-64 rounded-tl-full bg-[#D552A3]/20 dark:bg-[#D552A3]/10" />
 
         <div className="relative z-10 grid gap-6 xl:grid-cols-[1.45fr_0.95fr]">
           <div className="space-y-5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#D552A3]/30 bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#462C7D] shadow-sm backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#D552A3]/30 bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#462C7D] shadow-sm backdrop-blur dark:bg-[#100B18]/55 dark:text-[#FFF5F8]">
               <Sparkles size={14} />
               Finance command center
             </div>
             <div>
               <h1 className="max-w-3xl text-3xl font-black leading-tight sm:text-5xl">Good Morning, John!</h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#64748B] sm:text-base">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#64748B] dark:text-[var(--text-secondary)] sm:text-base">
                 Track disbursements, approvals, collections, and customer momentum from one polished workspace.
               </p>
             </div>
@@ -208,27 +211,27 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-[#D552A3]/30 bg-white/80 p-5 shadow-[0_18px_45px_rgba(70,44,125,0.16)] backdrop-blur-xl">
+          <div className="rounded-2xl border border-[#D552A3]/30 bg-white/80 p-5 shadow-[0_18px_45px_rgba(70,44,125,0.16)] backdrop-blur-xl dark:border-[var(--border)] dark:bg-[#100B18]/55 dark:shadow-[0_18px_45px_rgba(0,0,0,0.34)]">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#462C7D]">Disbursed Portfolio</p>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#462C7D] dark:text-[#D552A3]">Disbursed Portfolio</p>
                 <h2 className="mt-3 text-3xl font-black sm:text-4xl">{formatINR(totalDisbursed)}</h2>
-                <p className="mt-2 text-sm text-[#64748B]">From {disbursedLoans.length} completed loans</p>
+                <p className="mt-2 text-sm text-[#64748B] dark:text-[var(--text-secondary)]">From {disbursedLoans.length} completed loans</p>
               </div>
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#FFF5F8] text-[#462C7D]">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#FFF5F8] text-[#462C7D] dark:bg-[#D552A3]/15 dark:text-[#FFF5F8]">
                 <IndianRupee size={24} />
               </span>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <div className="rounded-2xl border border-[#D552A3]/20 bg-[#FFF5F8] p-3">
-                <p className="text-xs text-[#64748B]">Monthly Growth</p>
+              <div className="rounded-2xl border border-[#D552A3]/20 bg-[#FFF5F8] p-3 dark:border-[var(--border)] dark:bg-[#241833]/80">
+                <p className="text-xs text-[#64748B] dark:text-[var(--text-secondary)]">Monthly Growth</p>
                 <div className="mt-2 flex items-center gap-1 text-lg font-black">
                   {isGrowthPositive ? <ArrowUpRight size={18} /> : <ArrowDownRight size={18} />}
                   {Math.abs(loanGrowth).toFixed(1)}%
                 </div>
               </div>
-              <div className="rounded-2xl border border-[#D552A3]/20 bg-[#FFF5F8] p-3">
-                <p className="text-xs text-[#64748B]">Portfolio Value</p>
+              <div className="rounded-2xl border border-[#D552A3]/20 bg-[#FFF5F8] p-3 dark:border-[var(--border)] dark:bg-[#241833]/80">
+                <p className="text-xs text-[#64748B] dark:text-[var(--text-secondary)]">Portfolio Value</p>
                 <p className="mt-2 text-lg font-black">{formatINR(totalPortfolio)}</p>
               </div>
             </div>
@@ -271,9 +274,9 @@ export default function Dashboard() {
                   <stop offset="95%" stopColor="#462C7D" stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 12, fill: '#64748B' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 12, fill: '#64748B' }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'var(--border)' : '#E2E8F0'} vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 12, fill: isDark ? 'var(--text-secondary)' : '#64748B' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 12, fill: isDark ? 'var(--text-secondary)' : '#64748B' }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip {...tooltipStyle} formatter={(v) => [v, 'Loans']} />
               <Area
                 type="monotone"
@@ -320,7 +323,7 @@ export default function Dashboard() {
                 <PieChart>
                   <Pie data={donutData} cx="50%" cy="50%" innerRadius={58} outerRadius={88} paddingAngle={5} dataKey="value">
                     {donutData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} stroke="#FFFFFF" strokeWidth={3} />
+                      <Cell key={i} fill={entry.color} stroke={isDark ? '#1B1326' : '#FFFFFF'} strokeWidth={3} />
                     ))}
                   </Pie>
                   <Tooltip contentStyle={tooltipStyle.contentStyle} labelStyle={tooltipStyle.labelStyle} formatter={(v, name) => [v, name]} />
@@ -345,23 +348,23 @@ export default function Dashboard() {
           )}
         </NeumorphicCard>
 
-        <NeumorphicCard className="xl:col-span-7 bg-[#FEFEFF] p-5 shadow-[0_18px_45px_rgba(70,44,125,0.10)]">
+        <NeumorphicCard className="xl:col-span-7 bg-[#FEFEFF] p-5 shadow-[0_18px_45px_rgba(70,44,125,0.10)] dark:bg-[var(--card)] dark:shadow-[0_18px_45px_rgba(0,0,0,0.32)]">
           <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <h2 className="text-base font-black text-[#1A1A1A] dark:text-white">Monthly Disbursement</h2>
-              <p className="mt-5 text-xs font-semibold text-[#94A3B8]">Total amount disbursed</p>
+              <p className="mt-5 text-xs font-semibold text-[#94A3B8] dark:text-[var(--text-secondary)]">Total amount disbursed</p>
               <div className="mt-1 flex items-end gap-1">
                 <span className="text-3xl font-black leading-none text-[#1A1A1A] dark:text-white">{formatINR(totalDisbursed)}</span>
-                <span className="pb-0.5 text-sm font-semibold text-[#94A3B8]">/ {formatINR(totalPortfolio || totalDisbursed)}</span>
+                <span className="pb-0.5 text-sm font-semibold text-[#94A3B8] dark:text-[var(--text-secondary)]">/ {formatINR(totalPortfolio || totalDisbursed)}</span>
               </div>
             </div>
-            <div className="flex w-fit rounded-full bg-[#F1F5F9] p-1 text-xs font-bold text-[#94A3B8]">
-              <button type="button" className="rounded-full px-4 py-2 transition-colors hover:text-[#462C7D]">Weekly</button>
-              <button type="button" className="rounded-full bg-white px-4 py-2 text-[#1A1A1A] shadow-[0_3px_10px_rgba(0,0,0,0.10)]">Monthly</button>
+            <div className="flex w-fit rounded-full bg-[#F1F5F9] p-1 text-xs font-bold text-[#94A3B8] dark:bg-[#100B18]/70 dark:text-[var(--text-secondary)]">
+              <button type="button" className="rounded-full px-4 py-2 transition-colors hover:text-[#462C7D] dark:hover:text-[#D552A3]">Weekly</button>
+              <button type="button" className="rounded-full bg-white px-4 py-2 text-[#1A1A1A] shadow-[0_3px_10px_rgba(0,0,0,0.10)] dark:bg-[#D552A3]/15 dark:text-white">Monthly</button>
             </div>
           </div>
 
-          <div className="mb-3 flex flex-wrap items-center gap-4 pl-1 text-[11px] font-semibold text-[#64748B]">
+          <div className="mb-3 flex flex-wrap items-center gap-4 pl-1 text-[11px] font-semibold text-[#64748B] dark:text-[var(--text-secondary)]">
             <span className="inline-flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-[#462C7D]" />
               Disbursed
@@ -381,15 +384,18 @@ export default function Dashboard() {
                   <stop offset="100%" stopColor="#462C7D" stopOpacity={0.9} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F0E6ED" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#94A3B8' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#94A3B8' }} axisLine={false} tickLine={false} tickFormatter={v => `${Number(v) / 1000}k`} />
-              <Tooltip {...tooltipStyle} formatter={(v) => [formatINR(Number(v)), 'Disbursed']} />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'var(--border)' : '#F0E6ED'} vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 11, fill: isDark ? 'var(--text-secondary)' : '#94A3B8' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: isDark ? 'var(--text-secondary)' : '#94A3B8' }} axisLine={false} tickLine={false} tickFormatter={v => `${Number(v) / 1000}k`} />
+              <Tooltip
+                {...tooltipStyle}
+                cursor={{ fill: isDark ? 'rgba(213, 82, 163, 0.08)' : 'rgba(213, 82, 163, 0.10)' }}
+                formatter={(v) => [formatINR(Number(v)), 'Disbursed']}
+              />
               <Bar
                 dataKey="amount"
                 fill="url(#barGrad)"
                 radius={[14, 14, 5, 5]}
-                background={{ fill: '#FFF5F8', radius: 14 }}
               />
             </BarChart>
           </ResponsiveContainer>

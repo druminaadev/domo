@@ -8,9 +8,11 @@ import {
   List, UserCheck, FilePlus, FileText, CheckSquare, CheckCircle,
   Banknote, X, Calendar, BarChart2, TrendingUp, AlertTriangle,
   Star, ClipboardList, Activity, PanelLeftClose, PanelLeftOpen,
-  Plus, Wallet, Calculator, Settings, LogOut, User, Bell, HelpCircle
+  Wallet, Calculator, Settings, LogOut, User, Bell, HelpCircle
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/store/authStore'
+import { useUIStore } from '@/store/uiStore'
 import { COLORS, GRADIENTS } from '@/lib/colors'
 
 interface NavChild { label: string; path: string; icon: React.ElementType; badge?: string }
@@ -99,6 +101,8 @@ interface SidebarProps {
 export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const logout = useAuthStore((state) => state.logout)
+  const showToast = useUIStore((state) => state.showToast)
   const [expanded, setExpanded] = useState<string[]>(['Loans', 'EMI'])
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [masterSetupOpen, setMasterSetupOpen] = useState(false)
@@ -110,6 +114,15 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
     group.children.some(c => pathname === c.path || pathname.startsWith(c.path + '/'))
 
   const isDashboard = pathname === '/'
+
+  const handleLogout = () => {
+    logout()
+    setSettingsOpen(false)
+    setMasterSetupOpen(false)
+    onClose?.()
+    showToast('Logged out successfully', 'info')
+    router.replace('/login')
+  }
 
   return (
     <>
@@ -447,7 +460,7 @@ export function Sidebar({ open, onClose, collapsed, onToggleCollapse }: SidebarP
                   </button>
                   <div className="my-1" style={{ borderTop: `1px solid ${COLORS.borderLight}` }} />
                   <button
-                    onClick={() => { /* Add logout logic */ setSettingsOpen(false) }}
+                    onClick={handleLogout}
                     className="w-full flex items-center gap-2.5 px-3 py-2.5 cursor-pointer transition-colors text-left"
                     style={{ color: '#EF4444' }}
                     onMouseEnter={e => e.currentTarget.style.background = '#FEE2E2'}

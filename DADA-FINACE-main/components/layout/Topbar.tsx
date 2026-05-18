@@ -145,6 +145,17 @@ export function Topbar({ onMenuToggle }: TopbarProps) {
             <div className="text-xs text-slate-500 dark:text-slate-400 capitalize" style={{ color: COLORS.gray }}>{user?.role}</div>
           </div>
         </div>
+
+        <button
+          onClick={handleLogout}
+          className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-red-500 transition-colors cursor-pointer"
+          title="Logout"
+          style={{ color: '#EF4444', backgroundColor: 'transparent' }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FEE2E2'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        >
+          <LogOut size={16} />
+        </button>
       </div>
     </header>
   )

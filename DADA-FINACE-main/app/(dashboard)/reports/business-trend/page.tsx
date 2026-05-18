@@ -1,14 +1,19 @@
 'use client'
 import { useMemo } from 'react'
+import { useTheme } from 'next-themes'
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { format, parseISO, startOfMonth } from 'date-fns'
+import { BadgeIndianRupee, LineChart, ReceiptText, TrendingUp } from 'lucide-react'
 import { useStore } from '@/store/appStore'
-import { PageHeader } from '@/components/layout/PageHeader'
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { format, startOfMonth, parseISO } from 'date-fns'
+import { ReportHero, ReportPage, ReportPanel, ReportStatCard } from '@/components/reports/ReportUI'
 
 export default function BusinessTrendPage() {
   const { loans, emis } = useStore()
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
 
-  const fmt = (n: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n)
+  const fmt = (n: number) =>
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n)
 
   const monthlyData = useMemo(() => {
     const map: Record<string, { month: string; disbursed: number; collected: number; interest: number; fileCharges: number }> = {}
@@ -28,7 +33,14 @@ export default function BusinessTrendPage() {
   }, [loans, emis])
 
   const tooltipStyle = {
-    contentStyle: { background: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#f1f5f9', fontSize: '12px' },
+    contentStyle: {
+      background: isDark ? 'var(--card)' : '#FFFFFF',
+      border: `1px solid ${isDark ? 'var(--border)' : '#F0E6ED'}`,
+      borderRadius: '14px',
+      color: isDark ? 'var(--text-primary)' : '#1A1A1A',
+      fontSize: '12px',
+    },
+    labelStyle: { color: isDark ? 'var(--text-secondary)' : '#64748B', fontWeight: 700 },
   }
 
   const totalInterest = loans.reduce((s, l) => s + l.interestAmount, 0)
@@ -36,46 +48,44 @@ export default function BusinessTrendPage() {
   const totalCollected = emis.filter(e => e.status === 'paid' || e.status === 'paid_late').reduce((s, e) => s + (e.paidAmount ?? 0), 0)
 
   return (
-    <>
-      <PageHeader title="Business Trend Report" />
-      <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {[
-            { label: 'Total Interest Income', value: fmt(totalInterest), color: 'text-green-600 dark:text-green-400' },
-            { label: 'Total File/Other Charges', value: fmt(totalCharges), color: 'text-blue-600 dark:text-blue-400' },
-            { label: 'Total EMI Collected', value: fmt(totalCollected), color: 'text-purple-600 dark:text-purple-400' },
-          ].map(s => (
-            <div key={s.label} className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-              <div className="text-xs text-slate-500 dark:text-slate-400">{s.label}</div>
-              <div className={`text-xl font-bold mt-1 ${s.color}`}>{s.value}</div>
-            </div>
-          ))}
-        </div>
+    <ReportPage>
+      <ReportHero
+        title="Business Trend Report"
+        subtitle="Track disbursement, EMI collection, interest income, and charges across recent months."
+        meta={`${monthlyData.length} months`}
+        icon={<TrendingUp size={22} />}
+      />
 
-        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-5">
-          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">Monthly Disbursement vs Collection</h3>
-          <ResponsiveContainer width="100%" height={260}>
-            <AreaChart data={monthlyData} margin={{ top: 4, right: 4, left: -10, bottom: 0 }}>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <ReportStatCard label="Total Interest Income" value={fmt(totalInterest)} tone="green" icon={<LineChart size={18} />} />
+        <ReportStatCard label="File/Other Charges" value={fmt(totalCharges)} tone="primary" icon={<BadgeIndianRupee size={18} />} />
+        <ReportStatCard label="EMI Collected" value={fmt(totalCollected)} tone="pink" icon={<ReceiptText size={18} />} />
+      </div>
+
+      <ReportPanel title="Monthly Disbursement vs Collection" subtitle="Trend view using the product palette instead of generic chart colors.">
+        <div className="p-4">
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={monthlyData} margin={{ top: 6, right: 8, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="disbGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#D552A3" stopOpacity={0.34} />
+                  <stop offset="95%" stopColor="#D552A3" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="collGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#462C7D" stopOpacity={0.28} />
+                  <stop offset="95%" stopColor="#462C7D" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}k`} />
+              <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'var(--border)' : '#F0E6ED'} vertical={false} />
+              <XAxis dataKey="month" tick={{ fontSize: 11, fill: isDark ? 'var(--text-secondary)' : '#64748B' }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: isDark ? 'var(--text-secondary)' : '#64748B' }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(Number(v) / 1000).toFixed(0)}k`} />
               <Tooltip {...tooltipStyle} formatter={(v, name) => [fmt(Number(v)), name]} />
-              <Area type="monotone" dataKey="disbursed" name="Disbursed" stroke="#3B82F6" strokeWidth={2} fill="url(#disbGrad)" />
-              <Area type="monotone" dataKey="collected" name="Collected" stroke="#10B981" strokeWidth={2} fill="url(#collGrad)" />
+              <Area type="monotone" dataKey="disbursed" name="Disbursed" stroke="#D552A3" strokeWidth={3} fill="url(#disbGrad)" />
+              <Area type="monotone" dataKey="collected" name="Collected" stroke="#462C7D" strokeWidth={3} fill="url(#collGrad)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
-      </div>
-    </>
+      </ReportPanel>
+    </ReportPage>
   )
 }

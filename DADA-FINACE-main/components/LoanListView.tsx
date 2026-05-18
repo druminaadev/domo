@@ -72,7 +72,7 @@ export function LoanListView({ filterStatus, title, showApprove, showDisburse }:
           return (
             <div className="flex items-center gap-1.5 flex-wrap">
               <DownloadDropdown loanId={loan.id} />
-              <button title="Edit" onClick={() => router.push('/loans/add')}
+              <button title="Edit" onClick={() => router.push(`/loans/add?edit=${loan.id}`)}
                 className="p-1.5 rounded-lg cursor-pointer transition-colors"
                 style={{ color: COLORS.primary }}
                 onMouseEnter={e => (e.currentTarget.style.background = COLORS.primaryAlpha12)}

@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { FieldErrors, useForm } from 'react-hook-form'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { Card } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Input'
@@ -53,24 +53,59 @@ export default function AddCustomerPage() {
   }, [watchDob, setValue])
 
   const onSubmit = (data: CustomerForm) => {
-    addCustomer({
-      name: data.name, fatherName: data.fatherName, motherName: data.motherName, dob: data.dob, age: Number(data.age),
-      gender: data.gender, maritalStatus: data.maritalStatus, bloodGroup: data.bloodGroup, occupation: data.occupation,
-      regDate: data.regDate, mobile: data.mobile, altMobile: data.altMobile, email: data.email,
-      aadhar: data.aadhar, pan: data.pan.toUpperCase(), jobAddress: data.jobAddress,
-      stateId: Number(data.stateId), cityId: Number(data.cityId), areaId: Number(data.areaId),
-      branchId: Number(data.branchId), employeeId: Number(data.employeeId), photoUrl: photo,
-      bank: { accountNo: data.bankAccountNo, holderName: data.bankHolderName, bankName: data.bankName, bankBranch: data.bankBranch, ifsc: data.bankIfsc.toUpperCase(), documentUrl: '' },
-      nominee: null, guarantor1: null, guarantor2: null,
-    })
-    showToast('Customer registered successfully!', 'success')
-    router.push('/customers/list')
+    try {
+      addCustomer({
+        name: data.name.trim(),
+        fatherName: data.fatherName.trim(),
+        motherName: data.motherName?.trim() ?? '',
+        dob: data.dob,
+        age: Number(data.age) || 0,
+        gender: data.gender,
+        maritalStatus: data.maritalStatus ?? '',
+        bloodGroup: data.bloodGroup?.trim() ?? '',
+        occupation: data.occupation?.trim() ?? '',
+        regDate: data.regDate,
+        mobile: data.mobile.trim(),
+        altMobile: data.altMobile?.trim() ?? '',
+        email: data.email?.trim() ?? '',
+        aadhar: data.aadhar.trim(),
+        pan: data.pan?.trim().toUpperCase() ?? '',
+        jobAddress: data.jobAddress?.trim() ?? '',
+        stateId: Number(data.stateId),
+        cityId: Number(data.cityId),
+        areaId: Number(data.areaId) || 0,
+        branchId: Number(data.branchId),
+        employeeId: Number(data.employeeId),
+        photoUrl: photo,
+        bank: {
+          accountNo: data.bankAccountNo?.trim() ?? '',
+          holderName: data.bankHolderName?.trim() ?? '',
+          bankName: data.bankName?.trim() ?? '',
+          bankBranch: data.bankBranch?.trim() ?? '',
+          ifsc: data.bankIfsc?.trim().toUpperCase() ?? '',
+          documentUrl: '',
+        },
+        nominee: null,
+        guarantor1: null,
+        guarantor2: null,
+      })
+      showToast('Customer registered successfully!', 'success')
+      router.push('/customers/list')
+    } catch (error) {
+      console.error('Customer registration failed:', error)
+      showToast('Customer registration failed. Please remove large photo and try again.', 'error')
+    }
+  }
+
+  const onInvalid = (formErrors: FieldErrors<CustomerForm>) => {
+    const firstError = Object.values(formErrors)[0]
+    showToast(firstError?.message ? `Please fix: ${firstError.message}` : 'Please fill required customer details', 'error')
   }
 
   return (
     <div className="min-h-screen bg-[#FFF5F8] dark:bg-[var(--bg)]" >
       <PageHeader title="Add Customer" />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 pb-8">
+      <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="flex flex-col gap-4 pb-8">
         <Card title="Personal Information">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="sm:col-span-2 lg:col-span-1">

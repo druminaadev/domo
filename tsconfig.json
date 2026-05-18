@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "react": ["DADA-FINACE-main/node_modules/@types/react/index.d.ts"],
+      "react/jsx-runtime": ["DADA-FINACE-main/node_modules/@types/react/jsx-runtime.d.ts"],
+      "react/*": ["DADA-FINACE-main/node_modules/@types/react/*"]
+    },
+    "typeRoots": ["DADA-FINACE-main/node_modules/@types"],
+    "types": ["react", "react-dom"]
+  },
+  "include": ["CustomerAddPage.tsx"]
+}

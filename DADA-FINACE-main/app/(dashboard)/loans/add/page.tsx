@@ -1,8 +1,8 @@
 'use client'
 /* eslint-disable react-hooks/incompatible-library */
 import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { FieldPath, useForm } from 'react-hook-form'
 import { PageHeader } from '@/components/layout/PageHeader'
 import { NeumorphicCard } from '@/components/ui/NeumorphicCard'
 import { Input } from '@/components/ui/Input'
@@ -51,15 +51,106 @@ const RELATIONS = ['Father', 'Mother', 'Spouse', 'Son', 'Daughter', 'Brother', '
 const STEPS = ['Aadhaar Auth', 'Personal Details', 'Loan Details', 'Nominee & Guarantors']
 const STEP_ICONS = [IdCard, User, HandCoins, Users]
 
+type RequiredField = { name: FieldPath<LoanForm>; label: string }
+
+const STEP_REQUIRED_FIELDS: Record<number, RequiredField[]> = {
+  1: [
+    { name: 'appNo', label: 'Application No' },
+    { name: 'aadhar', label: 'Aadhaar No' },
+  ],
+  2: [
+    { name: 'branchId', label: 'Branch' },
+    { name: 'employeeId', label: 'Employee' },
+    { name: 'customerName', label: 'Customer Name' },
+    { name: 'fatherName', label: "Father's Name" },
+    { name: 'motherName', label: "Mother's Name" },
+    { name: 'dob', label: 'Date of Birth' },
+    { name: 'gender', label: 'Gender' },
+    { name: 'maritalStatus', label: 'Marital Status' },
+    { name: 'regDate', label: 'Registration Date' },
+    { name: 'mobile', label: 'Mobile Number' },
+    { name: 'email', label: 'Email ID' },
+    { name: 'altMobile', label: 'Alternative Mobile' },
+    { name: 'pan', label: 'PAN No' },
+    { name: 'bloodGroup', label: 'Blood Group' },
+    { name: 'occupation', label: 'Occupation' },
+    { name: 'jobAddress', label: 'Job Address' },
+    { name: 'stateId', label: 'State' },
+    { name: 'cityId', label: 'City' },
+    { name: 'areaId', label: 'Area' },
+    { name: 'address', label: 'Address' },
+  ],
+  3: [
+    { name: 'loanDate', label: 'Loan Date' },
+    { name: 'emiStartDate', label: 'EMI Start Date' },
+    { name: 'loanTypeId', label: 'Loan Type' },
+    { name: 'intervalDays', label: 'Payment Interval' },
+    { name: 'bankAccountNo', label: 'Bank Account Number' },
+    { name: 'bankHolderName', label: 'Account Holder Name' },
+    { name: 'bankName', label: 'Bank Name' },
+    { name: 'bankBranch', label: 'Bank Branch' },
+    { name: 'ifscCode', label: 'IFSC Code' },
+    { name: 'amount', label: 'Loan Amount' },
+    { name: 'interestRate', label: 'Interest Rate' },
+    { name: 'installments', label: 'No. of Installments' },
+    { name: 'fileCharges', label: 'File Charges' },
+    { name: 'otherCharges', label: 'Other Charges' },
+    { name: 'remarks', label: 'Remarks' },
+    { name: 'receiverMobile', label: 'Receiver Phone Number' },
+  ],
+  4: [
+    { name: 'nomineeName', label: 'Nominee Name' },
+    { name: 'nomineeRelation', label: 'Nominee Relation' },
+    { name: 'nomineeDob', label: 'Nominee Date of Birth' },
+    { name: 'nomineeMobile', label: 'Nominee Mobile' },
+    { name: 'nomineeIdentityProof', label: 'Nominee Identity Proof' },
+    { name: 'nomineeIdentityNo', label: 'Nominee Identity No' },
+    { name: 'nomineeAddress', label: 'Nominee Address' },
+    { name: 'nomineeAccountNo', label: 'Nominee Account Number' },
+    { name: 'nomineeHolderName', label: 'Nominee Account Holder Name' },
+    { name: 'nomineeBankName', label: 'Nominee Bank Name' },
+    { name: 'nomineeBankBranch', label: 'Nominee Bank Branch' },
+    { name: 'nomineeIfsc', label: 'Nominee IFSC' },
+    { name: 'guarantor1Name', label: 'Guarantor 1 Name' },
+    { name: 'guarantor1Relation', label: 'Guarantor 1 Relation' },
+    { name: 'guarantor1Dob', label: 'Guarantor 1 Date of Birth' },
+    { name: 'guarantor1Mobile', label: 'Guarantor 1 Mobile' },
+    { name: 'guarantor1IdentityProof', label: 'Guarantor 1 Identity Proof' },
+    { name: 'guarantor1IdentityNo', label: 'Guarantor 1 Identity No' },
+    { name: 'guarantor1Address', label: 'Guarantor 1 Address' },
+    { name: 'guarantor1AccountNo', label: 'Guarantor 1 Account Number' },
+    { name: 'guarantor1HolderName', label: 'Guarantor 1 Account Holder Name' },
+    { name: 'guarantor1BankName', label: 'Guarantor 1 Bank Name' },
+    { name: 'guarantor1BankBranch', label: 'Guarantor 1 Bank Branch' },
+    { name: 'guarantor1Ifsc', label: 'Guarantor 1 IFSC' },
+    { name: 'guarantor2Name', label: 'Guarantor 2 Name' },
+    { name: 'guarantor2Relation', label: 'Guarantor 2 Relation' },
+    { name: 'guarantor2Dob', label: 'Guarantor 2 Date of Birth' },
+    { name: 'guarantor2Mobile', label: 'Guarantor 2 Mobile' },
+    { name: 'guarantor2IdentityProof', label: 'Guarantor 2 Identity Proof' },
+    { name: 'guarantor2IdentityNo', label: 'Guarantor 2 Identity No' },
+    { name: 'guarantor2Address', label: 'Guarantor 2 Address' },
+    { name: 'guarantor2AccountNo', label: 'Guarantor 2 Account Number' },
+    { name: 'guarantor2HolderName', label: 'Guarantor 2 Account Holder Name' },
+    { name: 'guarantor2BankName', label: 'Guarantor 2 Bank Name' },
+    { name: 'guarantor2BankBranch', label: 'Guarantor 2 Bank Branch' },
+    { name: 'guarantor2Ifsc', label: 'Guarantor 2 IFSC' },
+  ],
+}
+
 export default function AddLoanPage() {
-  const { employees, loanTypes, addLoan, branches, states, cities, areas } = useStore()
+  const { employees, loanTypes, addLoan, updateLoan, updateCustomer, branches, states, cities, areas, customers, loans } = useStore()
   const { showToast } = useUIStore()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const editLoanId = Number(searchParams.get('edit') || 0)
+  const editingLoan = editLoanId ? loans.find(loan => loan.id === editLoanId) : undefined
+  const editingCustomer = editingLoan ? customers.find(customer => customer.id === editingLoan.customerId) : undefined
   const [interestAmount, setInterestAmount] = useState(0)
   const [securityType, setSecurityType] = useState<'vehicle' | 'gold'>('vehicle')
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null)
   const [currentStep, setCurrentStep] = useState(1)
-  const { register, handleSubmit, watch, setValue } = useForm<LoanForm>({
+  const { register, handleSubmit, watch, setValue, reset, getValues, setFocus } = useForm<LoanForm>({
     defaultValues: {
       appNo: `APP${1447}`,
       loanDate: new Date().toISOString().split('T')[0],
@@ -110,12 +201,166 @@ export default function AddLoanPage() {
   const filteredAreas = areas.filter(a => a.cityId === Number(watchCityId))
   const totalPayable = Number(watchAmount || 0) + interestAmount + Number(watch('fileCharges') || 0) + Number(watch('otherCharges') || 0)
 
-  const goNext = () => setCurrentStep(step => Math.min(step + 1, STEPS.length))
+  const getRequiredFieldsForStep = (step: number): RequiredField[] => {
+    const fields = [...(STEP_REQUIRED_FIELDS[step] ?? [])]
+    if (step === 3) {
+      fields.push(
+        ...(securityType === 'vehicle'
+          ? [
+              { name: 'modelName' as const, label: 'Vehicle Model' },
+              { name: 'regNo' as const, label: 'Registration Number' },
+              { name: 'chassisNo' as const, label: 'Chassis Number' },
+              { name: 'keys' as const, label: 'Number of Keys' },
+              { name: 'rcReceived' as const, label: 'RC Book Received' },
+            ]
+          : [
+              { name: 'itemName' as const, label: 'Gold Item Name' },
+              { name: 'weight' as const, label: 'Gold Weight' },
+              { name: 'pieces' as const, label: 'No. of Pieces' },
+            ])
+      )
+    }
+    return fields
+  }
+
+  const validateStep = (step: number) => {
+    const values = getValues()
+    const missing = getRequiredFieldsForStep(step).find(field => {
+      const value = values[field.name]
+      return value === undefined || value === null || String(value).trim() === ''
+    })
+
+    if (missing) {
+      showToast(`${missing.label} is required`, 'error')
+      setCurrentStep(step)
+      setTimeout(() => setFocus(missing.name), 0)
+      return false
+    }
+
+    return true
+  }
+
+  const goNext = () => {
+    if (!validateStep(currentStep)) return
+    setCurrentStep(step => Math.min(step + 1, STEPS.length))
+  }
   const goPrevious = () => setCurrentStep(step => Math.max(step - 1, 1))
 
+  const goToStep = (targetStep: number) => {
+    if (targetStep <= currentStep) {
+      setCurrentStep(targetStep)
+      return
+    }
+
+    for (let step = currentStep; step < targetStep; step++) {
+      if (!validateStep(step)) return
+    }
+
+    setCurrentStep(targetStep)
+  }
+
+  useEffect(() => {
+    if (!editingLoan) return
+
+    setSecurityType(editingLoan.security.type)
+    setCurrentStep(2)
+    reset({
+      appNo: editingCustomer?.appNo ?? '',
+      branchId: editingCustomer ? String(editingCustomer.branchId) : '',
+      employeeId: String(editingLoan.employeeId || editingCustomer?.employeeId || ''),
+      customerName: editingCustomer?.name ?? '',
+      fatherName: editingCustomer?.fatherName ?? '',
+      motherName: editingCustomer?.motherName ?? '',
+      dob: editingCustomer?.dob ?? '',
+      age: editingCustomer ? String(editingCustomer.age) : '',
+      gender: editingCustomer?.gender ?? 'Male',
+      maritalStatus: editingCustomer?.maritalStatus ?? 'Married',
+      regDate: editingCustomer?.regDate ?? new Date().toISOString().split('T')[0],
+      mobile: editingCustomer?.mobile ?? '',
+      email: editingCustomer?.email ?? '',
+      altMobile: editingCustomer?.altMobile ?? '',
+      aadhar: editingCustomer?.aadhar ?? '',
+      pan: editingCustomer?.pan ?? '',
+      bloodGroup: editingCustomer?.bloodGroup ?? '',
+      occupation: editingCustomer?.occupation ?? '',
+      jobAddress: editingCustomer?.jobAddress ?? '',
+      stateId: editingCustomer ? String(editingCustomer.stateId) : '',
+      cityId: editingCustomer ? String(editingCustomer.cityId) : '',
+      areaId: editingCustomer?.areaId ? String(editingCustomer.areaId) : '',
+      address: '',
+      bankAccountNo: editingCustomer?.bank.accountNo ?? '',
+      bankHolderName: editingCustomer?.bank.holderName ?? '',
+      bankName: editingCustomer?.bank.bankName ?? '',
+      bankBranch: editingCustomer?.bank.bankBranch ?? '',
+      ifscCode: editingCustomer?.bank.ifsc ?? '',
+      nomineeName: editingCustomer?.nominee?.name ?? '',
+      nomineeRelation: editingCustomer?.nominee?.relation ?? '',
+      nomineeDob: editingCustomer?.nominee?.dob ?? '',
+      nomineeAge: editingCustomer?.nominee ? String(editingCustomer.nominee.age) : '',
+      nomineeMobile: editingCustomer?.nominee?.mobile ?? '',
+      nomineeIdentityProof: editingCustomer?.nominee?.identityProof ?? '',
+      nomineeIdentityNo: editingCustomer?.nominee?.identityNo ?? '',
+      nomineeAddress: editingCustomer?.nominee?.address ?? '',
+      nomineeAccountNo: editingCustomer?.nominee?.accountNo ?? '',
+      nomineeHolderName: editingCustomer?.nominee?.holderName ?? '',
+      nomineeBankName: editingCustomer?.nominee?.bankName ?? '',
+      nomineeBankBranch: editingCustomer?.nominee?.bankBranch ?? '',
+      nomineeIfsc: editingCustomer?.nominee?.ifsc ?? '',
+      guarantor1Name: editingCustomer?.guarantor1?.name ?? '',
+      guarantor1Relation: editingCustomer?.guarantor1?.relation ?? '',
+      guarantor1Dob: editingCustomer?.guarantor1?.dob ?? '',
+      guarantor1Age: editingCustomer?.guarantor1 ? String(editingCustomer.guarantor1.age) : '',
+      guarantor1Mobile: editingCustomer?.guarantor1?.mobile ?? '',
+      guarantor1IdentityProof: editingCustomer?.guarantor1?.identityProof ?? '',
+      guarantor1IdentityNo: editingCustomer?.guarantor1?.identityNo ?? '',
+      guarantor1Address: editingCustomer?.guarantor1?.address ?? '',
+      guarantor1AccountNo: editingCustomer?.guarantor1?.accountNo ?? '',
+      guarantor1HolderName: editingCustomer?.guarantor1?.holderName ?? '',
+      guarantor1BankName: editingCustomer?.guarantor1?.bankName ?? '',
+      guarantor1BankBranch: editingCustomer?.guarantor1?.bankBranch ?? '',
+      guarantor1Ifsc: editingCustomer?.guarantor1?.ifsc ?? '',
+      guarantor2Name: editingCustomer?.guarantor2?.name ?? '',
+      guarantor2Relation: editingCustomer?.guarantor2?.relation ?? '',
+      guarantor2Dob: editingCustomer?.guarantor2?.dob ?? '',
+      guarantor2Age: editingCustomer?.guarantor2 ? String(editingCustomer.guarantor2.age) : '',
+      guarantor2Mobile: editingCustomer?.guarantor2?.mobile ?? '',
+      guarantor2IdentityProof: editingCustomer?.guarantor2?.identityProof ?? '',
+      guarantor2IdentityNo: editingCustomer?.guarantor2?.identityNo ?? '',
+      guarantor2Address: editingCustomer?.guarantor2?.address ?? '',
+      guarantor2AccountNo: editingCustomer?.guarantor2?.accountNo ?? '',
+      guarantor2HolderName: editingCustomer?.guarantor2?.holderName ?? '',
+      guarantor2BankName: editingCustomer?.guarantor2?.bankName ?? '',
+      guarantor2BankBranch: editingCustomer?.guarantor2?.bankBranch ?? '',
+      guarantor2Ifsc: editingCustomer?.guarantor2?.ifsc ?? '',
+      loanDate: editingLoan.loanDate,
+      emiStartDate: editingLoan.emiStartDate,
+      loanTypeId: String(editingLoan.loanTypeId),
+      amount: String(editingLoan.amount),
+      installments: String(editingLoan.installments),
+      interestRate: String(editingLoan.interestRate),
+      fileCharges: String(editingLoan.fileCharges),
+      otherCharges: String(editingLoan.otherCharges),
+      intervalDays: editingLoan.intervalDays,
+      remarks: editingLoan.remarks,
+      modelName: editingLoan.security.modelName ?? '',
+      regNo: editingLoan.security.regNo ?? '',
+      chassisNo: editingLoan.security.chassisNo ?? '',
+      keys: editingLoan.security.keys ?? '',
+      rcReceived: editingLoan.security.rcReceived ? 'yes' : 'no',
+      itemName: editingLoan.security.itemName ?? '',
+      weight: editingLoan.security.weight ? String(editingLoan.security.weight) : '',
+      pieces: editingLoan.security.pieces ? String(editingLoan.security.pieces) : '',
+      receiverMobile: editingLoan.receiver.mobile,
+    })
+  }, [editingLoan, editingCustomer, reset])
+
   const onSubmit = (data: LoanForm) => {
-    addLoan({
-      customerId: 1,
+    for (let step = 1; step <= STEPS.length; step++) {
+      if (!validateStep(step)) return
+    }
+
+    const loanPayload = {
+      customerId: editingLoan?.customerId ?? 1,
       employeeId: Number(data.employeeId) || 0,
       loanDate: data.loanDate,
       emiStartDate: data.emiStartDate,
@@ -136,8 +381,48 @@ export default function AddLoanPage() {
         fileUrls: []
       },
       receiver: { mobile: data.receiverMobile, documentUrl: '' },
-    })
-    showToast('Loan registered successfully!', 'success')
+    }
+
+    if (editingLoan) {
+      if (editingCustomer) {
+        updateCustomer(editingCustomer.id, {
+          name: data.customerName,
+          fatherName: data.fatherName,
+          motherName: data.motherName,
+          dob: data.dob,
+          age: Number(data.age) || editingCustomer.age,
+          gender: data.gender,
+          maritalStatus: data.maritalStatus,
+          bloodGroup: data.bloodGroup,
+          occupation: data.occupation,
+          regDate: data.regDate,
+          mobile: data.mobile,
+          altMobile: data.altMobile,
+          email: data.email,
+          aadhar: data.aadhar,
+          pan: data.pan.toUpperCase(),
+          jobAddress: data.jobAddress,
+          stateId: Number(data.stateId) || editingCustomer.stateId,
+          cityId: Number(data.cityId) || editingCustomer.cityId,
+          areaId: Number(data.areaId) || editingCustomer.areaId,
+          branchId: Number(data.branchId) || editingCustomer.branchId,
+          employeeId: Number(data.employeeId) || editingCustomer.employeeId,
+          bank: {
+            accountNo: data.bankAccountNo,
+            holderName: data.bankHolderName,
+            bankName: data.bankName,
+            bankBranch: data.bankBranch,
+            ifsc: data.ifscCode.toUpperCase(),
+            documentUrl: editingCustomer.bank.documentUrl,
+          },
+        })
+      }
+      updateLoan(editingLoan.id, loanPayload)
+      showToast('Loan updated successfully!', 'success')
+    } else {
+      addLoan(loanPayload)
+      showToast('Loan registered successfully!', 'success')
+    }
     router.push('/loans/list')
   }
 
@@ -190,7 +475,7 @@ export default function AddLoanPage() {
 
   return (
     <div className="min-h-screen pb-6">
-      <PageHeader title="Add New Loan" />
+      <PageHeader title={editingLoan ? `Edit Loan - ${editingLoan.loanNo}` : 'Add New Loan'} />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="rounded-xl border border-[#D552A3]/30 bg-white p-3 shadow-sm dark:border-[var(--border)] dark:bg-[var(--card)]">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5">
@@ -203,7 +488,7 @@ export default function AddLoanPage() {
                 <button
                   key={step}
                   type="button"
-                  onClick={() => setCurrentStep(number)}
+                  onClick={() => goToStep(number)}
                   className="group flex min-h-14 items-center gap-2.5 rounded-lg p-2.5 text-left transition-all hover:-translate-y-0.5 hover:shadow-md"
                   style={{
                     background: '#FFFFFF',
@@ -454,7 +739,7 @@ export default function AddLoanPage() {
           <div className="flex flex-wrap gap-2.5">
             {currentStep > 1 && <GradientButton type="button" variant="outline" size="lg" onClick={goPrevious}>Previous</GradientButton>}
             {currentStep < STEPS.length && <GradientButton type="button" size="lg" onClick={goNext}>Next</GradientButton>}
-            {currentStep === STEPS.length && <GradientButton type="submit" size="lg">Register Loan</GradientButton>}
+            {currentStep === STEPS.length && <GradientButton type="submit" size="lg">{editingLoan ? 'Update Loan' : 'Register Loan'}</GradientButton>}
             <button type="button" onClick={() => router.push('/loans/list')} className="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all hover:bg-gray-200" style={{ background: '#F1F1F1', color: '#6B6B6B', border: '1.5px solid #E0E0E0' }}>Cancel</button>
           </div>
         </div>
